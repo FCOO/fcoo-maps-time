@@ -1,0 +1,87 @@
+/***********************************************
+bottom-menu.scss
+************************************************/
+
+
+//$time-mode-list must contains the same ids as timeModeInfo in src/fcoo-maps-time.js
+$time-mode-list: 'SCALE', 'RELATIVE', 'SELECT', 'ABSOLUTE';
+@each $time-mode in $time-mode-list {
+    @include show-and-hide-for-modernizr-test( $modernizr-test: 'time-mode-' + $time-mode, $incl-no-selector: true, $incl-table-display: false);
+
+    html.#{'time-mode-' + $time-mode} .#{'bold-for-time-mode-' + $time-mode} {
+        color: red;
+    }
+}
+
+
+//show/hide for extended buttom-menu
+@include show-and-hide-for-modernizr-test( $modernizr-test: 'bottom-menu-extended', $incl-no-selector: false, $incl-table-display: false);
+
+
+
+//Container for header and footer. TODO: Move it to jquery-bootstrap
+.jb-header-container {
+    @include header-variant();
+    @include header-colors();
+
+    &.jb-header-container-sm {
+        @include header-variant-sm();
+    }
+}
+
+.jb-footer-container {
+    @include footer-variant();
+
+    &.jb-footer-container-sm {
+        @include footer-variant-sm();
+    }
+}
+
+.time-selector-container {
+    & > *:nth-child(odd) {
+//HER        background: yellow;
+    }
+
+    & > *:nth-child(even) {
+//HER        background: green;
+    }
+
+
+    display       : flex;
+    flex-wrap     : wrap;
+    flex-direction: column;
+
+
+    .ts-main-container {
+        display       : flex;
+        flex-direction: row;
+    }
+
+    .ts-button-container {
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: row;
+        flex-grow: 0;
+
+        > div {
+            display: flex;
+            flex-direction: row;
+        }
+
+        html.portrait & {
+            &.left  { flex-direction: column; }
+            &.right { flex-direction: column-reverse; }
+        }
+    }
+
+
+    .ts-info-container {
+        flex-grow: 1;
+
+        display: flex;
+        flex-direction: row;
+    }
+}
+
+
+

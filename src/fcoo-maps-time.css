@@ -1,0 +1,488 @@
+/***********************************************
+	fcoo-maps-time.scss,
+
+	(c) 2020, FCOO
+
+	https://github.com/FCOO/fcoo-maps
+	https://github.com/FCOO
+
+
+************************************************/
+/*
+//BOURBON - http://bourbon.io/
+@import "../bower_components/bourbon/core/bourbon";
+
+//MODERNIZR-MIXIN - https://github.com/danielguillan/modernizr-mixin
+@import "../bower_components/modernizr-mixin/stylesheets/modernizr";
+
+//MATHSASS - https://github.com/terkel/mathsass
+@import "../bower_components/mathsass/dist/math";
+
+//MODERNIZR-SASS - http://github.com/FCOO/modernizr-scss
+@import "../bower_components/modernizr-scss/dist/modernizr-scss";
+
+//LEAFLET-MAP-SYNC https://github.com/fcoo/leaflet-map-sync
+@import "../bower_components/leaflet-map-sync/src/leaflet-map-sync-outline-color";
+
+*/
+/************************************************************
+INCLUDE-JQUERY-BOOTSTRAP-VARIABLES
+USED IN FOR OTHER PACKAGES TO INCLUDE ALL SCSS-FILES NEEDED
+TO HAVE ACCESS TO ALL BOOTSTRAP AND FCOO/JQUERY-BOOTSTRAP SCSS-VARIABLES
+************************************************************/
+/***********************************************
+JQUERY-BOOTSTRAP: Set and adjust bootstrap default values
+************************************************/
+/************************************************************
+BOOTSTRAP-VARIABLES
+************************************************************/
+/***********************************************
+FUNCTIONS TO CONVETRT FROM PX TO REM
+To make it easier to design and calculate dimensions
+the function rem defined
+************************************************/
+/***********************************************
+ADJUST BOOTSTRAP DEFAULT VALUES
+************************************************/
+/***********************************************
+Adjust bootstrap-variables to only have dimensions
+in integer px from rem
+************************************************/
+/*Not used. No lg-buttons
+$input-btn-padding-y-lg: .75rem;
+$input-btn-padding-x-lg: $input-btn-padding-y-lg;
+
+Syntax and relations:
+In Bootstrap
+    $input-btn-padding(-x|-y)[-sm|-lg] = A Value
+    $btn-padding(-x|-y)[-sm|-lg] = $input-btn-padding(-x|-y)[-sm|-lg]
+
+
+
+In jquery-bootstrap
+    $input-btn-padding-x-sm = 3px
+    $input-btn-padding-y-sm = 4px
+
+    xs-versions added
+    $input-btn-padding-x-xs = 2px
+    $input-btn-padding-y-xs = 3px
+
+*/
+/************************************************************
+Including "size" xs as in Bootstrap 4
+************************************************************/
+/************************************************************
+Add line-heights for xs
+************************************************************/
+/************************************************************
+Border-colors
+************************************************************/
+/************************************************************
+Make all font-size and margin for header (<h1>, <h2>,...<h6>)
+releative to container (rem -> em)
+************************************************************/
+/* Defalut not changed:
+$font-size-base         : 1rem !default;
+$spacer                 : 1rem !default;
+*/
+/************************************************************
+Set margin for buttons in block
+************************************************************/
+/************************************************************
+Adjust dropdown-menu
+************************************************************/
+/************************************************************
+Adjust modal
+************************************************************/
+/***********************************************
+BOOTSTRAP: scss variables
+************************************************/
+/***********************************************
+JQUERY-BOOTSTRAP: Background-color and text color and Variables
+************************************************/
+/************************************************************
+COLOR
+
+background-color and text-color for
+headers modal, popover, tables, buttons, list-items etc.
+
+"$header-" is used for header to modal-windows and popover
+"$title-" is used for headers on content - table, accordion etc.
+"$control-" is used for buttons, list-items etc.
+************************************************************/
+/************************************************************
+VARIABLES
+************************************************************/
+/***********************************************
+DEFINE BOOTSTRAP BUTTON STYLE
+$btn-style-name MUST correspond with ns.bsButtonClass
+in src/jquery-bootstrap-button.js
+************************************************/
+/************************************************************
+Variables bassed on bootstrop variables
+************************************************************/
+/************************************************************
+HEADER
+Font-sizes for headers are one 'size' smaller than normal font
+$font-size-lg  : 1.25rem    20px
+$font-size-base: 1rem       16px
+$font-size-sm  : .875rem;   14px
+$font-size-xs  : .75rem     12px
+************************************************************/
+/************************************************************
+BUTTON AND MODAL
+Opacity for semi-transparent and transparent content
+************************************************************/
+/************************************************************
+SQUARE BUTTONS
+Dimentions for square buttons with only icons
+************************************************************/
+/************************************************************
+LABEL
+Font-sizes for labels are same size as header but incl a xxs-size
+************************************************************/
+/************************************************************
+CONTENT
+Unifies padding and font-size for content of modal, accordion, popup etc.
+Using same font-size and vertical/horizontal padding as buttons
+NOTE: For sm and xs y-padding = x-padding
+************************************************************/
+/************************************************************
+MARGIN-BOTTOM
+All elements in modal-windows get same margin-bottom
+************************************************************/
+/************************************************************
+MIXIN
+************************************************************/
+/************************************************************
+RIGHT-SIDE-ICON
+Add style to <i> to place it to the right and vertical center
+NOTE: Parent element MUST have @include vertical-align-center();
+************************************************************/
+/************************************************************
+FOCUS
+All elements get same outline when they have focus:
+No outline
+border-color = light blue
+************************************************************/
+/************************************************************
+CONTENT
+Unifies padding for modal, accordion, popup etc.
+************************************************************/
+/************************************************************
+CONTROL-CONTAINER
+Style for div with controls inside modal.
+Must have tabindex:"-1" to work with focus
+************************************************************/
+/************************************************************
+CONTROL BORDER-COLOR
+All control elements get same border-color when normal, hover, active and error
+************************************************************/
+/************************************************************
+CONTROL-COLORS
+Sets all color for text, background, border for normal, :hover, :focus,  :active and .active
+************************************************************/
+/************************************************************
+TYPE-COLOR
+Bg-color and color for different 'type' (warning, alert, info, error, success)
+Used in Noty and Modal
+************************************************************/
+/************************************************************
+HEADER AND TITLE BACKGROUND-COLOR AND COLOR
+Headers for modal, popover, popup etc.
+************************************************************/
+/************************************************************
+color-hover - Background-color and text-color for 'normal' and hover
+************************************************************/
+/************************************************************
+header-colors - Colors for headers
+************************************************************/
+/************************************************************
+title-color - create colors for headers for table and accordion etc.
+************************************************************/
+/************************************************************
+HEADER, TITLE, AND FOOTER PADDING AND FONT-SIZE
+Padding are set to button y-padding (moving text to the left)
+************************************************************/
+/************************************************************
+header-variant
+************************************************************/
+/************************************************************
+title-variant - as header but with same font-size as siblings
+************************************************************/
+/************************************************************
+footer-variant
+************************************************************/
+/************************************************************
+MARGIN-BOTTOM FOR ELEMENTS IN MODAL
+All elements in modal-windows get same margin-bottom
+************************************************************/
+/*
+//ZOOM MODERNIZR https://github.com/fcoo/leaflet-zoom-modernizr
+@import "../bower_components/leaflet-zoom-modernizr/src/leaflet-zoom-modernizr";
+
+
+//LEAFLET-BOOTSTRAP - mixin to create colors for bsMarker
+@import "../bower_components/sass-color-helpers/stylesheets/color-helpers";
+@import "../bower_components/leaflet-bootstrap-marker/src/leaflet-bootstrap-marker-mixin";
+
+//LEAFLET-POLYLINE - mixin to create colors for polyline and polygon
+@import "../bower_components/leaflet-polyline/src/leaflet-polyline-mixin";
+
+*/
+.leaflet-control.leaflet-button-box.forced-shown {
+  visibility: visible !important;
+  opacity: 1; }
+  .leaflet-control.leaflet-button-box.forced-shown a.btn.hide-for-extended {
+    display: block !important; }
+  .leaflet-control.leaflet-button-box.forced-shown a.btn.show-for-extended {
+    display: none !important; }
+
+.icon-time-past {
+  color: #7ABAE1; }
+
+.icon-time-now {
+  color: lightgreen; }
+
+.icon-time-future {
+  color: #4D72B8; }
+
+.leaflet-container.time-is-past .time-info-control a {
+  box-shadow: 0 0 0px 2px #7ABAE1; }
+
+.leaflet-container.time-is-now .time-info-control a {
+  box-shadow: 0 0 0px 2px lightgreen; }
+
+.leaflet-container.time-is-future .time-info-control a {
+  box-shadow: 0 0 0px 2px #4D72B8; }
+
+/***********************************************
+bottom-menu.scss
+************************************************/
+.time-mode-SCALE .hide-for-time-mode-SCALE {
+  display: none !important; }
+
+.time-mode-SCALE .show-for-no-time-mode-SCALE {
+  display: none !important; }
+
+.no-time-mode-SCALE .show-for-time-mode-SCALE {
+  display: none !important; }
+
+.no-time-mode-SCALE .hide-for-no-time-mode-SCALE {
+  display: none !important; }
+
+html.time-mode-SCALE .bold-for-time-mode-SCALE {
+  color: red; }
+
+.time-mode-RELATIVE .hide-for-time-mode-RELATIVE {
+  display: none !important; }
+
+.time-mode-RELATIVE .show-for-no-time-mode-RELATIVE {
+  display: none !important; }
+
+.no-time-mode-RELATIVE .show-for-time-mode-RELATIVE {
+  display: none !important; }
+
+.no-time-mode-RELATIVE .hide-for-no-time-mode-RELATIVE {
+  display: none !important; }
+
+html.time-mode-RELATIVE .bold-for-time-mode-RELATIVE {
+  color: red; }
+
+.time-mode-SELECT .hide-for-time-mode-SELECT {
+  display: none !important; }
+
+.time-mode-SELECT .show-for-no-time-mode-SELECT {
+  display: none !important; }
+
+.no-time-mode-SELECT .show-for-time-mode-SELECT {
+  display: none !important; }
+
+.no-time-mode-SELECT .hide-for-no-time-mode-SELECT {
+  display: none !important; }
+
+html.time-mode-SELECT .bold-for-time-mode-SELECT {
+  color: red; }
+
+.time-mode-ABSOLUTE .hide-for-time-mode-ABSOLUTE {
+  display: none !important; }
+
+.time-mode-ABSOLUTE .show-for-no-time-mode-ABSOLUTE {
+  display: none !important; }
+
+.no-time-mode-ABSOLUTE .show-for-time-mode-ABSOLUTE {
+  display: none !important; }
+
+.no-time-mode-ABSOLUTE .hide-for-no-time-mode-ABSOLUTE {
+  display: none !important; }
+
+html.time-mode-ABSOLUTE .bold-for-time-mode-ABSOLUTE {
+  color: red; }
+
+.bottom-menu-extended .hide-for-bottom-menu-extended {
+  display: none !important; }
+
+.no-bottom-menu-extended .show-for-bottom-menu-extended {
+  display: none !important; }
+
+.jb-header-container {
+  /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
+  display: flex;
+  align-items: center;
+  cursor: default;
+  font-weight: 400;
+  padding: 0.25rem 0.3125rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border-radius: inherit;
+  border-bottom: 1px solid #9aa1a8;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+  color: #495057;
+  background-color: #f2f2f2; }
+  .jb-header-container span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
+  .jb-header-container span.fixed-header {
+    overflow: visible;
+    word-break: keep-all; }
+  .jb-header-container.jb-header-container-sm {
+    /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
+    display: flex;
+    align-items: center;
+    cursor: default;
+    font-weight: 400;
+    padding: 0.1875rem 0.25rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    border-radius: inherit;
+    border-bottom: 1px solid #9aa1a8;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0; }
+    .jb-header-container.jb-header-container-sm span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap; }
+    .jb-header-container.jb-header-container-sm span.fixed-header {
+      overflow: visible;
+      word-break: keep-all; }
+
+.jb-footer-container {
+  /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
+  display: flex;
+  align-items: center;
+  cursor: default;
+  font-weight: 400;
+  padding: 0.25rem 0.3125rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border-radius: inherit;
+  color: #495057;
+  background-color: #f2f2f2;
+  line-height: 1.25;
+  border-top: 1px solid #9aa1a8;
+  border-top-left-radius: 0 !important;
+  border-top-right-radius: 0 !important; }
+  .jb-footer-container span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap; }
+  .jb-footer-container span.fixed-header {
+    overflow: visible;
+    word-break: keep-all; }
+  .jb-footer-container:empty {
+    display: none !important; }
+  .jb-footer-container.jb-footer-container-sm {
+    /*
+    $padding-x: $input-btn-padding-x;
+    $padding-y: $input-btn-padding-y;
+    @if $size == "sm" {
+        $padding-x: $input-btn-padding-x-sm;
+        $padding-y: $input-btn-padding-y-sm;
+    }
+    @if $size == "xs" {
+        $padding-x: $input-btn-padding-x-xs;
+        $padding-y: $input-btn-padding-y-xs;
+    }
+*/
+    display: flex;
+    align-items: center;
+    cursor: default;
+    font-weight: 400;
+    padding: 0.1875rem 0.25rem;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    border-radius: inherit;
+    color: #495057;
+    background-color: #f2f2f2;
+    line-height: 1.25;
+    border-top: 1px solid #9aa1a8;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important; }
+    .jb-footer-container.jb-footer-container-sm span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap; }
+    .jb-footer-container.jb-footer-container-sm span.fixed-header {
+      overflow: visible;
+      word-break: keep-all; }
+    .jb-footer-container.jb-footer-container-sm:empty {
+      display: none !important; }
+
+.time-selector-container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column; }
+  .time-selector-container .ts-main-container {
+    display: flex;
+    flex-direction: row; }
+  .time-selector-container .ts-button-container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    flex-grow: 0; }
+    .time-selector-container .ts-button-container > div {
+      display: flex;
+      flex-direction: row; }
+    html.portrait .time-selector-container .ts-button-container.left {
+      flex-direction: column; }
+    html.portrait .time-selector-container .ts-button-container.right {
+      flex-direction: column-reverse; }
+  .time-selector-container .ts-info-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: row; }
