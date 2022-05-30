@@ -56,10 +56,14 @@
 
     //The button is allways visible
     a.btn.hide-for-extended {
-        display: block !important;
+        display: inline-block !important;
+    }
+    a.btn.hide-for-extended * {
+        display: inline-block !important;
     }
     //The extended button is allways hidden
-    a.btn.show-for-extended {
+    a.btn.show-for-extended,
+    a.btn.show-for-extended * {
         display: none !important;
     }
 }

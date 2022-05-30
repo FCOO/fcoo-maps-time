@@ -86,7 +86,7 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
                 bigIcon : true,
                 class   : className
             });
-        };
+        }
 
         function appendButtons($container, buttonList){
             var $div = $('<div/>').appendTo($container);
@@ -119,15 +119,17 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
 
 
         //Create common elements
-        var $slider1 = $('<div/>')
-                .appendTo($container)
-                .addClass('show-for-bottom-menu-extended')
+        //var $slider1 =
+                $('<div/>')
+                    .appendTo($container)
+                    .addClass('show-for-bottom-menu-extended')
 .height(30)
 .text('slider1');
 
-        var $slider2 = $('<div/>')
-                .appendTo($container)
-                .addClass('show-for-bottom-menu-extended')
+        //var $slider2 =
+                $('<div/>')
+                    .appendTo($container)
+                    .addClass('show-for-bottom-menu-extended')
 .height(30)
 .text('slider2');
 
@@ -137,13 +139,14 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
                 .addClass('ts-main-container');
 
 
-        var $footer = $('<div/>')
-            .appendTo($container)
-            ._bsAddBaseClassAndSize({baseClass: 'jb-footer-container', useTouchSize: true})
-            .addClass('show-for-bottom-menu-extended')
-//HER            .css('border-top', '1px solid red')
-//HER            .addClass('modal-footer-header show-for-bottom-menu-extended')
-            ._bsAddHtml( ns.globalSettingFooter(ns.events.TIMEZONECHANGED, true) );
+        //var $footer =
+                $('<div/>')
+                    .appendTo($container)
+                    ._bsAddBaseClassAndSize({baseClass: 'jb-footer-container', useTouchSize: true})
+                    .addClass('show-for-bottom-menu-extended')
+//HER                    .css('border-top', '1px solid red')
+//HER                    .addClass('modal-footer-header show-for-bottom-menu-extended')
+                    ._bsAddHtml( ns.globalSettingFooter(ns.events.TIMEZONECHANGED, true) );
 
 
         var $time = $('<div/>')
@@ -181,20 +184,21 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
             .appendTo($main)
             .addClass('ts-button-container left');
 
-        appendButtons($leftButtonContainer, [$timeModeButton, 'time-step-first' ])
-        appendButtons($leftButtonContainer, ['time-step-prev-ext', 'time-step-prev' ])
+        appendButtons($leftButtonContainer, [$timeModeButton, 'time-step-first' ]);
+        appendButtons($leftButtonContainer, ['time-step-prev-ext', 'time-step-prev' ]);
 
 
-        var $info = $('<div/>')
-                        .appendTo($main)
-                        .addClass('ts-info-container')
+        //var $info =
+                $('<div/>')
+                    .appendTo($main)
+                    .addClass('ts-info-container')
 
-                        .append( $relative )
+                    .append( $relative )
 
-                        .append( $time )
-                        .append( $date )
+                    .append( $time )
+                    .append( $date )
 
-                        .append( $utc )
+                    .append( $utc );
 
 
 //HER        $('<div/>')
@@ -219,8 +223,8 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
             .appendTo($main)
             .addClass('ts-button-container right');
 
-        appendButtons($rightButtonContainer, ['time-step-next', 'time-step-next-ext'])
-        appendButtons($rightButtonContainer, ['time-step-last', $extendedButton])
+        appendButtons($rightButtonContainer, ['time-step-next', 'time-step-next-ext']);
+        appendButtons($rightButtonContainer, ['time-step-last', $extendedButton]);
 
 
 
@@ -230,7 +234,7 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
         //Set event on buttons
         $.each(buttons, function(className, options){
             $container.find('.'+className).on('click', function(){
-                console.log(options.diff);
+                nsTime._addDiffToCurrentTimeMode(options.diff);
             });
         });
 

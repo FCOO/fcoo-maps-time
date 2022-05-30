@@ -67,7 +67,7 @@ semiTransparent: false,
                 options.popupList.push({
                     type        : 'button',
                     icon        : 'fa-clock',
-                    text        : 'MANGLER',
+                    text        : {da: '(?) Tidsvælger', en: '(?) Time Selector'},
                     onClick     : nsTime.selectTimeMode,
                     closeOnClick: true,
                     lineAfter   : true
@@ -197,9 +197,11 @@ semiTransparent: false,
 
             this.timeSyncAsStr = newTimeSyncAsStr;
 
-            //If mode is differne from "as main" and the bsTimeInfoControl is hidden it is forced to be displayed disabled to allways see the time-offset
+            //If mode is different from "as main" and the bsTimeInfoControl is hidden it is forced to be displayed disabled to allways see the time-offset
             var forcedShown = !this.options.show && (!asMain || !!offset);
             this.$container.toggleClass('forced-shown', forcedShown);
+            $(this.bsButton).toggleClass('semi-transparent', forcedShown);
+
             forcedShown ? this.disable() : this.enable();
 
             //Update sync time (Now or relative time)

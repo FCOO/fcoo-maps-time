@@ -1,16 +1,16 @@
 {
-    "name"		 : "time",
-    "version"	 : "0.0.0",
-    "homepage"   : "https://github.com/FCOO/time",
-    "author"     : "Niels Holt nho@fcoo.dk",
-    "description": "package.json is only use for building the package. see bower.json for more info",
-    "repository" : {
-        "type": "git",
-        "url" : "git://github.com/FCOO/time.git"
-    },
-    "dependencies": {},
-    "devDependencies": {
-        "grunt-fcoo-grunt-plugin": "^6.0.0"
-    },
-    "license": "MIT"
+  "name": "time",
+  "version": "0.0.1",
+  "homepage": "https://github.com/FCOO/time",
+  "author": "Niels Holt nho@fcoo.dk",
+  "description": "package.json is only use for building the package. see bower.json for more info",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/FCOO/time.git"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "grunt-fcoo-grunt-plugin": "^6.0.0"
+  },
+  "license": "MIT"
 }
