@@ -4,84 +4,53 @@ bottom-menu.scss
 
 
 //$time-mode-list must contains the same ids as timeModeInfo in src/fcoo-maps-time.js
-$time-mode-list: 'SCALE', 'RELATIVE', 'SELECT', 'ABSOLUTE';
+$time-mode-list: 'SCALE', 'RELATIVE', 'SELECT', 'ANIMATION';
 @each $time-mode in $time-mode-list {
     @include show-and-hide-for-modernizr-test( $modernizr-test: 'time-mode-' + $time-mode, $incl-no-selector: true, $incl-table-display: false);
 
     html.#{'time-mode-' + $time-mode} .#{'bold-for-time-mode-' + $time-mode} {
-        color: red;
+        font-weight: bold !important;
     }
 }
 
 
-//show/hide for extended buttom-menu
-@include show-and-hide-for-modernizr-test( $modernizr-test: 'bottom-menu-extended', $incl-no-selector: false, $incl-table-display: false);
+//Border and shadow-color equar past, now, or future
+.btn.btn-standard.border-color-as-time {
+    .time-is-past & {
+        border-color: $time-past-color !important;
+        box-shadow: inset 0 0 0px 1px $time-past-color !important;
+    }
 
+    .time-is-now & {
+        border-color: $time-now-color !important;
+        box-shadow: inset 0 0 0px 1px $time-now-color !important;
+    }
 
-
-//Container for header and footer. TODO: Move it to jquery-bootstrap
-.jb-header-container {
-    @include header-variant();
-    @include header-colors();
-
-    &.jb-header-container-sm {
-        @include header-variant-sm();
+    .time-is-future & {
+        border-color: $time-future-color !important;
+        box-shadow: inset 0 0 0px 1px $time-future-color !important;
     }
 }
 
-.jb-footer-container {
-    @include footer-variant();
+//show/hide for tree modes of buttom-menu: minimized, normal, and extended
+@include show-and-hide-for-modernizr-test( $modernizr-test: 'bottom-menu-minimized', $incl-no-selector: true, $incl-table-display: false);
+@include show-and-hide-for-modernizr-test( $modernizr-test: 'bottom-menu-normal',    $incl-no-selector: true, $incl-table-display: false);
+@include show-and-hide-for-modernizr-test( $modernizr-test: 'bottom-menu-extended',  $incl-no-selector: true, $incl-table-display: false);
 
-    &.jb-footer-container-sm {
-        @include footer-variant-sm();
+
+
+//show-for-phone-and-portrait = Special versions = Visible for phone, portrait
+//hide-for-phone-and-portrait = Standard versions = Hidden for phone, portrait
+.show-for-phone-and-portrait {
+    display: none !important;
+}
+html.phone.portrait {
+    .show-for-phone-and-portrait {
+        display: flex !important;
+    }
+    .hide-for-phone-and-portrait {
+        display: none !important;
     }
 }
-
-.time-selector-container {
-    & > *:nth-child(odd) {
-//HER        background: yellow;
-    }
-
-    & > *:nth-child(even) {
-//HER        background: green;
-    }
-
-
-    display       : flex;
-    flex-wrap     : wrap;
-    flex-direction: column;
-
-
-    .ts-main-container {
-        display       : flex;
-        flex-direction: row;
-    }
-
-    .ts-button-container {
-        display: flex;
-        flex-wrap: wrap;
-        flex-direction: row;
-        flex-grow: 0;
-
-        > div {
-            display: flex;
-            flex-direction: row;
-        }
-
-        html.portrait & {
-            &.left  { flex-direction: column; }
-            &.right { flex-direction: column-reverse; }
-        }
-    }
-
-
-    .ts-info-container {
-        flex-grow: 1;
-
-        display: flex;
-        flex-direction: row;
-    }
-}
-
 
 

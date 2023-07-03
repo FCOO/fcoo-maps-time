@@ -18,15 +18,26 @@
         window.fcoo = window.fcoo || {};
         window.fcoo.DEMO_VERSION = true;
         //OR window.fcoo.LOCAL_DATA = true;
+
+        if (window.location.href.includes('?testmode'))
+            window.FCOOMAPSTIME_TEST = true;
+
     </script>
 
     <script src="bower_components.js"></script>
-    <script src="../src/bottom-menu.js"></script>
-    <script src="../src/L.Control.BsTimeInfoControl.js"></script>
-    <script src="../src/fcoo-maps-time.js"></script>
+
+    <script src="../src/00_fcoo-maps-time.js"></script>
+    <script src="../src/10_bottom-menu-elements.js"></script>
+    <script src="../src/12_bottom-menu-elements-timeSilder.js"></script>
+    <script src="../src/15_bottom-menu-ElementSet.js"></script>
+    <script src="../src/20_bottom-menu-content.js"></script>
+    <script src="../src/30_L.Control.BsTimeInfoControl.js"></script>
     <!-- <script src="../src/map-layer-time.js"></script> -->
 
     <script>
+        window.bsIsTouch = false;
+        window.bsIsTouch = (window.location.search =='?touch');
+       
         window.fcoo.map.createApplication(
             //options
             {
@@ -38,13 +49,10 @@
             ["TIME"]
         );
 
-        
+    
 
-
-
-
-
-
+    
+    
     </script>
 </body>
 </html>

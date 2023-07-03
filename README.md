@@ -42,6 +42,10 @@ http://FCOO.github.io/fcoo-maps-time/demo/
     .methods2( arg1, arg2,...): Do something else
 
  -->
+## Technical Documentation
+
+See the [Technical Documentation here](documentation.md)
+
 
 ## Copyright and License
 This plugin is licensed under the [MIT license](https://github.com/FCOO/fcoo-maps-time/LICENSE).

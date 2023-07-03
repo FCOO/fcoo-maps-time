@@ -8,6 +8,8 @@
 
 
 ************************************************/
+@use "sass:color";
+
 /*
 //BOURBON - http://bourbon.io/
 @import "../bower_components/bourbon/core/bourbon";
@@ -33,8 +35,6 @@
 //JQUERY-BOOTSTRAP VARIABLES AND MIXINS
 @import "../bower_components/jquery-bootstrap/src/include-jquery-bootstrap-variables";
 
-
-
 /*
 //ZOOM MODERNIZR https://github.com/fcoo/leaflet-zoom-modernizr
 @import "../bower_components/leaflet-zoom-modernizr/src/leaflet-zoom-modernizr";
@@ -48,6 +48,11 @@
 @import "../bower_components/leaflet-polyline/src/leaflet-polyline-mixin";
 
 */
+
+//FCOO-COLORS and FCOO-MAPS-COLORS
+@import "../bower_components/fcoo-colors/src/fcoo-colors-mixin";
+@import "../bower_components/fcoo-maps-colors/src/fcoo-maps-colors-variables";
+
 
 //Special css for L.Control.BsTimeInfoControl when show==false and some info needs to be shown anyway
 .leaflet-control.leaflet-button-box.forced-shown {
@@ -70,22 +75,12 @@
 
 
 //Set shadow around time-info-control indicading if the time is the past, now or the future
-//The colors are taken from jquery-bootrsrap-niord and should be set in a common packages
-$time-past-color  : #7ABAE1;
-$time-now-color   : lightgreen;
-$time-future-color: #4D72B8;
-
-
-.icon-time-past   { color: $time-past-color  }
-.icon-time-now    { color: $time-now-color   }
-.icon-time-future { color: $time-future-color}
-
-
 .leaflet-container {
-    &.time-is-past   { .time-info-control a { box-shadow: 0 0 0px 2px $time-past-color;   } }
-    &.time-is-now    { .time-info-control a { box-shadow: 0 0 0px 2px $time-now-color;    } }
-    &.time-is-future { .time-info-control a { box-shadow: 0 0 0px 2px $time-future-color; } }
+    &.time-is-past   { .time-info-control a { box-shadow: 0 0 0px 2px $time-past-bg-color;   } }
+    &.time-is-now    { .time-info-control a { box-shadow: 0 0 0px 2px $time-now-bg-color;    } }
+    &.time-is-future { .time-info-control a { box-shadow: 0 0 0px 2px $time-future-bg-color; } }
 }
 
 @import "_bottom-menu";
+
 
