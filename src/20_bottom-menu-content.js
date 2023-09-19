@@ -34,21 +34,23 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
         var isDesktop = false,
             isNotDesktop = !isDesktop,
             isPhone = true;
-*/
+//*/
         var isDesktop = ns.modernizrDevice.isDesktop,
             isNotDesktop = !isDesktop,
             isPhone = ns.modernizrDevice.isPhone;
 
         //Remove button for mode if only one mode
         if (nsTime.timeOptions.timeModeList.length == 1)
-            elements['time-mode'] = null;
-
+            elements['time-mode'] = elements['empty'];
 
         //Set events for resize and change relative time
         $container.resize( nsTime.bottomMenu_onResize );
-        ns.events.on('CURRENTRELATIVECHANGED', nsTime.bottomMenu_onCurrentRelativeChanged);
-
         ns.events.on('TIMEMODECHANGED', nsTime.bottomMenu_onResize);
+
+        //Add swip up and down to change the size off the bottom menu (bms = bottom-menu-size)
+        $container.hammer();
+        $container.on('swipeup', nsTime.incBMS);
+        $container.on('swipedown', nsTime.decBMS);
 
 
         /**************************************************************************
@@ -62,12 +64,12 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
             DESKTOP, TABLE, PHONE-LANDSCAPE, PHONE-PORTRAIT-MINIMIZED:
                 Buttons and current, relative and utc time
             PHONE-PORTRAIT-NORMAL:
-                1. row: SCALE:Current, RELATIVE:Relative
+                1. row: FIXED:Current, RELATIVE:Relative
                 2. row: relative/current and utc time
                 3. row: Buttons
             PHONE-PORTRAIT-EXTENDED:
                 As PHONE-PORTRAIT-NORMAL +
-                4. Range
+                4. Time-slider
         **************************************************************************/
         //DESKTOP, TABLE, PHONE-LANDSCAPE: Buttons and current, relative and utc time
         addElementSet({
@@ -75,7 +77,7 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
                 $('<div/>')
                 .appendTo($container)
                 .addClass('d-flex justify-content-between')
-                .toggleClass('hide-for-phone-and-portrait', isPhone),  //Hide for phone portrait: See special version below
+                .toggleClass('hide-for-phone-and-portrait-and-extended', isPhone),  //Hide for phone portrait extended: See special version below
 
                 elementList: function(){
                     var list = [];
@@ -93,16 +95,16 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
                             ['time-mode', 'time-step-first', 'time-step-prev-ext', 'time-step-prev']
                         );
 
-                    //Center content with relative,*current*,utc for mode = SCALE
+                    //Center content with relative,*current*,utc for mode = FIXED
                     if (isNotDesktop)
                         list.push({ownContainer: true, class: 'd-flex justify-content-center flex-grow-1'});
 
-                    //mode = SCALE
+                    //mode = FIXED
                     list.push(
                         //Relative time
-                        'relative-SCALE-min', 'relative-SCALE-mid', 'relative-SCALE-max',
+                        'relative-FIXED-min', 'relative-FIXED-mid', 'relative-FIXED-max',
                         //Current time
-                        'current-SCALE-min', 'current-SCALE-mid', 'current-SCALE-max',
+                        'current-FIXED-min', 'current-FIXED-mid', 'current-FIXED-max',
 
                     //mode = RELATIVE
                         //Current time
@@ -110,7 +112,7 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
                         //Relative time
                         'relative-RELATIVE',
 
-                    //mode = SCALE or RELATIVE
+                    //mode = FIXED or RELATIVE
                         //Utc time
                         'utc-min', 'utc-mid', 'utc-max'
                     );
@@ -137,16 +139,16 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
 
             prioList: {
                 ALL: {
-                    SCALE: [
+                    FIXED: [
                         //Relative time         Current time       UTC time  Buttons
-                        '                       current-SCALE-min',
-                        '                       current-SCALE-mid',
-                        '                       current-SCALE-mid            time-step-ext',
-                        'relative-SCALE-min     current-SCALE-mid  utc-min   time-step-ext',
-                        'relative-SCALE-min     current-SCALE-mid  utc-min   time-step-ext time-step-first-last',
-                        'relative-SCALE-min     current-SCALE-max  utc-min   time-step-ext time-step-first-last',
-                        'relative-SCALE-mid     current-SCALE-max  utc-mid   time-step-ext time-step-first-last',
-                        'relative-SCALE-max     current-SCALE-max  utc-max   time-step-ext time-step-first-last'
+                        '                       current-FIXED-min',
+                        '                       current-FIXED-mid',
+                        '                       current-FIXED-mid            time-step-ext',
+                        'relative-FIXED-min     current-FIXED-mid  utc-min   time-step-ext',
+                        'relative-FIXED-min     current-FIXED-mid  utc-min   time-step-ext time-step-first-last',
+                        'relative-FIXED-min     current-FIXED-max  utc-min   time-step-ext time-step-first-last',
+                        'relative-FIXED-mid     current-FIXED-max  utc-mid   time-step-ext time-step-first-last',
+                        'relative-FIXED-max     current-FIXED-max  utc-max   time-step-ext time-step-first-last'
                     ],
                     RELATIVE: [
                         //Current time          Relative           UTC time  Buttons
@@ -168,7 +170,7 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
                 $container: $('<div/>')
                     .appendTo($container)
                     .addClass('d-flex justify-content-center')
-                    .addClass('show-for-phone-and-portrait'),  //Show for phone portrait
+                    .addClass('show-for-phone-and-portrait-and-extended'),  //Show for phone portrait extended
 
                 elementList: [
                     {ownContainer: true, class: 'd-flex flex-nowrap'},
@@ -177,8 +179,8 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
                     //Center content with *current* or *relative*
                     {ownContainer: true, class: 'd-flex justify-content-center flex-grow-1'},
 
-                        //mode = SCALE: Current time
-                        'current-SCALE-min', 'current-SCALE-mid', 'current-SCALE-max',
+                        //mode = FIXED: Current time
+                        'current-FIXED-min', 'current-FIXED-mid', 'current-FIXED-max',
 
                         //mode = RELATIVE: Relative time
                         'relative-RELATIVE',
@@ -196,18 +198,18 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
 
                 prioList: {
                     ALL: {
-                        SCALE   : ['current-SCALE-min', 'current-SCALE-mid', 'current-SCALE-max'],
+                        FIXED   : ['current-FIXED-min', 'current-FIXED-mid', 'current-FIXED-max'],
                         RELATIVE: ['relative-RELATIVE']
                     }
                 }
             });
 
             //**********************************************************************
-            //2. row: RELTIVE: Current and utc, SCALE: Relative and utc
+            //2. row: RELTIVE: Current and utc, FIXED: Relative and utc
             addElementSet({
                 $container: $('<div/>')
                     .appendTo($container)
-                    .addClass('show-for-phone-and-portrait'),  //Show for phone portrait
+                    .addClass('show-for-phone-and-portrait-and-extended'),  //Show for phone portrait extended
 
                 elementList: [
                     {ownContainer: true, class: 'd-flex flex-nowrap'},
@@ -215,13 +217,13 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
 
                     {ownContainer: true, class: 'd-flex justify-content-center flex-grow-1'},
 
-                        //mode = SCALE: Relative time
-                        'relative-SCALE-min-none', 'relative-SCALE-mid-none', 'relative-SCALE-max-none',
+                        //mode = FIXED: Relative time
+                        'relative-FIXED-min-none', 'relative-FIXED-mid-none', 'relative-FIXED-max-none',
 
                         //mode = RELATIVE: Current time (always shown)
                         'current-RELATIVE-min', 'current-RELATIVE-mid', 'current-RELATIVE-max',
 
-                        //mode = SCALE or RELATIVE: Utc time
+                        //mode = FIXED or RELATIVE: Utc time
                         'utc-min-none', 'utc-mid-none', 'utc-max-none',
 
                     {ownContainer: true, class: 'd-flex flex-nowrap'},
@@ -232,11 +234,11 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
 
                 prioList: {
                     ALL: {
-                        SCALE: [
+                        FIXED: [
                             //Relative time          UTC time
-                            'relative-SCALE-min-none utc-min-none',
-                            'relative-SCALE-mid-none utc-mid-none',
-                            'relative-SCALE-max-none utc-max-none'
+                            'relative-FIXED-min-none utc-min-none',
+                            'relative-FIXED-mid-none utc-mid-none',
+                            'relative-FIXED-max-none utc-max-none'
                         ],
                         RELATIVE: [
                             //Current time        UTC time
@@ -252,19 +254,19 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
 
         /**************************************************************************
         DESKTOP, TABLE, PHONE: BMS=Normal
-        Range and Time-slider
+        Time-sliders
         **************************************************************************/
         addElementSet({
             $container: $('<div/>')
                 .appendTo($container)
-                .addClass('d-flex w-100')
+                .addClass('d-flex w-100 align-items-end')
                 .addClass('show-for-bottom-menu-normal'),
 
             elementList: [
-                'empty',
+               {id: 'empty', class:'d-flex'},
 
-                {id: 'range-RELATIVE', ownContainer: true, class: 'd-flex flex-grow-1'},
-                'range-SCALE',
+                {id: 'bms-normal-RELATIVE', ownContainer: true, class: 'd-flex flex-grow-1 overflow-hidden'},
+                'bms-normal-FIXED',
 
                 {id: 'bms-minimized', ownContainer: true}
             ]
@@ -272,7 +274,7 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
 
         /**************************************************************************
         DESKTOP, TABLE, PHONE: BMS=Extended
-        Range and Time-slider
+        Time-sliders
         **************************************************************************/
         addElementSet({
             $container: $('<div/>')
@@ -280,40 +282,19 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
                     .addClass('d-flex w-100')
                     .addClass('show-for-bottom-menu-extended'),
             elementList: [
-                //'empty',
-
-                {id: 'time-slider-RELATIVE', class: 'd-flex flex-grow-1'},
-                'time-slider-SCALE',
-
-                //{id: 'empty', ownContainer: true},
+                {id: 'bms-extended-RELATIVE', class: 'd-flex flex-grow-1 overflow-hidden'},
+                'bms-extended-FIXED',
             ]
         });
 
 
         /**************************************************************************
-        ONLY PHONE: MINIMIZED and PORTRAIT - BOTH SCALE and RELATIVE mode
+        ONLY PHONE: MINIMIZED and PORTRAIT - BOTH FIXED and RELATIVE mode
         **************************************************************************/
 
         /**************************************************************************
         NOT PHONE: EXTENDED: Footer
         **************************************************************************/
-/* Skal nok ikke bruges...
-        $('<div/>')
-            .prependTo($container)
-            ._bsAddBaseClassAndSize({baseClass: 'jb-header-container', useTouchSize: true})
-            ._bsHeaderAndIcons({
-                headerClassName: 'show-for-bottom-menu-extended',
-                header: {
-                    icon: 'fa-clock',
-                    text: ''(?) Overskrift',
-                },
-                icons: {
-                    diminish: { onClick: function(){ alert('dim'); }},
-                    close   : { onClick: function(){ alert('close'); }}
-                }
-
-            });
-*/
         if (!isPhone)
             $('<div/>')
                 .appendTo($container)
@@ -332,7 +313,11 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
     nsMap.BOTTOM_MENU = {
         height         : 'auto',
         standardHandler: true,
+        isOpen         : false,
         createContent  : creaetBottomMenu
     };
+
+	$(function() { nsMap.BOTTOM_MENU.isOpen = !window.bsIsTouch; });
+
 
 }(jQuery, L, this, document));

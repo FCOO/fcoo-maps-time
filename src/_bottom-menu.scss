@@ -4,7 +4,7 @@ bottom-menu.scss
 
 
 //$time-mode-list must contains the same ids as timeModeInfo in src/fcoo-maps-time.js
-$time-mode-list: 'SCALE', 'RELATIVE', 'SELECT', 'ANIMATION';
+$time-mode-list: 'FIXED', 'RELATIVE', 'SELECT', 'ANIMATION';
 @each $time-mode in $time-mode-list {
     @include show-and-hide-for-modernizr-test( $modernizr-test: 'time-mode-' + $time-mode, $incl-no-selector: true, $incl-table-display: false);
 
@@ -15,21 +15,10 @@ $time-mode-list: 'SCALE', 'RELATIVE', 'SELECT', 'ANIMATION';
 
 
 //Border and shadow-color equar past, now, or future
-.btn.btn-standard.border-color-as-time {
-    .time-is-past & {
-        border-color: $time-past-color !important;
-        box-shadow: inset 0 0 0px 1px $time-past-color !important;
-    }
-
-    .time-is-now & {
-        border-color: $time-now-color !important;
-        box-shadow: inset 0 0 0px 1px $time-now-color !important;
-    }
-
-    .time-is-future & {
-        border-color: $time-future-color !important;
-        box-shadow: inset 0 0 0px 1px $time-future-color !important;
-    }
+.btn.btn-jb.border-color-as-time {
+    .time-is-past &   { box-shadow: inset 0 0 0px 2px $time-past-color !important;   }
+    .time-is-now &    { box-shadow: inset 0 0 0px 2px $time-now-color !important;    }
+    .time-is-future & { box-shadow: inset 0 0 0px 2px $time-future-color !important; }
 }
 
 //show/hide for tree modes of buttom-menu: minimized, normal, and extended
@@ -37,20 +26,17 @@ $time-mode-list: 'SCALE', 'RELATIVE', 'SELECT', 'ANIMATION';
 @include show-and-hide-for-modernizr-test( $modernizr-test: 'bottom-menu-normal',    $incl-no-selector: true, $incl-table-display: false);
 @include show-and-hide-for-modernizr-test( $modernizr-test: 'bottom-menu-extended',  $incl-no-selector: true, $incl-table-display: false);
 
-
-
-//show-for-phone-and-portrait = Special versions = Visible for phone, portrait
-//hide-for-phone-and-portrait = Standard versions = Hidden for phone, portrait
-.show-for-phone-and-portrait {
+//show-for-phone-and-portrait-extended = Special versions = Visible for phone, portrait, and extended
+//hide-for-phone-and-portrait-extended = Standard versions = Hidden for phone, portrait, and extended
+.show-for-phone-and-portrait-and-extended {
     display: none !important;
 }
-html.phone.portrait {
-    .show-for-phone-and-portrait {
+html.phone.portrait.bottom-menu-extended {
+    .show-for-phone-and-portrait-and-extended {
         display: flex !important;
     }
-    .hide-for-phone-and-portrait {
+    .hide-for-phone-and-portrait-and-extended {
         display: none !important;
     }
 }
-
 

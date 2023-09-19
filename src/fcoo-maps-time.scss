@@ -49,15 +49,57 @@
 
 */
 
+//FONTAWESOME MIXIN
+@import "../bower_components/fcoo-fontawesome/src/_fontawesome-pro-web/scss/mixins";
+
+
 //FCOO-COLORS and FCOO-MAPS-COLORS
 @import "../bower_components/fcoo-colors/src/fcoo-colors-mixin";
 @import "../bower_components/fcoo-maps-colors/src/fcoo-maps-colors-variables";
 
 
+//$time-mode-list must contains the same ids as timeModeInfo in src/fcoo-maps-time.js
+$time-mode-list: 'FIXED', 'RELATIVE', 'SELECT', 'ANIMATION';
+@each $time-mode in $time-mode-list {
+    @include show-and-hide-for-modernizr-test( $modernizr-test: 'time-mode-' + $time-mode, $incl-no-selector: true, $incl-table-display: false);
+
+    html.#{'time-mode-' + $time-mode} .#{'bold-for-time-mode-' + $time-mode} {
+        font-weight: bold !important;
+    }
+}
+
+
+//Border and shadow-color equar past, now, or future
+.btn.btn-jb.border-color-as-time {
+    .time-is-past &   { box-shadow: inset 0 0 0px 2px $time-past-color !important;   }
+    .time-is-now &    { box-shadow: inset 0 0 0px 2px $time-now-color !important;    }
+    .time-is-future & { box-shadow: inset 0 0 0px 2px $time-future-color !important; }
+}
+
+//show/hide for tree modes of buttom-menu: minimized, normal, and extended
+@include show-and-hide-for-modernizr-test( $modernizr-test: 'bottom-menu-minimized', $incl-no-selector: true, $incl-table-display: false);
+@include show-and-hide-for-modernizr-test( $modernizr-test: 'bottom-menu-normal',    $incl-no-selector: true, $incl-table-display: false);
+@include show-and-hide-for-modernizr-test( $modernizr-test: 'bottom-menu-extended',  $incl-no-selector: true, $incl-table-display: false);
+
+//show-for-phone-and-portrait-extended = Special versions = Visible for phone, portrait, and extended
+//hide-for-phone-and-portrait-extended = Standard versions = Hidden for phone, portrait, and extended
+.show-for-phone-and-portrait-and-extended {
+    display: none !important;
+}
+html.phone.portrait.bottom-menu-extended {
+    .show-for-phone-and-portrait-and-extended {
+        display: flex !important;
+    }
+    .hide-for-phone-and-portrait-and-extended {
+        display: none !important;
+    }
+}
+
+
 //Special css for L.Control.BsTimeInfoControl when show==false and some info needs to be shown anyway
 .leaflet-control.leaflet-button-box.forced-shown {
     visibility: visible !important;
-    opacity   : 1;
+    opacity   : .8;
 
     //The button is allways visible
     a.btn.hide-for-extended {
@@ -75,12 +117,86 @@
 
 
 //Set shadow around time-info-control indicading if the time is the past, now or the future
+$shadow-width: 2px;
+
 .leaflet-container {
-    &.time-is-past   { .time-info-control a { box-shadow: 0 0 0px 2px $time-past-bg-color;   } }
-    &.time-is-now    { .time-info-control a { box-shadow: 0 0 0px 2px $time-now-bg-color;    } }
-    &.time-is-future { .time-info-control a { box-shadow: 0 0 0px 2px $time-future-bg-color; } }
+    &.time-is-past   { .time-info-control a { box-shadow: 0 0 0px $shadow-width $time-past-color;   } }
+    &.time-is-now    { .time-info-control a { box-shadow: 0 0 0px $shadow-width $time-now-color;    } }
+    &.time-is-future { .time-info-control a { box-shadow: 0 0 0px $shadow-width $time-future-color; } }
+
+    .time-info-control a.disabled {
+        box-shadow: none;
+        i {
+            color      :  var(--bs-btn-disabled-color);
+            font-weight: 300;
+        }
+    }
 }
 
-@import "_bottom-menu";
+//Border and shadow-color equar past, now, or future
+.btn.btn-jb.border-color-as-time {
+    .time-is-past &   { box-shadow: inset 0 0 0px $shadow-width $time-past-color   !important; }
+    .time-is-now &    { box-shadow: inset 0 0 0px $shadow-width $time-now-color    !important; }
+    .time-is-future & { box-shadow: inset 0 0 0px $shadow-width $time-future-color !important; }
+}
+
+//show/hide for tree modes of buttom-menu: minimized, normal, and extended
+@include show-and-hide-for-modernizr-test( $modernizr-test: 'bottom-menu-minimized', $incl-no-selector: true, $incl-table-display: false);
+@include show-and-hide-for-modernizr-test( $modernizr-test: 'bottom-menu-normal',    $incl-no-selector: true, $incl-table-display: false);
+@include show-and-hide-for-modernizr-test( $modernizr-test: 'bottom-menu-extended',  $incl-no-selector: true, $incl-table-display: false);
+
+//show-for-phone-and-portrait-extended = Special versions = Visible for phone, portrait, and extended
+//hide-for-phone-and-portrait-extended = Standard versions = Hidden for phone, portrait, and extended
+.show-for-phone-and-portrait-and-extended {
+    display: none !important;
+}
+html.phone.portrait.bottom-menu-extended {
+    .show-for-phone-and-portrait-and-extended {
+        display: flex !important;
+    }
+    .hide-for-phone-and-portrait-and-extended {
+        display: none !important;
+    }
+}
 
 
+//Style for buttons with time-slider fetures
+:root {
+    --slider-button-left: 40%;
+}
+html.no-bottom-menu-minimized {
+    .btn.slider-button {
+        background: none !important;
+        &::before {
+            content:'';
+        }
+     }
+}
+
+html.bottom-menu-minimized {
+    .btn.slider-button {
+        background-size : 100% .5em !important;
+        position        : relative;
+        overflow        : hidden;
+
+        &.slide-button-panning {
+
+            background-size : 100% .75em !important;
+        }
+
+    &::before {
+            @include fa-family-classic(); //font-family: 'Font Awesome 6 Pro';
+            color      : white;
+            position   : absolute;
+            width      : 1em;
+            margin-left: -0.5em;
+            left       : var(--slider-button-left);
+            bottom     : -0.7em;
+            display    : inline-block;
+        }
+    }
+}
+
+html.bottom-menu-minimized .time-is-now .btn.slider-button::before {
+    color: $time-now-bg-color;
+}

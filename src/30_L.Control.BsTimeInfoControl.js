@@ -63,6 +63,15 @@ Leaflet control to display current time and relative time in the maps
 
             //Add items to popup-list: Main or global mode = select time-mode, secondary = select relative mode
             options.popupList = [];
+
+            //Header - MANGLER
+/*
+            options.popupList.push({
+                icon: 'far fa-clock',
+                text: 'MANGLER'
+            });
+*/
+
             if ( (isMainMap && (nsTime.timeOptions.timeModeList.length > 1) ||
                  (isSecondaryMap && !nsTime.timeOptions.allowDifferentTime)) )
                 options.popupList.push({
@@ -201,7 +210,6 @@ Leaflet control to display current time and relative time in the maps
             //If mode is different from "as main" and the bsTimeInfoControl is hidden it is forced to be displayed disabled to allways see the time-offset
             var forcedShown = !this.options.show && (!asMain || !!offset);
             this.$container.toggleClass('forced-shown', forcedShown);
-            $(this.bsButton).toggleClass('semi-transparent', forcedShown);
 
             forcedShown ? this.disable() : this.enable();
 

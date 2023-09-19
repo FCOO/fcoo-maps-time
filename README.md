@@ -3,7 +3,7 @@
 
 
 ## Description
-Time dimension for fcoo-maps.
+Extension to [fcoo-maps](https://github.com/FCOO/fcoo-maps) to have time-dependencies layers and to add bottom-menu with time-selector, add time-controls to the maps, and add options for time-sync in application-settings
 
 NOTE: Using a forked version of [Leaflet.TimeDimension](https://github.com/socib/Leaflet.TimeDimension) to have correct version of [leaflet](https://leafletjs.com/)
 
@@ -50,7 +50,7 @@ See the [Technical Documentation here](documentation.md)
 ## Copyright and License
 This plugin is licensed under the [MIT license](https://github.com/FCOO/fcoo-maps-time/LICENSE).
 
-Copyright (c) 2021 [FCOO](https://github.com/FCOO)
+Copyright (c) 2023 [FCOO](https://github.com/FCOO)
 
 ## Contact information
 

@@ -119,6 +119,10 @@ bottom-menu-ElementSet.js
                     });
                 }
 
+                //If it is a button with slider features create it
+                if (elemOptions.slider)
+                    nsTime.createSliderButton(elemOptions.slider, $newElem);
+
 
 
                 var groupId = (nsTime.elementGroup[elementId] || elementId) + (elemOptions.subVersion ? '-'+elemOptions.subVersion : '');
@@ -217,12 +221,11 @@ bottom-menu-ElementSet.js
         },
 
         //**************************************************************************
-        onCurrentRelativeChanged: function( time ){
-            var relative = time.relative || 0;
+        onCurrentRelativeChanged: function( currentRelative = 0 ){
             this.$container
-                .toggleClass('time-is-past',   relative < 0)
-                .toggleClass('time-is-now',    relative == 0)
-                .toggleClass('time-is-future', relative > 0);
+                .toggleClass('time-is-past',   currentRelative < 0)
+                .toggleClass('time-is-now',    currentRelative == 0)
+                .toggleClass('time-is-future', currentRelative > 0);
         }
     };
 
@@ -240,14 +243,21 @@ bottom-menu-ElementSet.js
 
     //**************************************************************************
     nsTime.bottomMenu_onResize = function(){
-        $.each(elementSetList, function(index, elementSet){
+        elementSetList.forEach( elementSet => {
             elementSet.update();
         });
     };
 
-    nsTime.bottomMenu_onCurrentRelativeChanged = function( time ){
-        $.each(elementSetList, function(index, elementSet){
-            elementSet.onCurrentRelativeChanged(time);
+
+    /**************************************************************************
+    nsTime.bottomMenu_onCurrentRelativeChanged( currentRelative )
+    Calls onCurrentRelativeChanged for all elementSets in elementSetList
+    onCurrentRelativeChanged change different class-names etc for the elements
+    depending on the value of relative
+    **************************************************************************/
+    nsTime.bottomMenu_onCurrentRelativeChanged = function( currentRelative ){
+        elementSetList.forEach( elementSet => {
+            elementSet.onCurrentRelativeChanged( currentRelative );
         });
     };
 

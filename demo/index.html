@@ -11,6 +11,14 @@
 
   <link  href="bower_components.css" rel="stylesheet">    
   <link  href="../src/fcoo-maps-time.css" rel="stylesheet">    
+
+    <style>
+        /* Unknown bug => when in test-mode the handle get invisible. Corrected by adding red border */
+        body.FCOOMAPSTIME_TEST span.handle {
+//            border: 2px solid red;
+        }
+    </style>
+    
 </head>
 
 <body>
@@ -19,14 +27,24 @@
         window.fcoo.DEMO_VERSION = true;
         //OR window.fcoo.LOCAL_DATA = true;
 
-        if (window.location.href.includes('?testmode'))
+        if (window.location.href.includes('?testmode')){
             window.FCOOMAPSTIME_TEST = true;
+            document.body.classList.add('FCOOMAPSTIME_TEST');
+        }            
+        if (window.location.href.includes('?testmodenow'))
+            window.FCOOMAPSTIME_TEST_NOW = true;
 
     </script>
 
     <script src="bower_components.js"></script>
 
-    <script src="../src/00_fcoo-maps-time.js"></script>
+    <script src="../src/01_setup.js"></script>
+    <script src="../src/03_time-mode.js"></script>
+    <script src="../src/05_time-mode-data.js"></script>
+    
+    <script src="../src/08_bsButtonTimeSlider.js"></script>
+    <script src="../src/09_L.Map.js"></script>
+
     <script src="../src/10_bottom-menu-elements.js"></script>
     <script src="../src/12_bottom-menu-elements-timeSilder.js"></script>
     <script src="../src/15_bottom-menu-ElementSet.js"></script>
@@ -35,8 +53,10 @@
     <!-- <script src="../src/map-layer-time.js"></script> -->
 
     <script>
-        window.bsIsTouch = false;
-        window.bsIsTouch = (window.location.search =='?touch');
+// HER>         window.bsIsTouch = false;
+// HER>         window.bsIsTouch = (window.location.search =='?touch');
+        if (window.location.search =='?touch')
+            window.bsIsTouch = true;
        
         window.fcoo.map.createApplication(
             //options

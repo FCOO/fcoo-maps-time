@@ -2,6 +2,7 @@
 bottom-menu-elements.js
 
 Create the content for bottom-menu with buttons, slider, info etc. for selected time
+bms = bottom-menu-size
 *************************************************************************************/
 (function ($, L, window/*, document, undefined*/) {
     "use strict";
@@ -16,7 +17,7 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
     var bottomMenuSizes = nsTime.bottomMenuSizes = ['minimized', 'normal', 'extended'];
     ns.appSetting.add({
         id          : 'bottomMenuSize',
-        callApply   : true, //false,
+        callApply   : true,
         applyFunc   : function( size ){
             nsTime.bottomMenuSize = size;
             bottomMenuSizes.forEach( function( nextSize ){
@@ -29,12 +30,24 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
     });
 
 
+    //Global method to change bms relative
+    function changeBMS(delta){
+        var newIndex = bottomMenuSizes.indexOf(nsTime.bottomMenuSize) + delta;
+        if ((newIndex >= 0) && (newIndex < bottomMenuSizes.length))
+            ns.appSetting.set('bottomMenuSize', bottomMenuSizes[newIndex]);
+    }
+
+    nsTime.incBMS = function(){ changeBMS(+1); };
+    nsTime.decBMS = function(){ changeBMS(-1); };
+
+
+
     /**************************************************************************
     The content of the bottom-menu contains of buttons, boxes with info on current time an sliders
     This are all referred to as an element and a prototype is created in elements = [ID]$-element
     All elements are divided into groups to control witch element to show when
     **************************************************************************/
-    var elements  = nsTime.elements  = {};
+    var elements = nsTime.elements = {};
 
     nsTime.elementGroup = {}; //[ELEMENT-ID]GROUP-ID
 
@@ -42,6 +55,15 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
         elements[id].addClass('group-'+groupId);
         nsTime.elementGroup[id] = groupId;
     }
+
+    /******************************************************************
+    timeModeData_setDelta(delta)
+    Add delta unit to the 'current time' in the current time-mode-data
+    ******************************************************************/
+    function timeModeData_setDelta( delta ){
+        nsTime.getCurrentTimeModeData().setDelta( delta );
+    }
+
 
     //Create all buttons to change size of the bottom menu bms = bottom-menu-size
     var bmsButtons = {
@@ -64,10 +86,10 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
     //Create all navigation-buttons = changing current or relative time
     var naviButtons = {
             'time-step-first'       : {icon: 'fa-arrow-to-left',         group: 'time-step-first-last', diff: -99999},
-            'time-step-prev-ext'    : {icon: 'fa-angle-double-left',     group: 'time-step-ext',        diff: -6    },
-            'time-step-prev'        : {icon: 'fa-angle-left',            group: 'time-step-prev-next',  diff: -1    },
-            'time-step-next'        : {icon: 'fa-angle-right',           group: 'time-step-prev-next',  diff: +1    },
-            'time-step-next-ext'    : {icon: 'fa-angle-double-right',    group: 'time-step-ext',        diff: +6    },
+            'time-step-prev-ext'    : {icon: 'fa-angle-double-left',     group: 'time-step-ext',        diff: -6    , auto: true},
+            'time-step-prev'        : {icon: 'fa-angle-left',            group: 'time-step-prev-next',  diff: -1    , auto: true},
+            'time-step-next'        : {icon: 'fa-angle-right',           group: 'time-step-prev-next',  diff: +1    , auto: true},
+            'time-step-next-ext'    : {icon: 'fa-angle-double-right',    group: 'time-step-ext',        diff: +6    , auto: true},
             'time-step-last'        : {icon: 'fa-arrow-to-right',        group: 'time-step-first-last', diff: +99999}
         };
     $.each( naviButtons, function(id, options ){
@@ -76,13 +98,21 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
                 square  : true,
                 icon    : options.icon,
                 bigIcon : true,
-                onClick: function(){ nsTime._addDiffToCurrentTimeMode(options.diff); }
+                onClick: function(){ timeModeData_setDelta( options.diff ); }
             });
+
+        //Add class btn-time-step-forward or btn-time-step-backward
+        elements[id].addClass(options.diff > 0 ? 'btn-time-step-forward' : 'btn-time-step-backward');
+
+        //Add auto-click-while-pressed
+        if (options.auto)
+            elements[id].autoclickWhilePressed();
+
         setGroup(id, options.group);
     });
 
     //Create "empty" to
-    elements['empty'] = $('<div/>').addClass( 'btn-shadow ' + $._bsGetSizeClass({baseClass: 'btn-shadow', useTouchSize: true}));
+    elements['empty'] = $('<div/>').addClass( 'btn-shadow flex-shrink-0 ' + $._bsGetSizeClass({baseClass: 'btn-shadow', useTouchSize: true}));
     setGroup('empty');
 
     //Create extended version of nav-buttons
@@ -99,14 +129,14 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
                     icon    : plus ? 'fa-angle-right' : 'fa-angle-left',
                     text    : absDiff,
                     //bigIcon : true,
-                    onClick: function(){ nsTime._addDiffToCurrentTimeMode(options.diff); }
+                    onClick: function(){ timeModeData_setDelta( options.diff ); }
                 })
                     .width('3em');
             setGroup(newId, newGroup);
         }
     });
 
-    //Create button to select time-mode (scale, relative etc.)
+    //Create button to select time-mode (fixed, relative etc.)
     elements['time-mode'] =
         $.bsButton({
             square : true,
@@ -173,7 +203,7 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
     //time = 12:00 currentTime
     createPrototype( 'time', {
         vfFormat: 'time',
-        width   : '5em',
+        width   : '5em'
     });
 
     //time_sup = 12:00+1
@@ -223,7 +253,7 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
     //date_time_full = 12. May 2022 12:00am
     createPrototype( 'date_time_full', {
         vfFormat : 'datetime',
-        width    : '11em'
+        width    : '11em',
     });
 
     //UTC
@@ -276,16 +306,18 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
     current-min, current-mid, current-max, utc-min, utc-mid, utc-max
     Depending of the current width avaiable the different groups are shown/hidden
     **************************************************************************/
-    var on = {click: function(){ nsTime.setCurrentRelative(0); } };
+    var on = {
+            click: function(){ nsTime.getCurrentTimeModeData().set(0); }
+        };
 
     //** CURRENT TIME **
     //min = 12:00am+1, mid = 18. May + 12.00am, max = 18. May 2022 + 12.00am
 
-    //Current when mode = SCALE
+    //Current when mode = FIXED
     var currentClass = 'border-color-as-time font-weight-bold';
-    elements['current-SCALE-min'] = {id: 'time_sup',          class: currentClass, on: on };
-    elements['current-SCALE-mid'] = {id: 'date_time',         class: currentClass, on: on };
-    elements['current-SCALE-max'] = {id: 'date_time_full',    class: currentClass, on: on };
+    elements['current-FIXED-min'] = {id: 'time_sup',          class: currentClass, on: on, slider: 'FIXED' };
+    elements['current-FIXED-mid'] = {id: 'date_time',         class: currentClass, on: on, slider: 'FIXED' };
+    elements['current-FIXED-max'] = {id: 'date_time_full',    class: currentClass, on: on, slider: 'FIXED' };
 
     //Current when mode = RELATIVE
     currentClass = '';
@@ -308,27 +340,27 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
 
 
     //*  RELATIVE TIME **
-    //Relative when mode = SCALE
+    //Relative when mode = FIXED
     var relativeClass = 'is-current-relative text-capitalize show-for-global-setting-showrelative-visibility';
-    elements['relative-SCALE']     = {id:'relative',                class: relativeClass };
+    elements['relative-FIXED']     = {id:'relative',                class: relativeClass };
     //Special version with other widths
-    elements['relative-SCALE-min'] = {id:'relative', width:  '7em', class: relativeClass };
-    elements['relative-SCALE-mid'] = {id:'relative', width:  '8em', class: relativeClass };
-    elements['relative-SCALE-max'] = {id:'relative', width: '10em', class: relativeClass };
+    elements['relative-FIXED-min'] = {id:'relative', width:  '7em', class: relativeClass };
+    elements['relative-FIXED-mid'] = {id:'relative', width:  '8em', class: relativeClass };
+    elements['relative-FIXED-max'] = {id:'relative', width: '10em', class: relativeClass };
 
-    //relative-SCALE-SIZE-none = relative-SCALE-SIZE but with display:none when not-visible
+    //relative-FIXED-SIZE-none = relative-FIXED-SIZE but with display:none when not-visible
     relativeClass = 'is-current-relative text-capitalize show-for-global-setting-showrelative';
-    elements['relative-SCALE-none']     = {id:'relative',                class: relativeClass };
+    elements['relative-FIXED-none']     = {id:'relative',                class: relativeClass };
     //Special version with other widths
-    elements['relative-SCALE-min-none'] = {id:'relative', width:  '7em', class: relativeClass };
-    elements['relative-SCALE-mid-none'] = {id:'relative', width:  '8em', class: relativeClass };
-    elements['relative-SCALE-max-none'] = {id:'relative', width: '10em', class: relativeClass };
+    elements['relative-FIXED-min-none'] = {id:'relative', width:  '7em', class: relativeClass };
+    elements['relative-FIXED-mid-none'] = {id:'relative', width:  '8em', class: relativeClass };
+    elements['relative-FIXED-max-none'] = {id:'relative', width: '10em', class: relativeClass };
 
     //Relative when mode = RELATIVE
     relativeClass = 'is-current-relative text-capitalize border-color-as-time font-weight-bold';
-    elements['relative-RELATIVE']     = {id:'relative',                class: relativeClass, on: on};
-    elements['relative-RELATIVE-min'] = {id:'relative', width:  '7em', class: relativeClass, on: on};
-    elements['relative-RELATIVE-mid'] = {id:'relative', width:  '8em', class: relativeClass, on: on};
-    elements['relative-RELATIVE-max'] = {id:'relative', width: '10em', class: relativeClass, on: on};
+    elements['relative-RELATIVE']     = {id:'relative',                class: relativeClass, on: on, slider: 'RELATIVE' };
+    elements['relative-RELATIVE-min'] = {id:'relative', width:  '7em', class: relativeClass, on: on, slider: 'RELATIVE' };
+    elements['relative-RELATIVE-mid'] = {id:'relative', width:  '8em', class: relativeClass, on: on, slider: 'RELATIVE' };
+    elements['relative-RELATIVE-max'] = {id:'relative', width: '10em', class: relativeClass, on: on, slider: 'RELATIVE' };
 
 }(jQuery, L, this, document));

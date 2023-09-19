@@ -1,7 +1,7 @@
 /***********************************************************************************
 bottom-menu-elements-timeSlider.js
 
-Create the content for bottom-menu with range and time-slider
+Create the content for bottom-menu with different versions of time-slider
 
 Both are TimeSlider (see jquery-time-slider)
 There are created as-is - not as prototype
@@ -16,16 +16,8 @@ There are created as-is - not as prototype
         nsMap  = ns.map = ns.map || {},
         nsTime = nsMap.time = nsMap.time || {};
 
-
     //tsList = list of TimeSlider used
-    var tsList = [];
-
-
-// HER>     //Add bottomMenuSize to application-settings
-// HER>     var bottomMenuSizes = nsTime.bottomMenuSizes = ['minimized', 'normal', 'extended'];
-
-
-
+    nsTime.tsList = [];
 
     /************************************************
     Colors
@@ -36,96 +28,102 @@ There are created as-is - not as prototype
     }
 
     //Colors for past, now and future
-    var pastColor     = getColor('jbn-time-past-color'),
-        pastBgColor   = getColor('jbn-time-past-bg-color'),
-        nowColor      = getColor('jbn-time-now-color'),
-        nowBgColor    = getColor('jbn-time-now-bg-color'),
-        futureColor   = getColor('jbn-time-future-color'),
-        futureBgColor = getColor('jbn-time-future-bg-color');
-
-
-    /************************************************
-    Global events: Change format and application ready
-    ************************************************/
-    //timeSlider_globalEvents = list of names of global events where the slider is updated/redrawn
-    //Relevant global events = LANGUAGECHANGED,  DATETIMEFORMATCHANGED, TIMEZONECHANGED, TIMEMODECHANGED, CREATEAPPLICATIONFINALLY
-    //In fcoo-moment event DATETIMEFORMATCHANGED are also fired when the language or the time zone is changed => only needs to listen for DATETIMEFORMATCHANGED
-    var timeSlider_globalEvents = {
-            'RELATIVE': [ns.events.LANGUAGECHANGED,                                  ns.events.TIMEMODECHANGED],
-            'SCALE'   : [                           ns.events.DATETIMEFORMATCHANGED, ns.events.TIMEMODECHANGED]
-        };
-
-
-    var ready = false;
-
-    function updateTimeSliders(event = ns.events.CREATEAPPLICATIONFINALLY){
-        if (!ready) return;
-        tsList.forEach(timeSlider => {
-            //If the time-slider is vissible in current mode and need updating for the event => update it
-            if ( timeSlider_globalEvents[timeSlider.options.timeMode].includes(event) && (timeSlider.options.timeMode == nsTime.timeMode) ){
-                timeSlider.setFormat();
-            }
-        });
-    }
-
-    //Add update to global events
-    ns.events.eventNames.forEach( event => {
-        let added = false;
-        $.each(timeSlider_globalEvents, (timeMode, eventList) => {
-            if (eventList.includes(event) && !added){
-                ns.events.on(event, updateTimeSliders.bind(null, event));
-                added = true;
-            }
-        });
-    });
-
-    //Update all sliders when application is loaded/ready
-    ns.events.on(ns.events.CREATEAPPLICATIONFINALLY, function(){
-        ready = true;
-        updateTimeSliders(ns.events.CREATEAPPLICATIONFINALLY);
-    });
-
-
-
-
-    /************************************************
-    Global events: when "NOW" or current time changes - MANGLER
-    ************************************************/
-    //Add events to update sliders when "NOW" or current time changes - MANGLER
-//NOWMOMENTCHANGED
-//CURRENTMOMENTCHANGED
-//CURRENTRELATIVECHANGED
-
-
-
-
-
+    nsTime.pastColor     = getColor('jbn-time-past-color'),
+    nsTime.pastBgColor   = getColor('jbn-time-past-bg-color'),
+    nsTime.nowColor      = getColor('jbn-time-now-color'),
+    nsTime.nowBgColor    = getColor('jbn-time-now-bg-color'),
+    nsTime.futureColor   = getColor('jbn-time-future-color'),
+    nsTime.futureBgColor = getColor('jbn-time-future-bg-color');
 
     /************************************************
     TimeSlider options
-    Options for the differnet types of time-slider
+    Options for the differnet types of time-slider, and
+    options for time-slider in different bms
+
     Some of the options are given by the min and max range given in
     nsTime.timeOptions.timeModeOptions[timeMode]
     These values are set as string "{min}" and "{max} and replaced
     during creation
+
+    In mode=FIXED The time-sliders in normal and extended mode can also
+    show the time i UTC and relative.
+    This is controlled by allowUTC_bmsNormal, allowUTC_bmsExtended, allowRel_bmsNormal, allowRel_bmsExtended and
+    is only allowed for different type of devices:
+        ns.modernizrDevice.isDesktop
+        ns.modernizrDevice.isTablet
+        ns.modernizrDevice.isPhone
     ************************************************/
+    var isDesktop   = ns.modernizrDevice.isDesktop, //Only Desktop
+        isNotPhone  = !ns.modernizrDevice.isPhone,  //Tablet or Desktop
+
+        allowRel_bmsNormal      = isNotPhone,
+        allowUTC_bmsNormal      = isDesktop,
+
+        allowRel_bmsExtended    = true,
+        allowUTC_bmsExtended    = true,
+        bigger_bmsExtendedFIXED = allowUTC_bmsExtended && isDesktop;
+
+
     var timeSliderOptions = {},
         timeSliderHeight = {
-            'range'      : '2em',
-            'time-slider': '6em'
-
+            'DEFAULT' : {
+                'bms-normal'    : '2em',
+                'bms-extended'  : '3em'
+            },
+            'RELATIVE': {
+                'bms-normal'    : '1.80em',
+                'bms-extended'  : '3.25em'
+            },
+            'FIXED': {
+                'bms-normal'    : allowUTC_bmsNormal  ? '4.25em' : //Current, Rel and UTC
+                                  (allowRel_bmsNormal ? '3.00em' : //Current and Rel
+                                                        '1.75em'), //Current
+                'bms-extended'  : allowUTC_bmsExtended ? (bigger_bmsExtendedFIXED ? '5.5em' : '4.25em') : '3em'
+            }
         };
 
 
-    //range: bms = normal
-    timeSliderOptions['range'] = {
+    /*************************************
+    ALL = for all time-sliders
+    *************************************/
+    function timeSlider_onChange( timeSlider ){
+        nsTime.getCurrentTimeModeData().set( timeSlider.value );
+    }
+
+    timeSliderOptions['ALL'] = {
+        onChangeOnDragging  : true,
+        onChange            : timeSlider_onChange,
+        useParentWidth      : true,
+        showFromTo          : false,
+        mousewheel          : true,
+
+        grid                : true,
+        resizable           : true,
+
+        handleFixed   : true,
+        handle        : "fixed",
+        valueDistances: 16, //or 16 or 18 or 20 MANGLER
+
+        //Default: No line
+        showLine      : false,
+        showLineColor : false,
+
+        //Green label on 'now'
+        labelColors: [{
+            value          : 0,
+            backgroundColor: nsTime.nowBgColor,
+            color          : nsTime.nowColor
+        }],
+
+    },
+
+    //bms = Normal
+    timeSliderOptions['bms-normal'] = {
         ticksOnLine: true,
-        showFromTo : false
     };
 
-    //time-slider = bms = extended
-    timeSliderOptions['time-slider'] = {
-
+    //bms = Extended
+    timeSliderOptions['bms-extended'] = {
     };
 
     /*************************************
@@ -138,81 +136,97 @@ There are created as-is - not as prototype
         min         : '{min}',
         max         : '{max}',
         step        : 1,
-        grid        : true,
-        mousewheel  : true,
-        resizable   : true,
 
         lineColors   : [
-            { to: 0, color: pastBgColor  },
-            {        color: futureBgColor}
+            { to: 0, color: nsTime.pastBgColor  },
+            {        color: nsTime.futureBgColor}
         ],
 
-        labelColors: [{
-            value          : 0,
-            backgroundColor: nowBgColor,
-            color          : nowColor
-        }],
-    };
-
-
-    //Extended version of relative time-slider
-    timeSliderOptions['time-slider-RELATIVE'] = {
-        showLineColor: false,
-        lineColors   : false,
         gridColors   : [
-            {              value: 0,       color: pastBgColor  },
-            {fromValue: 0, value: '{max}', color: futureBgColor}
+            {              value: 0,       color: nsTime.pastBgColor  },
+            {fromValue: 0, value: '{max}', color: nsTime.futureBgColor}
         ]
+
     };
 
 
-    //Set slider for relative time-slider
-    timeSliderOptions['range-RELATIVE'] = {
-        handle: 'vertical'
+    //Mode=RELATIVE, bms=Normal
+    timeSliderOptions['bms-normal-RELATIVE'] = {
+        valueDistances: 20, //MANGLER
     };
+
+    //Mode=RELATIVE, bms=Extended
+    timeSliderOptions['bms-extended-RELATIVE'] = {
+        handle        : 'down',
+        valueDistances: 24,
+
+        showLineColor: false,
+
+// HER>         gridColors   : [
+// HER>             {              value: 0,       color: nsTime.pastBgColor  },
+// HER>             {fromValue: 0, value: '{max}', color: nsTime.futureBgColor}
+// HER>         ]
+    };
+
+
 
 
     /*************************************
-    time-mode = SCALE
+    time-mode = FIXED
     *************************************/
-    timeSliderOptions['SCALE'] = {
+    timeSliderOptions['FIXED'] = {
         min          : '{min}',
         max          : '{max}',
         step         : 1,
         value        : 0,
-        grid         : true,
-//MANGLER
-
-        handleFixed  : true,
-
-        handle       : "fixed",
-
-valueDistances: 400,
-width: 4000,
-
-        mousewheel   : true,
 
         showLineColor: false,
-        resizable    : false, //true,
         ticksOnLine  : true,
 
+        noDateLabels  : true,
+        dateAtMidnight: true,
+
+
+
+        //showUTC           : When true a scale for utc is also shown, but only if the time-zone isn't utc or forceUTC is set. Default = false. Only if showRelative == false
+        forceUTC            : true,  //If true and showUTC: true the utc-scale is included
+        noGridColorsOnUTC   : true,  //If true the UTC-grid will not get any grid colors
+        noLabelColorsOnUTC  : false, //If true the UTC-grid will not get any labels with colors
+        UTCGridClassName    : 'hide-for-global-setting-timezone-utc show-for-global-setting-showutc', //Class-name(s) for the grids use for UTC time-lime
+
+        //showExtraRelative         : If true and showRelative = false => A relative scale is included
+        noGridColorsOnExtraRelative : true, // If true the extra relative-grid will not get any grid colors
+        noLabelColorsOnExtraRelative: true, // If true the extra relative-grid will not get any labels with colors
+        ExtraRelativeGridClassName  : 'show-for-global-setting-showrelative', // Class-name(s) for the grids use for the extra relative grid
+
         gridColors: [
-            {              value: 0      , color: pastBgColor  },
-            {fromValue: 0, value: '{max}', color: futureBgColor}
+            {              value: 0      , color: nsTime.pastBgColor  },
+            {fromValue: 0, value: '{max}', color: nsTime.futureBgColor}
         ],
 
-        labelColors: [{
-            value          : 0,
-            backgroundColor: nowBgColor,
-            color          : nowColor
-        }],
+      //valueDistances: 16, MANGLER
     };
 
-    //Extended version of range scale time-slider
-    timeSliderOptions['range-SCALE'] = {
-        noDateLabels    : true,
-        dateAtMidnight  : true
-    }
+    //Mode=FIXED, bms=Normal
+    timeSliderOptions['bms-normal-FIXED'] = {
+        showExtraRelative   : allowRel_bmsNormal,
+        showUTC             : allowUTC_bmsNormal
+
+      //valueDistances: 16, MANGLER
+    };
+
+    //Mode=FIXED, bms=Extended
+    timeSliderOptions['bms-extended-FIXED'] = {
+        noDateLabels  : !bigger_bmsExtendedFIXED,
+        dateAtMidnight: !bigger_bmsExtendedFIXED,
+
+        showExtraRelative   : allowRel_bmsExtended,
+        showUTC             : allowUTC_bmsExtended,
+
+      //valueDistances: 16, MANGLER
+
+    };
+
 
 
     /**********************************************************************
@@ -240,14 +254,14 @@ width: 4000,
 
         replaceMinMax( tsOptions );
 
+        var heights = (timeSliderHeight[timeMode] || timeSliderHeight['DEFAULT']);
         var $result = $('<div/>')
-                .addClass('d-flex justify-content-center align-items-center w-100')
-                .height(timeSliderHeight[type]);
+                .addClass('d-block justify-content-center align-items-center w-100')
+                .height(heights[type]);
 
         var $sliderInput = $('<input/>').appendTo( $result ),
             timeSlider = $sliderInput.timeSlider( element.tsOptions ).data('timeSlider');
-         tsList.push(timeSlider);
-
+         nsTime.tsList.push(timeSlider);
         return $result;
     }
 
@@ -255,203 +269,29 @@ width: 4000,
     /**********************************************************************
     Create the different time-sliders
     **********************************************************************/
-    ['range', 'time-slider'].forEach( function(type){
-        ['SCALE', 'RELATIVE'].forEach( function(timeMode){
-            let tsOptions = $.extend(
-                    {timeMode: timeMode},
+    nsTime.onSetupLoaded.push(function(){
+        ['bms-normal', 'bms-extended'].forEach( function(type){
+            nsTime.timeOptions.timeModeList.forEach( function(timeMode){
+                let tsOptions = $.extend({
+                            timeMode: timeMode,
+                        },
+                        timeSliderOptions['ALL'] || {},
+                        timeSliderOptions[timeMode] || {},
+                        timeSliderOptions[type]  || {},
+                        timeSliderOptions[type+'-'+timeMode] || {}
+                    );
 
-{
-    onChangeOnDragging: true,
-    onChange: function(timeSlider){
-        //console.log('onChange', timeSlider.value);
-    }
-},
-
-
-                    timeSliderOptions[timeMode] || {},
-                    timeSliderOptions[type]  || {},
-                    timeSliderOptions[type+'-'+timeMode] || {}
-                );
-
-            nsTime.elements[type+'-'+timeMode] = {
-                class    : 'show-for-time-mode-'+timeMode,
-                content  : createTimeSlider,
-                tsOptions: tsOptions,
-                type     : type
-            }
+                nsTime.elements[type+'-'+timeMode] = {
+                    class    : 'show-for-time-mode-'+timeMode,
+                    content  : createTimeSlider,
+                    tsOptions: tsOptions,
+                    type     : type
+                };
+            });
         });
     });
 
-    //**********************************************************************
-    //**********************************************************************
-    //**********************************************************************
-    //**********************************************************************
-
-return;
-/*
-    elements['range-RELATIVE'] = {
-        class: 'w-100 show-for-time-mode-RELATIVE',
-//        fullWidth: true,
-
-
-        content: function($container, elementSet, element ){
-
-return $('<div/>').text('range RELATIVE')
-//                .addClass('d-flex flew-grow-1 w-100')
-
-// HER>                 .append(
-// HER>                     $('<input type="range"/>')
-// HER>                         .addClass('w-100')
-// HER>                 )
-        }
-    }
-
-    elements['range-SCALE'] = {
-        class: 'w-100 show-for-time-mode-SCALE',
-//        fullWidth: true,
-
-
-        content: function($container, elementSet, element ){
-            console.log('>>>>', $container, elementSet, element );
-
-return $('<div/>').text('range SCALE')
-//                .addClass('d-flex flew-grow-1 w-100')
-
-// HER>                 .append(
-// HER>                     $('<input type="range"/>')
-// HER>                         .addClass('w-100')
-// HER>                 )
-        }
-    }
-
-
-
-
-        //Create the time-slider
-//        elements['time-slider-SCALE'] = $('<div style="height:100px">time slider</div>')
-        elements['time-slider-RELATIVE'] = {
-            class: 'w-100 show-for-time-mode-RELATIVE',
-            ownContainer: true,
-            content: function($container, elementSet, element ){
-            console.log('>>>>', $container, elementSet, element );
-var $result = $('<div/>')
-        .addClass('d-flex justify-content-center align-items-center w-100')
-        .height('6em');
-
-
-var $sliderInput     = $('<input/>').appendTo( $result );
-
-            //
-            var timeSliderOptions = {
-                    type   : 'single',
-// HER>                     display: { value: { tzElement: ('#currentMomentLocal'), utcElement: $('#currentMomentUTC') } },
-// HER>                     buttons: { value: { firstBtn:'tsFirst', previousBtn:'tsPrev', nowBtn:'tsNow', nextBtn:'tsNext', lastBtn:'tsLast'} },
-
-                    markerFrame: true,
-
-// HER>                     minMoment  : -24,   //this.options.minMoment,
-// HER>                     maxMoment  : 48,    //this.options.maxMoment,
-// HER>                     fromMoment : this.options.fromMoment,
-// HER>                     toMoment   : this.options.toMoment,
-// HER>                     valueMoment: 0, //this.options.valueMoment,
-
-                    min  : -24,     //this.options.min,
-                    max  : 48,      //this.options.max,
-// HER>                     from : this.options.from,
-// HER>                     to   : this.options.to,
-                    value: 0,       //this.options.value,
-
-                    step            : 1,    //this.options.step,
-// HER>                     stepOffset      : this.options.stepOffset,
-// HER>                     stepOffsetMoment: this.options.stepOffsetMoment,
-
-                    onChangeOnDragging: false,
-                    showLineColor     : false,
-                    lineColors        : [{ to: 0, color: '#7ABAE1'}, {color:'#4D72B8'}],
-
-                    labelColors       : [{value:0, backgroundColor:'green', color:'white'}],
-
-                    format: {date: 'DMY', time: '24', showRelative: false, timezone: 'local', showUTC: false },
-
-// HER>                     onChange: this.options.onChange || this.options.callback
-            };
-
-var timeSlider = $sliderInput.timeSlider( timeSliderOptions ).data('timeSlider');
-timeSlider.setFormat();
-console.log('timeSlider', timeSlider);
-
-    return $result;
-}
-}
-/*
-    elements['time-slider'] = $('<div/>')
-        .addClass('d-flex justify-content-center align-items-center w-100')
-        .height('6em')
-        ._bsAppendContent({
-                type: 'timeSlider',
-            //type: "double",
-                _format: {
-                    showRelative:false,
-                    showUTC: true,
-                    showYear: true
-                },
-                min: 0,
-                max: 120*24,
-                step: 1,
-                value: 0,
-                grid: true,
-                handleFixed: true,
-                slider:"fixed",
-                mousewheel: true,
-                width: 120*400,
-                showLineColor: false,
-                resizable: true,
-ticksOnLine: true,
-/*
-                gridColors: [{value: 0, color: 'red'}, {fromValue: 0, value: 24*7, color: 'rgba(0,0,255, .5)'}],
-                labelColors: [
-                    {value: 0, color:'white', backgroundColor: 'green' },
-                    {value: 2, color:'white', backgroundColor: 'red' }
-                ],
-            });
-
-*/
-/*
-    var $input = $('<input type="text" id="example_00"/>')
-            .appendTo(elements['time-slider'])
-            .timeSlider({
-            //type: "double",
-                _format: {
-                    showRelative:false,
-                    showUTC: true,
-                    showYear: true
-                },
-                min: 0,
-                max: 120*24,
-                step: 1,
-                value: 0,
-                grid: true,
-                handleFixed: true,
-                slider:"fixed",
-                mousewheel: true,
-                width: 120*400,
-                showLineColor: false,
-                resizable: true,
-ticksOnLine: true,
-/*
-                gridColors: [{value: 0, color: 'red'}, {fromValue: 0, value: 24*7, color: 'rgba(0,0,255, .5)'}],
-                labelColors: [
-                    {value: 0, color:'white', backgroundColor: 'green' },
-                    {value: 2, color:'white', backgroundColor: 'red' }
-                ],
-*//*
-            })
-            .data('timeSlider');
-*/
-
-//HER HER HER HER HER HER HER HER HER HER
 //range.css = background: linear-gradient(to right, lightgreen 25%, darkgreen 25%, darkgreen 50%, red 50%);
-//HER HER HER HER HER HER HER HER HER HER
 
 
 }(jQuery, window.moment, window.i18next, this, document));
