@@ -35951,11 +35951,12 @@ Style for 'About FCOO' modal-content
   padding: 0.25rem;
   text-align: center;
   font-size: 1.3125rem;
-  line-height: 1.3125rem;
+  line-height: 1;
   text-shadow: -1px 0 var(--fcoo-app-shadow-color), 0 1px var(--fcoo-app-shadow-color), 1px 0 var(--fcoo-app-shadow-color), 0 -1px var(--fcoo-app-shadow-color);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  min-height: calc(1em + 2 * 0.25rem);
 }
 .about-owner img {
   margin: 1rem auto;
