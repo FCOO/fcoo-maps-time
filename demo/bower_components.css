@@ -36087,6 +36087,38 @@ Two modes:
   transition-duration: 0s 4;
 }
 
+html.top-menu-open .hide-for-top-menu-open {
+  display: none !important;
+}
+
+html.no-top-menu-open .show-for-top-menu-open {
+  display: none !important;
+}
+
+html.bottom-menu-open .hide-for-bottom-menu-open {
+  display: none !important;
+}
+
+html.no-bottom-menu-open .show-for-bottom-menu-open {
+  display: none !important;
+}
+
+html.left-menu-open .hide-for-left-menu-open {
+  display: none !important;
+}
+
+html.no-left-menu-open .show-for-left-menu-open {
+  display: none !important;
+}
+
+html.right-menu-open .hide-for-right-menu-open {
+  display: none !important;
+}
+
+html.no-right-menu-open .show-for-right-menu-open {
+  display: none !important;
+}
+
 /*****************************************************
 Style for icons
 *****************************************************/

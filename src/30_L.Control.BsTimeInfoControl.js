@@ -71,6 +71,26 @@ Leaflet control to display current time and relative time in the maps
                 text: 'MANGLER'
             });
 */
+            if (window.bsIsTouch){
+                options.popupList.push({
+                    type        : 'button',
+                    icon        : 'far fa-ruler-horizontal fa-flip-vertical',
+                    text        : {da: 'Vis tidsvælger', en: 'Show time-selector'},
+                    class       : 'hide-for-bottom-menu-open',
+                    onClick     : function(){ nsMap.main.bottomMenu.open(); },
+                    closeOnClick: true,
+                    lineAfter   : true
+                });
+                options.popupList.push({
+                    type        : 'button',
+                    icon        : [['far fa-ruler-horizontal fa-flip-vertical', 'far fa-slash']],
+                    text        : {da: 'Skjul tidsvælger', en: 'Hide time selector'},
+                    class       : 'show-for-bottom-menu-open',
+                    onClick     : function(){ nsMap.main.bottomMenu.close(); },
+                    closeOnClick: true,
+                    lineAfter   : true
+                });
+            }
 
             if ( (isMainMap && (nsTime.timeOptions.timeModeList.length > 1) ||
                  (isSecondaryMap && !nsTime.timeOptions.allowDifferentTime)) )

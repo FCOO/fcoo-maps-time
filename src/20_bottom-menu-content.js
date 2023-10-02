@@ -313,11 +313,11 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
     nsMap.BOTTOM_MENU = {
         height         : 'auto',
         standardHandler: true,
-        isOpen         : false,
+        isOpen         : true, //false,
         createContent  : creaetBottomMenu
     };
 
-	$(function() { nsMap.BOTTOM_MENU.isOpen = !window.bsIsTouch; });
+//	$(function() { nsMap.BOTTOM_MENU.isOpen = !window.bsIsTouch; });
 
 
 }(jQuery, L, this, document));
