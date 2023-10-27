@@ -26,10 +26,10 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
 
     /**************************************************************************
     ***************************************************************************
-    creaetBottomMenu( $container )
+    createBottomMenu( $container )
     ***************************************************************************
     **************************************************************************/
-    function creaetBottomMenu( $container ){
+    function createBottomMenu( $container ){
 /* TEST
         var isDesktop = false,
             isNotDesktop = !isDesktop,
@@ -313,11 +313,8 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
     nsMap.BOTTOM_MENU = {
         height         : 'auto',
         standardHandler: true,
-        isOpen         : true, //false,
-        createContent  : creaetBottomMenu
+        isOpen         : true,
+        createContent  : createBottomMenu
     };
-
-//	$(function() { nsMap.BOTTOM_MENU.isOpen = !window.bsIsTouch; });
-
 
 }(jQuery, L, this, document));

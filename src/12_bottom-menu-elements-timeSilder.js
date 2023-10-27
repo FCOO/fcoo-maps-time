@@ -188,16 +188,18 @@ There are created as-is - not as prototype
 
 
 
-        //showUTC           : When true a scale for utc is also shown, but only if the time-zone isn't utc or forceUTC is set. Default = false. Only if showRelative == false
-        forceUTC            : true,  //If true and showUTC: true the utc-scale is included
-        noGridColorsOnUTC   : true,  //If true the UTC-grid will not get any grid colors
-        noLabelColorsOnUTC  : false, //If true the UTC-grid will not get any labels with colors
-        UTCGridClassName    : 'hide-for-global-setting-timezone-utc show-for-global-setting-showutc', //Class-name(s) for the grids use for UTC time-lime
+        //showUTC                : When true a scale for utc is also shown, but only if the time-zone isn't utc or forceUTC is set. Default = false. Only if showRelative == false
+        forceUTC                 : true,  //If true and showUTC: true the utc-scale is included
+        noExtendedGridColorsOnUTC: true,  //If true the UTC-grid will not get any extended grid colors
+        noGridColorsOnUTC        : true,  //If true the UTC-grid will not get any grid colors
+        noLabelColorsOnUTC       : false, //If true the UTC-grid will not get any labels with colors
+        UTCGridClassName         : 'hide-for-global-setting-timezone-utc show-for-global-setting-showutc', //Class-name(s) for the grids use for UTC time-lime
 
-        //showExtraRelative         : If true and showRelative = false => A relative scale is included
-        noGridColorsOnExtraRelative : true, // If true the extra relative-grid will not get any grid colors
-        noLabelColorsOnExtraRelative: true, // If true the extra relative-grid will not get any labels with colors
-        ExtraRelativeGridClassName  : 'show-for-global-setting-showrelative', // Class-name(s) for the grids use for the extra relative grid
+        //showExtraRelative                 : If true and showRelative = false => A relative scale is included
+        noGridColorsOnExtraRelative         : true, // If true the extra relative-grid will not get any grid colors
+        noExtendedGridColorsOnExtraRelative : true; //If true the extra relative-grid will not get any extended grid colors
+        noLabelColorsOnExtraRelative        : true, // If true the extra relative-grid will not get any labels with colors
+        extraRelativeGridClassName          : 'show-for-global-setting-showrelative', // Class-name(s) for the grids use for the extra relative grid
 
         gridColors: [
             {              value: 0      , color: nsTime.pastBgColor  },

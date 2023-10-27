@@ -27,6 +27,15 @@ L.Map
         nsMap.mainMapOptions      = $.extend(nsMap.mainMapOptions,      map_timeDimension_options);
         nsMap.secondaryMapOptions = $.extend(nsMap.secondaryMapOptions, map_timeDimension_options);
 
+        //Add button to open button menu - only visible when single map and bottom menu is closed
+        if (true){
+            nsMap.mainMapOptions = $.extend(nsMap.mainMapOptions, {
+                bsToggleBottomMenuControl: true,
+                bsToggleBottomMenuOptions: {class:'MANGLER'}
+            });
+        }
+
+
         //***** TEST *****
         if (window.FCOOMAPSTIME_TEST){
             nsMap.mainMapOptions.timeDimensionControl = true;
