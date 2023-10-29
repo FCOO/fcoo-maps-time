@@ -160,6 +160,43 @@ html.phone.portrait.bottom-menu-extended {
 }
 
 
+/*
+Special show/hide classes when only one map and button-menu is open or closed
+html.no-bottom-menu-open html.bottom-menu-open
+html.no-single-maps-selected html.single-maps-selected  / multi-maps-selected
+*/
+html.single-maps-selected.bottom-menu-open {
+    .hide-for-single-map-and-bottom-menu-open {
+        display: none !important;
+    }
+}
+
+/*
+Special hide case:
+On desktop in fixed-mode when not showing relative time and not showing utc =>
+change the not shown relative and utc boxes from not visible to not displayed
+This way the navigation arrows will get next to the box with current time
+
+The utc-box is hidden in one of two ways: Show-utc = false or time-zome = utc.
+*/
+//Allways when desktop, fixed-mode and do not show relative
+html.desktop.time-mode-FIXED.no-global-setting-showrelative {
+    //1: Hide relative and utc because show-utc = false
+    &.no-global-setting-showutc {
+        a.show-for-global-setting-showrelative-visibility, a.show-for-global-setting-showutc-visibility {
+            display: none !important;
+        }
+    }
+    //1: Hide relative and utc because timezone = utc = false
+    &.global-setting-timezone-utc {
+        a.show-for-global-setting-showrelative-visibility, a.hide-for-global-setting-timezone-utc-visibility {
+            display: none !important;
+        }
+    }
+}
+
+
+
 //Style for buttons with time-slider fetures
 :root {
     --slider-button-left: 40%;

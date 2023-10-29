@@ -70,7 +70,10 @@ L.Map
 
         //Add bsTimeInfoControl to default map-settings
         nsMap.mainMapOptions.bsTimeInfoControl = true;
+
         nsMap.mainMapOptions.bsTimeInfoControlOptions = {
+            //time-info-control on main map gets extra class = 'hide-for-single-map-and-bottom-menu-open'
+            className : L.Control.BsTimeInfoControl.prototype.options + ' hide-for-single-map-and-bottom-menu-open',
             position  : bsTimeInfoControlPosition,
             isMainMap : true,
             isExtended: true,
