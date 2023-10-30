@@ -71,14 +71,14 @@ There are created as-is - not as prototype
                 'bms-extended'  : '3em'
             },
             'RELATIVE': {
-                'bms-normal'    : '1.80em',
-                'bms-extended'  : '3.25em'
+                'bms-normal'    : '1.85em',
+                'bms-extended'  : '3.30em'
             },
             'FIXED': {
-                'bms-normal'    : allowUTC_bmsNormal  ? '4.25em' : //Current, Rel and UTC
-                                  (allowRel_bmsNormal ? '3.00em' : //Current and Rel
-                                                        '1.75em'), //Current
-                'bms-extended'  : allowUTC_bmsExtended ? (bigger_bmsExtendedFIXED ? '5.5em' : '4.25em') : '3em'
+                'bms-normal'    : allowUTC_bmsNormal  ? '4.30em' : //Current, Rel and UTC
+                                  (allowRel_bmsNormal ? '3.10em' : //Current and Rel
+                                                        '1.80em'), //Current
+                'bms-extended'  : allowUTC_bmsExtended ? (bigger_bmsExtendedFIXED ? '5.75em' : '4.30em') : '3em'
             }
         };
 

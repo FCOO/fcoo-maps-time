@@ -892,6 +892,15 @@ L.Map
         nsMap.mainMapOptions      = $.extend(nsMap.mainMapOptions,      map_timeDimension_options);
         nsMap.secondaryMapOptions = $.extend(nsMap.secondaryMapOptions, map_timeDimension_options);
 
+        //Add button to open button menu - only visible when single map and bottom menu is closed
+        if (false){
+            nsMap.mainMapOptions = $.extend(nsMap.mainMapOptions, {
+                bsToggleBottomMenuControl: true,
+                bsToggleBottomMenuOptions: {class:'MANGLER'}
+            });
+        }
+
+
         //***** TEST *****
         if (window.FCOOMAPSTIME_TEST){
             nsMap.mainMapOptions.timeDimensionControl = true;
@@ -926,7 +935,10 @@ L.Map
 
         //Add bsTimeInfoControl to default map-settings
         nsMap.mainMapOptions.bsTimeInfoControl = true;
+
         nsMap.mainMapOptions.bsTimeInfoControlOptions = {
+            //time-info-control on main map gets extra class = 'hide-for-single-map-and-bottom-menu-open'
+            className : L.Control.BsTimeInfoControl.prototype.options + ' hide-for-single-map-and-bottom-menu-open',
             position  : bsTimeInfoControlPosition,
             isMainMap : true,
             isExtended: true,
@@ -1514,14 +1526,14 @@ There are created as-is - not as prototype
                 'bms-extended'  : '3em'
             },
             'RELATIVE': {
-                'bms-normal'    : '1.80em',
-                'bms-extended'  : '3.25em'
+                'bms-normal'    : '1.85em',
+                'bms-extended'  : '3.30em'
             },
             'FIXED': {
-                'bms-normal'    : allowUTC_bmsNormal  ? '4.25em' : //Current, Rel and UTC
-                                  (allowRel_bmsNormal ? '3.00em' : //Current and Rel
-                                                        '1.75em'), //Current
-                'bms-extended'  : allowUTC_bmsExtended ? (bigger_bmsExtendedFIXED ? '5.5em' : '4.25em') : '3em'
+                'bms-normal'    : allowUTC_bmsNormal  ? '4.30em' : //Current, Rel and UTC
+                                  (allowRel_bmsNormal ? '3.10em' : //Current and Rel
+                                                        '1.80em'), //Current
+                'bms-extended'  : allowUTC_bmsExtended ? (bigger_bmsExtendedFIXED ? '5.75em' : '4.30em') : '3em'
             }
         };
 
@@ -1546,6 +1558,13 @@ There are created as-is - not as prototype
         handleFixed   : true,
         handle        : "fixed",
         valueDistances: 16, //or 16 or 18 or 20 MANGLER
+
+        //Font for labels
+        size: {
+            fontSize  : 11,
+            fontFamily: 'Verdana',
+            fontWeight: 'lighter'
+        },
 
         //Default: No line
         showLine      : false,
@@ -1631,16 +1650,18 @@ There are created as-is - not as prototype
 
 
 
-        //showUTC           : When true a scale for utc is also shown, but only if the time-zone isn't utc or forceUTC is set. Default = false. Only if showRelative == false
-        forceUTC            : true,  //If true and showUTC: true the utc-scale is included
-        noGridColorsOnUTC   : true,  //If true the UTC-grid will not get any grid colors
-        noLabelColorsOnUTC  : false, //If true the UTC-grid will not get any labels with colors
-        UTCGridClassName    : 'hide-for-global-setting-timezone-utc show-for-global-setting-showutc', //Class-name(s) for the grids use for UTC time-lime
+        //showUTC                : When true a scale for utc is also shown, but only if the time-zone isn't utc or forceUTC is set. Default = false. Only if showRelative == false
+        forceUTC                 : true,  //If true and showUTC: true the utc-scale is included
+        noGridColorsOnUTC        : true,  //If true the UTC-grid will not get any grid colors
+        noExtendedGridColorsOnUTC: true,  //If true the UTC-grid will not get any extended grid colors
+        noLabelColorsOnUTC       : false, //If true the UTC-grid will not get any labels with colors
+        UTCGridClassName         : 'hide-for-global-setting-timezone-utc show-for-global-setting-showutc', //Class-name(s) for the grids use for UTC time-lime
 
-        //showExtraRelative         : If true and showRelative = false => A relative scale is included
-        noGridColorsOnExtraRelative : true, // If true the extra relative-grid will not get any grid colors
-        noLabelColorsOnExtraRelative: true, // If true the extra relative-grid will not get any labels with colors
-        ExtraRelativeGridClassName  : 'show-for-global-setting-showrelative', // Class-name(s) for the grids use for the extra relative grid
+        //showExtraRelative                 : If true and showRelative = false => A relative scale is included
+        noGridColorsOnExtraRelative         : true, // If true the extra relative-grid will not get any grid colors
+        noExtendedGridColorsOnExtraRelative : true, //If true the extra relative-grid will not get any extended grid colors
+        noLabelColorsOnExtraRelative        : true, // If true the extra relative-grid will not get any labels with colors
+        extraRelativeGridClassName          : 'show-for-global-setting-showrelative', // Class-name(s) for the grids use for the extra relative grid
 
         gridColors: [
             {              value: 0      , color: nsTime.pastBgColor  },
@@ -2035,10 +2056,10 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
 
     /**************************************************************************
     ***************************************************************************
-    creaetBottomMenu( $container )
+    createBottomMenu( $container )
     ***************************************************************************
     **************************************************************************/
-    function creaetBottomMenu( $container ){
+    function createBottomMenu( $container ){
 /* TEST
         var isDesktop = false,
             isNotDesktop = !isDesktop,
@@ -2322,12 +2343,9 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
     nsMap.BOTTOM_MENU = {
         height         : 'auto',
         standardHandler: true,
-        isOpen         : true, //false,
-        createContent  : creaetBottomMenu
+        isOpen         : true,
+        createContent  : createBottomMenu
     };
-
-//	$(function() { nsMap.BOTTOM_MENU.isOpen = !window.bsIsTouch; });
-
 
 }(jQuery, L, this, document));
 
