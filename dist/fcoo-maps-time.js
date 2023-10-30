@@ -2477,7 +2477,7 @@ Leaflet control to display current time and relative time in the maps
                     closeOnClick: true,
                 });
             });
-console.log(options);
+
             return L.Control.BsButtonBox.prototype.initialize.call(this, options);
         },
 
