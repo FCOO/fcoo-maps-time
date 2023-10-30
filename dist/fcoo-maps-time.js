@@ -938,7 +938,7 @@ L.Map
 
         nsMap.mainMapOptions.bsTimeInfoControlOptions = {
             //time-info-control on main map gets extra class = 'hide-for-single-map-and-bottom-menu-open'
-            className : L.Control.BsTimeInfoControl.prototype.options + ' hide-for-single-map-and-bottom-menu-open',
+            className : L.Control.BsTimeInfoControl.prototype.options.className + ' hide-for-single-map-and-bottom-menu-open',
             position  : bsTimeInfoControlPosition,
             isMainMap : true,
             isExtended: true,
@@ -2477,7 +2477,7 @@ Leaflet control to display current time and relative time in the maps
                     closeOnClick: true,
                 });
             });
-
+console.log(options);
             return L.Control.BsButtonBox.prototype.initialize.call(this, options);
         },
 
