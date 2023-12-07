@@ -13,34 +13,8 @@ bms = bottom-menu-size
         nsTime    = nsMap.time = nsMap.time || {};
 
 
-    //Add bottomMenuSize to application-settings
-    var bottomMenuSizes = nsTime.bottomMenuSizes = ['minimized', 'normal', 'extended'];
-    ns.appSetting.add({
-        id          : 'bottomMenuSize',
-        callApply   : true,
-        applyFunc   : function( size ){
-            nsTime.bottomMenuSize = size;
-            bottomMenuSizes.forEach( function( nextSize ){
-                window.modernizrToggle('bottom-menu-'+nextSize, nsTime.bottomMenuSize == nextSize);
-            });
-            if (nsTime.bottomMenu_onResize)
-                nsTime.bottomMenu_onResize();
-        },
-        defaultValue: 'minimized'
-    });
-
-
-    //Global method to change bms relative
-    function changeBMS(delta){
-        var newIndex = bottomMenuSizes.indexOf(nsTime.bottomMenuSize) + delta;
-        if ((newIndex >= 0) && (newIndex < bottomMenuSizes.length))
-            ns.appSetting.set('bottomMenuSize', bottomMenuSizes[newIndex]);
-    }
-
-    nsTime.incBMS = function(){ changeBMS(+1); };
-    nsTime.decBMS = function(){ changeBMS(-1); };
-
-
+    //bottomMenuSizeList = list of avaiable size of bottom-menu content
+    nsTime.bottomMenuSizeList = ['minimized', 'normal', 'extended'];
 
     /**************************************************************************
     The content of the bottom-menu contains of buttons, boxes with info on current time an sliders
@@ -73,12 +47,15 @@ bms = bottom-menu-size
             'bms-extended2normal'   : {icon: 'fal fa-chevron-circle-down', size: 'normal'},
         };
     $.each( bmsButtons, function(id, options ){
+        const bottomMenuSizeIndex = nsTime.bottomMenuSizeList.indexOf( options.size );
         elements[id] =
             $.bsButton({
                 square  : true,
                 icon    : options.icon,
                 bigIcon : true,
-                onClick: function(){ ns.appSetting.set('bottomMenuSize', options.size); }
+                onClick: function(){
+                    ns.appSetting.set('bottom-menu-size', bottomMenuSizeIndex);
+                }
             });
         setGroup(id);
     });

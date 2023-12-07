@@ -17,6 +17,32 @@
         body.FCOOMAPSTIME_TEST span.handle {
 //            border: 2px solid red;
         }
+
+    :root.color1 {
+        --jbn-time-past-color  : #7a839e;
+        --jbn-time-now-color   : #94b5c2;
+        --jbn-time-future-color: #eadcc1;
+    }
+    
+    :root.color2 {
+        --jbn-time-past-color  : #e7e1ef;
+        --jbn-time-now-color   : #dd1c77;
+        --jbn-time-future-color: #c994c7;
+    }
+    
+    :root.color3 {
+        --jbn-time-past-color  : #e6bfdb;
+        --jbn-time-now-color   : #5c242a;
+        --jbn-time-future-color: #9d5981;
+    }
+    
+    :root.color4 {
+        --jbn-time-past-color   : #e0c494;
+        --jbn-time-now-color    : #ee5f01;
+        --jbn-time-future-color : #d99149;
+    }    
+  
+    
     </style>
     
 </head>
@@ -33,10 +59,17 @@
         }            
         if (window.location.href.includes('?testmodenow'))
             window.FCOOMAPSTIME_TEST_NOW = true;
-
+   
     </script>
 
     <script src="bower_components.js"></script>
+
+    <script>
+        [1,2,3,4].forEach( (id) => {
+            if (window.location.href.includes('color='+id))
+                $('html').addClass('color'+id);
+        });
+    </script>
 
     <script src="../src/01_setup.js"></script>
     <script src="../src/03_time-mode.js"></script>

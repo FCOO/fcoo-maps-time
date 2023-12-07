@@ -23,17 +23,18 @@ There are created as-is - not as prototype
     Colors
     ************************************************/
     var documentElement = getComputedStyle(document.documentElement);
-    function getColor(varName){
+    function getColorValue(varName){
         return documentElement.getPropertyValue('--' + varName);
     }
-
     //Colors for past, now and future
-    nsTime.pastColor     = getColor('jbn-time-past-color'),
-    nsTime.pastBgColor   = getColor('jbn-time-past-bg-color'),
-    nsTime.nowColor      = getColor('jbn-time-now-color'),
-    nsTime.nowBgColor    = getColor('jbn-time-now-bg-color'),
-    nsTime.futureColor   = getColor('jbn-time-future-color'),
-    nsTime.futureBgColor = getColor('jbn-time-future-bg-color');
+    nsTime.pastColor        = 'var(--jbn-time-past-color)';
+    nsTime.pastColorValue   = getColorValue('jbn-time-past-color');
+
+    nsTime.nowColor         = 'var(--jbn-time-now-color)';
+    nsTime.nowColorValue    = getColorValue('jbn-time-now-color');
+
+    nsTime.futureColor      = 'var(--jbn-time-future-color)';
+    nsTime.futureColorValue = getColorValue('jbn-time-future-color');
 
     /************************************************
     TimeSlider options
@@ -118,10 +119,9 @@ There are created as-is - not as prototype
         //Green label on 'now'
         labelColors: [{
             value          : 0,
-            backgroundColor: nsTime.nowBgColor,
-            color          : nsTime.nowColor
+            backgroundColor: nsTime.nowColorValue,
+            color          : window.chromaBestContrast(nsTime.nowColorValue)
         }],
-
     },
 
     //bms = Normal
@@ -145,13 +145,13 @@ There are created as-is - not as prototype
         step        : 1,
 
         lineColors   : [
-            { to: 0, color: nsTime.pastBgColor  },
-            {        color: nsTime.futureBgColor}
+            { to: 0, color: nsTime.pastColor  },
+            {        color: nsTime.futureColor}
         ],
 
         gridColors   : [
-            {              value: 0,       color: nsTime.pastBgColor  },
-            {fromValue: 0, value: '{max}', color: nsTime.futureBgColor}
+            {              value: 0,       color: nsTime.pastColor  },
+            {fromValue: 0, value: '{max}', color: nsTime.futureColor}
         ]
 
     };
@@ -166,13 +166,7 @@ There are created as-is - not as prototype
     timeSliderOptions['bms-extended-RELATIVE'] = {
         handle        : 'down',
         valueDistances: 24,
-
         showLineColor: false,
-
-// HER>         gridColors   : [
-// HER>             {              value: 0,       color: nsTime.pastBgColor  },
-// HER>             {fromValue: 0, value: '{max}', color: nsTime.futureBgColor}
-// HER>         ]
     };
 
 
@@ -209,8 +203,8 @@ There are created as-is - not as prototype
         extraRelativeGridClassName          : 'show-for-global-setting-showrelative', // Class-name(s) for the grids use for the extra relative grid
 
         gridColors: [
-            {              value: 0      , color: nsTime.pastBgColor  },
-            {fromValue: 0, value: '{max}', color: nsTime.futureBgColor}
+            {              value: 0      , color: nsTime.pastColor  },
+            {fromValue: 0, value: '{max}', color: nsTime.futureColor}
         ],
 
       //valueDistances: 16, MANGLER

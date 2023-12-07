@@ -835,8 +835,8 @@ Methods to add mini time-slider to a button incl swiping and panning
             .addClass('slider-button fa-sort-up')
             .css('background',
                     'linear-gradient(to right, '+
-                        nsTime.pastBgColor+' '+ getPercent(0, timeMode)+'%, '+
-                        nsTime.futureBgColor+' 0%) '+
+                        nsTime.pastColor+' '+ getPercent(0, timeMode)+'%, '+
+                        nsTime.futureColor+' 0%) '+
                     'no-repeat bottom right');
 
         if (window.bsIsTouch){
@@ -892,6 +892,7 @@ L.Map
         nsMap.mainMapOptions      = $.extend(nsMap.mainMapOptions,      map_timeDimension_options);
         nsMap.secondaryMapOptions = $.extend(nsMap.secondaryMapOptions, map_timeDimension_options);
 
+/*
         //Add button to open button menu - only visible when single map and bottom menu is closed
         if (false){
             nsMap.mainMapOptions = $.extend(nsMap.mainMapOptions, {
@@ -899,7 +900,7 @@ L.Map
                 bsToggleBottomMenuOptions: {class:'MANGLER'}
             });
         }
-
+*/
 
         //***** TEST *****
         if (window.FCOOMAPSTIME_TEST){
@@ -1100,34 +1101,8 @@ bms = bottom-menu-size
         nsTime    = nsMap.time = nsMap.time || {};
 
 
-    //Add bottomMenuSize to application-settings
-    var bottomMenuSizes = nsTime.bottomMenuSizes = ['minimized', 'normal', 'extended'];
-    ns.appSetting.add({
-        id          : 'bottomMenuSize',
-        callApply   : true,
-        applyFunc   : function( size ){
-            nsTime.bottomMenuSize = size;
-            bottomMenuSizes.forEach( function( nextSize ){
-                window.modernizrToggle('bottom-menu-'+nextSize, nsTime.bottomMenuSize == nextSize);
-            });
-            if (nsTime.bottomMenu_onResize)
-                nsTime.bottomMenu_onResize();
-        },
-        defaultValue: 'minimized'
-    });
-
-
-    //Global method to change bms relative
-    function changeBMS(delta){
-        var newIndex = bottomMenuSizes.indexOf(nsTime.bottomMenuSize) + delta;
-        if ((newIndex >= 0) && (newIndex < bottomMenuSizes.length))
-            ns.appSetting.set('bottomMenuSize', bottomMenuSizes[newIndex]);
-    }
-
-    nsTime.incBMS = function(){ changeBMS(+1); };
-    nsTime.decBMS = function(){ changeBMS(-1); };
-
-
+    //bottomMenuSizeList = list of avaiable size of bottom-menu content
+    nsTime.bottomMenuSizeList = ['minimized', 'normal', 'extended'];
 
     /**************************************************************************
     The content of the bottom-menu contains of buttons, boxes with info on current time an sliders
@@ -1160,12 +1135,15 @@ bms = bottom-menu-size
             'bms-extended2normal'   : {icon: 'fal fa-chevron-circle-down', size: 'normal'},
         };
     $.each( bmsButtons, function(id, options ){
+        const bottomMenuSizeIndex = nsTime.bottomMenuSizeList.indexOf( options.size );
         elements[id] =
             $.bsButton({
                 square  : true,
                 icon    : options.icon,
                 bigIcon : true,
-                onClick: function(){ ns.appSetting.set('bottomMenuSize', options.size); }
+                onClick: function(){
+                    ns.appSetting.set('bottom-menu-size', bottomMenuSizeIndex);
+                }
             });
         setGroup(id);
     });
@@ -1478,17 +1456,18 @@ There are created as-is - not as prototype
     Colors
     ************************************************/
     var documentElement = getComputedStyle(document.documentElement);
-    function getColor(varName){
+    function getColorValue(varName){
         return documentElement.getPropertyValue('--' + varName);
     }
-
     //Colors for past, now and future
-    nsTime.pastColor     = getColor('jbn-time-past-color'),
-    nsTime.pastBgColor   = getColor('jbn-time-past-bg-color'),
-    nsTime.nowColor      = getColor('jbn-time-now-color'),
-    nsTime.nowBgColor    = getColor('jbn-time-now-bg-color'),
-    nsTime.futureColor   = getColor('jbn-time-future-color'),
-    nsTime.futureBgColor = getColor('jbn-time-future-bg-color');
+    nsTime.pastColor        = 'var(--jbn-time-past-color)';
+    nsTime.pastColorValue   = getColorValue('jbn-time-past-color');
+
+    nsTime.nowColor         = 'var(--jbn-time-now-color)';
+    nsTime.nowColorValue    = getColorValue('jbn-time-now-color');
+
+    nsTime.futureColor      = 'var(--jbn-time-future-color)';
+    nsTime.futureColorValue = getColorValue('jbn-time-future-color');
 
     /************************************************
     TimeSlider options
@@ -1573,10 +1552,9 @@ There are created as-is - not as prototype
         //Green label on 'now'
         labelColors: [{
             value          : 0,
-            backgroundColor: nsTime.nowBgColor,
-            color          : nsTime.nowColor
+            backgroundColor: nsTime.nowColorValue,
+            color          : window.chromaBestContrast(nsTime.nowColorValue)
         }],
-
     },
 
     //bms = Normal
@@ -1600,13 +1578,13 @@ There are created as-is - not as prototype
         step        : 1,
 
         lineColors   : [
-            { to: 0, color: nsTime.pastBgColor  },
-            {        color: nsTime.futureBgColor}
+            { to: 0, color: nsTime.pastColor  },
+            {        color: nsTime.futureColor}
         ],
 
         gridColors   : [
-            {              value: 0,       color: nsTime.pastBgColor  },
-            {fromValue: 0, value: '{max}', color: nsTime.futureBgColor}
+            {              value: 0,       color: nsTime.pastColor  },
+            {fromValue: 0, value: '{max}', color: nsTime.futureColor}
         ]
 
     };
@@ -1621,13 +1599,7 @@ There are created as-is - not as prototype
     timeSliderOptions['bms-extended-RELATIVE'] = {
         handle        : 'down',
         valueDistances: 24,
-
         showLineColor: false,
-
-// HER>         gridColors   : [
-// HER>             {              value: 0,       color: nsTime.pastBgColor  },
-// HER>             {fromValue: 0, value: '{max}', color: nsTime.futureBgColor}
-// HER>         ]
     };
 
 
@@ -1664,8 +1636,8 @@ There are created as-is - not as prototype
         extraRelativeGridClassName          : 'show-for-global-setting-showrelative', // Class-name(s) for the grids use for the extra relative grid
 
         gridColors: [
-            {              value: 0      , color: nsTime.pastBgColor  },
-            {fromValue: 0, value: '{max}', color: nsTime.futureBgColor}
+            {              value: 0      , color: nsTime.pastColor  },
+            {fromValue: 0, value: '{max}', color: nsTime.futureColor}
         ],
 
       //valueDistances: 16, MANGLER
@@ -1934,8 +1906,7 @@ bottom-menu-ElementSet.js
 
                 //Find the total width of all groups in each set of bms, mode, orientation
                 var newPrio = {};
-
-                nsTime.bottomMenuSizes.forEach( function( bms ){
+                nsTime.bottomMenuSizeList.forEach( function( bms ){
                     newPrio[bms] = {};
                     nsTime.timeOptions.timeModeList.forEach( function( mode ){
                         newPrio[bms][mode] = {};
@@ -1964,7 +1935,7 @@ bottom-menu-ElementSet.js
             }
 
             //Find the set of groups with largest width less that container width
-            var bms              = ns.appSetting.get('bottomMenuSize'),
+            let bms              = nsTime.bottomMenuSizeList[ ns.appSetting.get('bottom-menu-size') ],
                 mode             = nsTime.timeMode,
                 orientation      = $('html').hasClass('landscape') ? 'landscape' : 'portrait',
                 prioList         = this.getArray( this.options.prioList, bms, mode, orientation ),
@@ -2074,13 +2045,7 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
             elements['time-mode'] = elements['empty'];
 
         //Set events for resize and change relative time
-        $container.resize( nsTime.bottomMenu_onResize );
         ns.events.on('TIMEMODECHANGED', nsTime.bottomMenu_onResize);
-
-        //Add swip up and down to change the size off the bottom menu (bms = bottom-menu-size)
-        $container.hammer();
-        $container.on('swipeup', nsTime.incBMS);
-        $container.on('swipedown', nsTime.decBMS);
 
 
         /**************************************************************************
@@ -2340,11 +2305,16 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
     }
 
     //********************************************************************************************
+    var sizeList = [];
+    nsTime.bottomMenuSizeList.forEach( (size) => { sizeList.push('bottom-menu-'+size); });
+
     nsMap.BOTTOM_MENU = {
-        height         : 'auto',
-        standardHandler: true,
-        isOpen         : true,
-        createContent  : createBottomMenu
+        height          : 'auto',
+        sizeList        : sizeList,
+        onSetSize       : nsTime.bottomMenu_onResize,
+        standardHandler : true,
+        isOpen          : true,
+        createContent   : createBottomMenu
     };
 
 }(jQuery, L, this, document));

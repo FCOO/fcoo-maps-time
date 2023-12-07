@@ -171,8 +171,7 @@ bottom-menu-ElementSet.js
 
                 //Find the total width of all groups in each set of bms, mode, orientation
                 var newPrio = {};
-
-                nsTime.bottomMenuSizes.forEach( function( bms ){
+                nsTime.bottomMenuSizeList.forEach( function( bms ){
                     newPrio[bms] = {};
                     nsTime.timeOptions.timeModeList.forEach( function( mode ){
                         newPrio[bms][mode] = {};
@@ -201,7 +200,7 @@ bottom-menu-ElementSet.js
             }
 
             //Find the set of groups with largest width less that container width
-            var bms              = ns.appSetting.get('bottomMenuSize'),
+            let bms              = nsTime.bottomMenuSizeList[ ns.appSetting.get('bottom-menu-size') ],
                 mode             = nsTime.timeMode,
                 orientation      = $('html').hasClass('landscape') ? 'landscape' : 'portrait',
                 prioList         = this.getArray( this.options.prioList, bms, mode, orientation ),

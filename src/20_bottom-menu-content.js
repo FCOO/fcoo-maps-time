@@ -44,13 +44,7 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
             elements['time-mode'] = elements['empty'];
 
         //Set events for resize and change relative time
-        $container.resize( nsTime.bottomMenu_onResize );
         ns.events.on('TIMEMODECHANGED', nsTime.bottomMenu_onResize);
-
-        //Add swip up and down to change the size off the bottom menu (bms = bottom-menu-size)
-        $container.hammer();
-        $container.on('swipeup', nsTime.incBMS);
-        $container.on('swipedown', nsTime.decBMS);
 
 
         /**************************************************************************
@@ -310,11 +304,16 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
     }
 
     //********************************************************************************************
+    var sizeList = [];
+    nsTime.bottomMenuSizeList.forEach( (size) => { sizeList.push('bottom-menu-'+size); });
+
     nsMap.BOTTOM_MENU = {
-        height         : 'auto',
-        standardHandler: true,
-        isOpen         : true,
-        createContent  : createBottomMenu
+        height          : 'auto',
+        sizeList        : sizeList,
+        onSetSize       : nsTime.bottomMenu_onResize,
+        standardHandler : true,
+        isOpen          : true,
+        createContent   : createBottomMenu
     };
 
 }(jQuery, L, this, document));

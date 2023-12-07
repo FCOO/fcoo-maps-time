@@ -65,8 +65,8 @@ Methods to add mini time-slider to a button incl swiping and panning
             .addClass('slider-button fa-sort-up')
             .css('background',
                     'linear-gradient(to right, '+
-                        nsTime.pastBgColor+' '+ getPercent(0, timeMode)+'%, '+
-                        nsTime.futureBgColor+' 0%) '+
+                        nsTime.pastColor+' '+ getPercent(0, timeMode)+'%, '+
+                        nsTime.futureColor+' 0%) '+
                     'no-repeat bottom right');
 
         if (window.bsIsTouch){
