@@ -1538,6 +1538,10 @@ There are created as-is - not as prototype
         handle        : "fixed",
         valueDistances: 16, //or 16 or 18 or 20 MANGLER
 
+        //Major ticks and labels, minor ticks, utc scale, and relative scale get same color = black
+        majorColor: '#000000',
+        minorColor: '#000000',
+
         //Font for labels
         size: {
             fontSize  : 11,

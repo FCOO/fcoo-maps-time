@@ -568,5 +568,3 @@ html.bottom-menu-minimized .btn.slider-button::before {
 html.bottom-menu-minimized .time-is-now .btn.slider-button::before {
   color: var(--jbn-time-now-color, darkgreen);
 }
-
-/*# sourceMappingURL=fcoo-maps-time.css.map */
