@@ -42,6 +42,15 @@
         --jbn-time-future-color : #d99149;
     }    
   
+    :root.color5 {
+        --jbn-time-past-color   : #AA7D00;
+        --jbn-time-now-color    : #3B7511;
+        --jbn-time-future-color : #573B93;
+    }    
+
+//573B93 lilla
+//AA7D00 gul
+  
     
     </style>
     
@@ -65,7 +74,7 @@
     <script src="bower_components.js"></script>
 
     <script>
-        [1,2,3,4].forEach( (id) => {
+        [1,2,3,4,5].forEach( (id) => {
             if (window.location.href.includes('color='+id))
                 $('html').addClass('color'+id);
         });
