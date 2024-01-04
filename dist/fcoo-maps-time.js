@@ -1445,9 +1445,11 @@ There are created as-is - not as prototype
     "use strict";
 
     //Create namespaces
-    var ns     = window.fcoo = window.fcoo || {},
-        nsMap  = ns.map = ns.map || {},
-        nsTime = nsMap.time = nsMap.time || {};
+    var ns      = window.fcoo = window.fcoo || {},
+        nsMap   = ns.map = ns.map || {},
+        nsTime  = nsMap.time = nsMap.time || {},
+        nsColor = ns.color = ns.color || {};
+
 
     //tsList = list of TimeSlider used
     nsTime.tsList = [];
@@ -1460,14 +1462,14 @@ There are created as-is - not as prototype
         return documentElement.getPropertyValue('--' + varName);
     }
     //Colors for past, now and future
-    nsTime.pastColor        = 'var(--jbn-time-past-color)';
-    nsTime.pastColorValue   = getColorValue('jbn-time-past-color');
+    nsTime.pastColor        = 'var(--fc-time-past-color)';
+    nsTime.pastColorValue   = getColorValue('fc-time-past-color');
 
-    nsTime.nowColor         = 'var(--jbn-time-now-color)';
-    nsTime.nowColorValue    = getColorValue('jbn-time-now-color');
+    nsTime.nowColor         = 'var(--fc-time-now-color)';
+    nsTime.nowColorValue    = getColorValue('fc-time-now-color');
 
-    nsTime.futureColor      = 'var(--jbn-time-future-color)';
-    nsTime.futureColorValue = getColorValue('jbn-time-future-color');
+    nsTime.futureColor      = 'var(--fc-time-future-color)';
+    nsTime.futureColorValue = getColorValue('fc-time-future-color');
 
     /************************************************
     TimeSlider options
@@ -1557,7 +1559,7 @@ There are created as-is - not as prototype
         labelColors: [{
             value          : 0,
             backgroundColor: nsTime.nowColorValue,
-            color          : window.chromaBestContrast(nsTime.nowColorValue)
+            color          : nsColor.chromaBestContrast(nsTime.nowColorValue)
         }],
     },
 

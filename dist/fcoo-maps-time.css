@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /***********************************************
 	fcoo-maps-time.scss,
 
@@ -234,16 +235,65 @@ Adjust text-, border-, and background-color for a button
 @import "../bower_components/leaflet-polyline/src/leaflet-polyline-mixin";
 
 */
-/***********************************************
-	fcoo-colors-mixin.scss,
-
-	(c) 2021, FCOO
+/**********************************************************
+	fcoo-colors-include.scss,
 
 	https://github.com/FCOO/fcoo-colors
 	https://github.com/FCOO
 
 
-************************************************/
+    Contain all include for a packages using
+    the scss-variables and scss-mixins of fcoo-colors
+
+    The scss file must also include
+
+    //COLOR-HELPER
+    @import "../bower_components/sass-color-helpers/stylesheets/color-helpers";
+
+    //LEAFLET-BOOTSTRAP-MARKER-MIXIN - mixin to create colors for marker (bsMarker)
+    @import "../bower_components/leaflet-bootstrap-marker-mixin/dist/leaflet-bootstrap-marker-mixin";
+
+    //LEAFLET-POLYLINE-MIXIN - mixin to create colors for polyline and polygon
+    @import "../bower_components/leaflet-polyline-mixin/dist/leaflet-polyline-mixin";
+
+**********************************************************/
+/**********************************************************
+	fcoo-colors-variables.scss,
+
+	https://github.com/FCOO/fcoo-colors
+	https://github.com/FCOO
+**********************************************************/
+/**********************************************************
+The color scheme is from LinkedIn and shown in linkedin-palette-screen.pdf
+**********************************************************/
+/**********************************************************
+Color for time = tree colors for the past, now, and the future
+**********************************************************/
+/**********************************************************
+Application color
+Defaults is = DALO color in "Forsvarsministeriets koncernfælles Designmanual 2018"
+Can be changed by mixin application-base-color( new-color )
+in src/_fcoo-color-mixin.scss
+**********************************************************/
+/**********************************************************
+    fcoo-colors-mixin.scss
+
+	https://github.com/FCOO/fcoo-colors
+	https://github.com/FCOO
+
+**********************************************************/
+/**********************************************************
+Functions to get colors in different (relative) gradients
+**********************************************************/
+/**********************************************************
+marker-and-polygon-color
+create color-classes for bsMarker and bsPolyline
+**********************************************************/
+/**********************************************************
+Application color
+Defaults is = DALO color in "Forsvarsministeriets koncernfælles Designmanual 2018"
+Can be changed by mixin application-base-color( new-color )
+**********************************************************/
 /***********************************************
 fcoo-maps-colors-variables
 
@@ -252,10 +302,6 @@ Create all scss-variable with colors for different fcoo-maps layers
 ************************************************/
 /****************************************************************************
 COMMON
-****************************************************************************/
-/****************************************************************************
-TIME
-Color to mark a time, button etc. as past, now or future
 ****************************************************************************/
 /****************************************************************************
 SEARCH RESULT
@@ -354,13 +400,13 @@ html.time-mode-ANIMATION .bold-for-time-mode-ANIMATION {
 }
 
 .time-is-past .btn.btn-jb.border-color-as-time {
-  box-shadow: inset 0 0 0px 2px var(--jbn-time-past-color, #7ABAE1) !important;
+  box-shadow: inset 0 0 0px 2px var(--fc-time-past-color) !important;
 }
 .time-is-now .btn.btn-jb.border-color-as-time {
-  box-shadow: inset 0 0 0px 2px var(--jbn-time-now-color, darkgreen) !important;
+  box-shadow: inset 0 0 0px 2px var(--fc-time-now-color) !important;
 }
 .time-is-future .btn.btn-jb.border-color-as-time {
-  box-shadow: inset 0 0 0px 2px var(--jbn-time-future-color, #4D72B8) !important;
+  box-shadow: inset 0 0 0px 2px var(--fc-time-future-color) !important;
 }
 
 .bottom-menu-minimized .hide-for-bottom-menu-minimized {
@@ -432,13 +478,13 @@ html.phone.portrait.bottom-menu-extended .hide-for-phone-and-portrait-and-extend
 }
 
 .leaflet-container.time-is-past .time-info-control a {
-  box-shadow: 0 0 0px 2px var(--jbn-time-past-color, #7ABAE1);
+  box-shadow: 0 0 0px 2px var(--fc-time-past-color), 0 0 0 3px black;
 }
 .leaflet-container.time-is-now .time-info-control a {
-  box-shadow: 0 0 0px 2px var(--jbn-time-now-color, darkgreen);
+  box-shadow: 0 0 0px 2px var(--fc-time-now-color), 0 0 0 3px black;
 }
 .leaflet-container.time-is-future .time-info-control a {
-  box-shadow: 0 0 0px 2px var(--jbn-time-future-color, #4D72B8);
+  box-shadow: 0 0 0px 2px var(--fc-time-future-color), 0 0 0 3px black;
 }
 .leaflet-container .time-info-control a.disabled {
   box-shadow: none;
@@ -449,13 +495,13 @@ html.phone.portrait.bottom-menu-extended .hide-for-phone-and-portrait-and-extend
 }
 
 .time-is-past .btn.btn-jb.border-color-as-time {
-  box-shadow: inset 0 0 0px 2px var(--jbn-time-past-color, #7ABAE1) !important;
+  box-shadow: inset 0 0 0px 2px var(--fc-time-past-color) !important;
 }
 .time-is-now .btn.btn-jb.border-color-as-time {
-  box-shadow: inset 0 0 0px 2px var(--jbn-time-now-color, darkgreen) !important;
+  box-shadow: inset 0 0 0px 2px var(--fc-time-now-color) !important;
 }
 .time-is-future .btn.btn-jb.border-color-as-time {
-  box-shadow: inset 0 0 0px 2px var(--jbn-time-future-color, #4D72B8) !important;
+  box-shadow: inset 0 0 0px 2px var(--fc-time-future-color) !important;
 }
 
 .bottom-menu-minimized .hide-for-bottom-menu-minimized {
@@ -566,5 +612,5 @@ html.bottom-menu-minimized .btn.slider-button::before {
 }
 
 html.bottom-menu-minimized .time-is-now .btn.slider-button::before {
-  color: var(--jbn-time-now-color, darkgreen);
+  color: var(--fc-time-now-color);
 }

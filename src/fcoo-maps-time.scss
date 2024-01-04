@@ -31,6 +31,8 @@
 //MODERNIZR-SCSS - https://github.com/fcoo/modernizr-scss
 @import "../bower_components/modernizr-scss/dist/modernizr-scss";
 
+//COLOR-HELPER
+@import "../bower_components/sass-color-helpers/stylesheets/color-helpers";
 
 //JQUERY-BOOTSTRAP VARIABLES AND MIXINS
 @import "../bower_components/jquery-bootstrap/src/include-jquery-bootstrap-variables";
@@ -54,7 +56,7 @@
 
 
 //FCOO-COLORS and FCOO-MAPS-COLORS
-@import "../bower_components/fcoo-colors/src/fcoo-colors-mixin";
+@import "../bower_components/fcoo-colors/src/fcoo-colors-include";
 @import "../bower_components/fcoo-maps-colors/src/fcoo-maps-colors-variables";
 
 
@@ -71,8 +73,8 @@ $time-mode-list: 'FIXED', 'RELATIVE', 'SELECT', 'ANIMATION';
 
 //Border and shadow-color equar past, now, or future
 .btn.btn-jb.border-color-as-time {
-    .time-is-past &   { box-shadow: inset 0 0 0px 2px $time-past-color !important;   }
-    .time-is-now &    { box-shadow: inset 0 0 0px 2px $time-now-color !important;    }
+    .time-is-past &   { box-shadow: inset 0 0 0px 2px $time-past-color   !important; }
+    .time-is-now &    { box-shadow: inset 0 0 0px 2px $time-now-color    !important; }
     .time-is-future & { box-shadow: inset 0 0 0px 2px $time-future-color !important; }
 }
 
@@ -117,12 +119,13 @@ html.phone.portrait.bottom-menu-extended {
 
 
 //Set shadow around time-info-control indicading if the time is the past, now or the future
-$shadow-width: 2px;
+$color-shadow-width: 2px;
+$black-shadow-width: $color-shadow-width + 1px;
 
 .leaflet-container {
-    &.time-is-past   { .time-info-control a { box-shadow: 0 0 0px $shadow-width $time-past-color;   } }
-    &.time-is-now    { .time-info-control a { box-shadow: 0 0 0px $shadow-width $time-now-color;    } }
-    &.time-is-future { .time-info-control a { box-shadow: 0 0 0px $shadow-width $time-future-color; } }
+    &.time-is-past   { .time-info-control a { box-shadow: 0 0 0px $color-shadow-width $time-past-color,   0 0 0 $black-shadow-width black } }
+    &.time-is-now    { .time-info-control a { box-shadow: 0 0 0px $color-shadow-width $time-now-color,    0 0 0 $black-shadow-width black } }
+    &.time-is-future { .time-info-control a { box-shadow: 0 0 0px $color-shadow-width $time-future-color, 0 0 0 $black-shadow-width black } }
 
     .time-info-control a.disabled {
         box-shadow: none;
@@ -135,9 +138,9 @@ $shadow-width: 2px;
 
 //Border and shadow-color equar past, now, or future
 .btn.btn-jb.border-color-as-time {
-    .time-is-past &   { box-shadow: inset 0 0 0px $shadow-width $time-past-color   !important; }
-    .time-is-now &    { box-shadow: inset 0 0 0px $shadow-width $time-now-color    !important; }
-    .time-is-future & { box-shadow: inset 0 0 0px $shadow-width $time-future-color !important; }
+    .time-is-past &   { box-shadow: inset 0 0 0px $color-shadow-width $time-past-color   !important; }
+    .time-is-now &    { box-shadow: inset 0 0 0px $color-shadow-width $time-now-color    !important; }
+    .time-is-future & { box-shadow: inset 0 0 0px $color-shadow-width $time-future-color !important; }
 }
 
 //show/hide for tree modes of buttom-menu: minimized, normal, and extended
@@ -187,7 +190,7 @@ html.desktop.time-mode-FIXED.no-global-setting-showrelative {
             display: none !important;
         }
     }
-    //1: Hide relative and utc because timezone = utc = false
+    //1: Hide relative and utc because timezone = utc
     &.global-setting-timezone-utc {
         a.show-for-global-setting-showrelative-visibility, a.hide-for-global-setting-timezone-utc-visibility {
             display: none !important;

@@ -19,38 +19,38 @@
         }
 
     :root.color1 {
-        --jbn-time-past-color  : #eadcc1;
-        --jbn-time-now-color   : #7a839e;
-        --jbn-time-future-color: #94b5c2;
+        --fc-time-past-color  : #eadcc1;
+        --fc-time-now-color   : #7a839e;
+        --fc-time-future-color: #94b5c2;
     }
     
     :root.color2 {
-        --jbn-time-past-color  : #e7e1ef;
-        --jbn-time-now-color   : #dd1c77;
-        --jbn-time-future-color: #c994c7;
+        --fc-time-past-color  : #e7e1ef;
+        --fc-time-now-color   : #dd1c77;
+        --fc-time-future-color: #c994c7;
     }
     
     :root.color3 {
-        --jbn-time-past-color  : #e6bfdb;
-        --jbn-time-now-color   : #5c242a;
-        --jbn-time-future-color: #9d5981;
+        --fc-time-past-color  : #e6bfdb;
+        --fc-time-now-color   : #5c242a;
+        --fc-time-future-color: #9d5981;
     }
     
     :root.color4 {
-        --jbn-time-past-color   : #e0c494;
-        --jbn-time-now-color    : #ee5f01;
-        --jbn-time-future-color : #d99149;
+        --fc-time-past-color   : #e0c494;
+        --fc-time-now-color    : #ee5f01;
+        --fc-time-future-color : #d99149;
     }    
   
     :root.color5 {
-        --jbn-time-past-color   : #AA7D00;  
-        --jbn-time-now-color    : #3B7511;  
-        --jbn-time-future-color : #573B93;
+        --fc-time-past-color   : #AA7D00;  
+        --fc-time-now-color    : #3B7511;  
+        --fc-time-future-color : #573B93;
     }    
 
     :root.color6 {
-        --jbn-time-past-color  : #eadcc1;
-        --jbn-time-now-color   : #3B7511;  
+        --fc-time-past-color  : #eadcc1;
+        --fc-time-now-color   : #3B7511;  
         --jbn-time-future-color: #94b5c2;
     }
     </style>
@@ -100,6 +100,10 @@
 // HER>         window.bsIsTouch = (window.location.search =='?touch');
         if (window.location.search =='?touch')
             window.bsIsTouch = true;
+
+//TEMP: No access to data-files on AWS. Read from old location instead 
+window.fcoo.path.setPath({host: 'bal.fcoo.dk'});
+       
        
         window.fcoo.map.createApplication(
             //options
