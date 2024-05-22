@@ -276,6 +276,11 @@ Can be changed by mixin application-base-color( new-color )
 in src/_fcoo-color-mixin.scss
 **********************************************************/
 /**********************************************************
+Environmental colors
+Defines a number of colors and $-variables for different
+parts of the environmental. Eq sky, cloud, sea etc.
+**********************************************************/
+/**********************************************************
     fcoo-colors-mixin.scss
 
 	https://github.com/FCOO/fcoo-colors

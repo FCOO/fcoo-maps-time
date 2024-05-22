@@ -50,9 +50,10 @@ setup.js
     nsMap.tdLayerWmsOptions = {};
 
     //Load time-options
-    nsMap.default_setup.standard.time = {subDir:"setup", fileName:"time.json"};
-    nsMap.standard.time = function(options){
+    ns.defaultApplicationOptions.standard = ns.defaultApplicationOptions.standard || {};
+    ns.defaultApplicationOptions.standard.time = {subDir:"setup", fileName:"time.json"};
 
+    nsMap.standard.time = function(options){
         nsTime.timeOptions = $.extend(true, {}, defaultTimeOptions, options);
 
         nsTime.timeOptions.timeModeList =
