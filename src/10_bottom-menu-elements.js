@@ -148,9 +148,11 @@ bms = bottom-menu-size
             };
 
         var $result = $.bsButton(buttonOptions);
-
-        if (options.vfFormat)
+        if (options.vfFormat){
             $result.vfFormat(options.vfFormat);
+            options.vfOptions = options.vfOptions || {};
+            options.vfOptions.capitalizeFirstLetter = true;
+        }
         if (options.vfOptions)
             $result.vfOptions(options.vfOptions);
 
@@ -229,7 +231,10 @@ bms = bottom-menu-size
 
     //date_time_full = 12. May 2022 12:00am
     createPrototype( 'date_time_full', {
-        vfFormat : 'datetime',
+        vfFormat : 'datetime_format',
+        vfOptions: {
+            dateFormat: {weekday: 'Short',  month: 'Short',  year: 'None' }
+        },
         width    : '11em',
     });
 
@@ -263,7 +268,10 @@ bms = bottom-menu-size
 
     //date_time_utc_full = utc 12. May 2022 12:00am
     createPrototype( 'date_time_utc_full', {
-        vfFormat : 'datetime_utc',
+        vfFormat : 'datetime_format_utc',
+        vfOptions: {
+            dateFormat: {weekday: 'Short',  month: 'Short',  year: 'None' }
+        },
         width    : '11em',
         italic   : true
     });
