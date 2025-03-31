@@ -115,7 +115,7 @@ Leaflet control to display current time and relative time in the maps
 
 
             //Add links to settings for timezone and date & time-format
-            $.each(['TIMEZONECHANGED','DATETIMEFORMATCHANGED'], function(index, id){
+            ['TIMEZONECHANGED','DATETIMEFORMATCHANGED'].forEach( id => {
                 var accOptions = ns.globalSettingAccordion(id);
                 options.popupList.push({
                     type     : 'button',
