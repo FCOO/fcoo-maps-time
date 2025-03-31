@@ -222,6 +222,23 @@ button-border-color-variant
 button-background-color-variant
 Adjust text-, border-, and background-color for a button
 ************************************************************/
+/************************************************************
+TABLE COLORS
+************************************************************/
+/*****************************************************************
+create-table-variant($postfix, $background, $default, $color)
+Adjusted copy of Bootstrap table-variant($state, $background) to
+create css-var to set colors in tables
+*****************************************************************/
+/*****************************************************************
+incl-table-variant($postfix)
+Include special version of Bootstrap table-var
+The var must have been created by create-table-variant first
+*****************************************************************/
+/*****************************************************************
+table-no-hover()
+Prevent any hover effect
+*****************************************************************/
 /*
 //ZOOM MODERNIZR https://github.com/fcoo/leaflet-zoom-modernizr
 @import "../bower_components/leaflet-zoom-modernizr/src/leaflet-zoom-modernizr";
@@ -402,6 +419,30 @@ html.time-mode-SELECT .bold-for-time-mode-SELECT {
 
 html.time-mode-ANIMATION .bold-for-time-mode-ANIMATION {
   font-weight: bold !important;
+}
+
+.time-past-color-as-text-color {
+  color: var(--fc-time-past-color);
+}
+
+.time-now-color-as-text-color {
+  color: var(--fc-time-now-color);
+}
+
+.time-future-color-as-text-color {
+  color: var(--fc-time-future-color);
+}
+
+.time-mode-MAIN {
+  color: #9ec5fe;
+}
+
+.time-mode-MAIN-past {
+  color: #3d8bfd;
+}
+
+.time-mode-MAIN-future {
+  color: #0a58ca;
 }
 
 .time-is-past .btn.btn-jb.border-color-as-time {

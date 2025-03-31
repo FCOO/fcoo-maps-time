@@ -70,6 +70,20 @@ $time-mode-list: 'FIXED', 'RELATIVE', 'SELECT', 'ANIMATION';
     }
 }
 
+//Special classes to have text-color as bg-color for icons
+.time-past-color-as-text-color   { color: $time-past-color        }
+.time-now-color-as-text-color    { color: $time-now-color         }
+.time-future-color-as-text-color { color: $time-future-color      }
+
+//Colors and classes for time-mode = same as main map with offset
+$time-mode-MAIN       : $blue-200;
+$time-mode-MAIN-past  :	$blue-400;
+$time-mode-MAIN-future: $blue-600;
+
+.time-mode-MAIN         { color: $time-mode-MAIN        }
+.time-mode-MAIN-past    { color: $time-mode-MAIN-past   }
+.time-mode-MAIN-future  { color: $time-mode-MAIN-future }
+
 
 //Border and shadow-color equar past, now, or future
 .btn.btn-jb.border-color-as-time {
