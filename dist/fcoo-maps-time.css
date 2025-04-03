@@ -421,6 +421,30 @@ html.time-mode-ANIMATION .bold-for-time-mode-ANIMATION {
   font-weight: bold !important;
 }
 
+.time-past-color-as-text-color {
+  color: var(--fc-time-past-color);
+}
+
+.time-now-color-as-text-color {
+  color: var(--fc-time-now-color);
+}
+
+.time-future-color-as-text-color {
+  color: var(--fc-time-future-color);
+}
+
+.time-mode-MAIN {
+  color: #9ec5fe;
+}
+
+.time-mode-MAIN-past {
+  color: #3d8bfd;
+}
+
+.time-mode-MAIN-future {
+  color: #0a58ca;
+}
+
 .time-is-past .btn.btn-jb.border-color-as-time {
   box-shadow: inset 0 0 0px 2px var(--fc-time-past-color) !important;
 }

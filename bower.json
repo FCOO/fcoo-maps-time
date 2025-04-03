@@ -1,48 +1,48 @@
 {
-    "name": "fcoo-maps-time",
-    "version": "1.4.0",
-    "homepage": "https://github.com/FCOO/fcoo-maps-time",
-    "authors": [
-        "Niels Holt"
-    ],
-    "description": "",
-    "main": [
-        "dist/fcoo-maps-time.js",
-        "dist/fcoo-maps-time.css"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/FCOO/fcoo-maps-time.git"
-    },
-    "license": "MIT",
-    "ignore": [
-        "**/.*",
-        "node_modules",
-        "bower_components",
-        "test",
-        "tests"
-    ],
-    "moduleType": [
-        "es6"
-    ],
-    "devDependencies": {
-        "bourbon": "latest",
-        "modernizr-mixin": "latest",
-        "mathsass": "latest",
-        "modernizr-scss": "fcoo/modernizr-scss#latest"
-    },
-    "dependencies": {
-        "fcoo-maps": "fcoo/fcoo-maps#latest",
-        "moment-timer": "^1.3.0",
-        "intervals": "fcoo/intervals.js#^1.0.0",
-        "iso8601-js-period": "mdartic/iso8601-js-period#latest",
-        "Leaflet.TimeDimension": "fcoo/Leaflet.TimeDimension#latest"
-    },
-    "overrides": {
-        "iso8601-js-period": {
-            "main": [
-                "iso8601.js"
-            ]
-        }
+  "name": "fcoo-maps-time",
+  "version": "1.4.1",
+  "homepage": "https://github.com/FCOO/fcoo-maps-time",
+  "authors": [
+    "Niels Holt"
+  ],
+  "description": "",
+  "main": [
+    "dist/fcoo-maps-time.js",
+    "dist/fcoo-maps-time.css"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/FCOO/fcoo-maps-time.git"
+  },
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "moduleType": [
+    "es6"
+  ],
+  "devDependencies": {
+    "bourbon": "latest",
+    "modernizr-mixin": "latest",
+    "mathsass": "latest",
+    "modernizr-scss": "fcoo/modernizr-scss#latest"
+  },
+  "dependencies": {
+    "fcoo-maps": "fcoo/fcoo-maps#latest",
+    "moment-timer": "^1.3.0",
+    "intervals": "fcoo/intervals.js#^1.0.0",
+    "iso8601-js-period": "mdartic/iso8601-js-period#latest",
+    "Leaflet.TimeDimension": "fcoo/Leaflet.TimeDimension#latest"
+  },
+  "overrides": {
+    "iso8601-js-period": {
+      "main": [
+        "iso8601.js"
+      ]
     }
+  }
 }

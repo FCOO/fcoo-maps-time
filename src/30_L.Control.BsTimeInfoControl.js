@@ -129,15 +129,16 @@ Leaflet control to display current time and relative time in the maps
         onAdd
         ***********************************************************/
         onAdd: function(map){
-            var result = L.Control.BsButtonBox.prototype.onAdd.call(this, map);
+            let result = L.Control.BsButtonBox.prototype.onAdd.call(this, map),
+                $result = $(result);
 
             //Find this.$currentTime = $-elements holding the current time of the map
-            this.$currentTime = $(result).find('span.current-time');
+            this.$currentTime = $result.find('span.current-time');
 
             this.$currentTime.vfFormat('time_now_sup');
 
             //Find this.$relative = $-elements holding info on relative mode eq. "Now +12h"
-            this.$relative = $(result).find('span.time-sync-info-text');
+            this.$relative = $result.find('span.time-sync-info-text');
             this.$relative.css({
                 'border-left' : '1px solid gray',
                 'padding-left': '.35em'
@@ -235,9 +236,13 @@ Leaflet control to display current time and relative time in the maps
 
             forcedShown ? this.disable() : this.enable();
 
+
+            
             //Update sync time (Now or relative time)
+            const showRelativeText = !asMain || offset;
+            
             this.$relative.empty().hide();
-            if (!asMain || offset){
+            if (showRelativeText){
                 var text = $.extend({}, timeSyncInfo.relativePrefix_Ctrl);
                 if (offset){
                     var offsetText = (offset > 0 ? '+ ' : '- ') + Math.abs(offset);
@@ -246,6 +251,8 @@ Leaflet control to display current time and relative time in the maps
                 }
                 this.$relative.i18n(text, 'html').show();
             }
+
+            this.bsButton.find('.container-stacked-icons').toggleClass('fa-no-margin', !showRelativeText);
 
             //Adjust the button:
             //Set icon color for mode and offset
@@ -263,10 +270,15 @@ Leaflet control to display current time and relative time in the maps
         /***********************************************************
         _changeIcon
         ***********************************************************/
-		_changeIcon: function( newIconOptions ){
+		_changeIcon: function( newIconOptions ){ 
 			if (newIconOptions){ 
-				let $icon = this.$container.find('i').parent();
-				$icon.replaceWith( $._bsCreateIcon(newIconOptions) ); 
+				this.$container.find('i').parent().each( (index, elem) => {
+                    let $oldIcon = $(elem);
+                    $._bsCreateIcon(newIconOptions)
+                        .addClass( elem.className ) 
+                        .insertAfter( $oldIcon );
+                    $oldIcon.remove();
+                });
 			}
 			return this;
 		},		

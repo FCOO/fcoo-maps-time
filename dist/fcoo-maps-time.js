@@ -96,6 +96,21 @@ setup.js
 ;
 /****************************************************************************
 time-modes
+
+There are two primary time mode:
+1: For the main map = A:FIXED', B:SELECT, C:RELATIVE, or D:ANIMATION (only A and C are implemented yet
+2: For all the other secondary maps the time mode is relative to eighter 
+	a: The main map, or
+	b: Current time ('Now')
+	Both a: and b; can be with a offset +/-24 hours
+
+Both secondary modes a: and b: have a icon with differnet colors displaying if the offset was negative, nul, or positive
+This is referede to as "past", "now" and "furture"
+
+The four main modes have icons and A: uses the same icon as b: and C: uses the same as a:
+
+
+
 ****************************************************************************/
 (function ($, L, moment, i18next, window/*, document, undefined*/) {
 	"use strict";
@@ -105,8 +120,95 @@ time-modes
         nsTime    = nsMap.time = nsMap.time || {};
 
     /******************************************************************
-    TIME-MODE
-    Txhere are four possible modes to display and select current time/moment:
+    SECONDARY MAP TIME-SYNC
+    Each secondary maps have a one of the following time-sync
+    tsMain: The time is the same as in the main-map with -24 - to +24 hours offset
+    tsNow : The time is the same as 'Now' with -24 - to +24 hours offset
+    ******************************************************************/
+    /*
+    "på nuværende tidspunkt" engelsk oversættelse
+    på nuværende tidspunkt {adv.}EN
+    "at this time" or "at the current moment"
+    */
+    nsTime.tsMain = 'MAIN';
+    nsTime.tsNow  = 'NOW';
+
+
+    //nsTime.timeSyncInfo = {TIMESYNC}{name, description, relativePrefix_List, relativePrefix_Ctrl}
+    nsTime.timeSyncInfo = {};
+    nsTime.timeSyncInfo[nsTime.tsMain] = {
+        name: {
+            da: 'Den samme som på hovedkortet',
+            en: 'The same as on the main map'
+        },
+        description: {
+            da: '',
+            en: ''
+        },
+        zeroOffset         : {da:'Samme som hovedkortet', en:'Same as main map'},
+        relativePrefix_List: {da: 'Hovedkort', en: 'Main map'}, //Prefix in list of offset in Setting
+        relativePrefix_Ctrl: {da: '', en: ''},                  //Prefix for offset in bsTimeInfoControl
+
+        iconColor      : ['time-mode-MAIN', 'time-mode-MAIN-past', 'time-mode-MAIN-future']
+    };
+
+    nsTime.timeSyncInfo[nsTime.tsNow] = {
+        name: {
+            da: 'Nuværende tidspunkt (Nu)',
+            en: 'Current moment (Now)'
+        },
+        description: {
+            da: '',
+            en: ''
+        },
+        zeroOffset         : {da: 'Nu', en: 'Now'},
+        relativePrefix_List: {da: 'Nu', en: 'Now'}, //Prefix in list of offset in Setting
+        relativePrefix_Ctrl: {da: 'Nu', en: 'Now'}, //Prefix for offset in bsTimeInfoControl
+
+        iconColor      : ['time-past-color-as-text-color', 'time-now-color-as-text-color', 'time-future-color-as-text-color'],
+
+    };
+
+    nsTime.timeSyncIconColors = '';
+    var timeSyncIconColorList = [];
+    $.each(nsTime.timeSyncInfo, function(id, opt){
+        timeSyncIconColorList.push(...opt.iconColor);
+    });
+    nsTime.timeSyncIconColors = timeSyncIconColorList.join(' ');
+
+    nsTime.getIconClass = function(mode, offset=0){
+        return nsTime.timeSyncInfo[mode].iconColor[
+                   offset < 0 ? 0 :
+                   offset == 0 ? 1 :
+                   2
+               ];
+    };
+
+    const hourIcons = ['clock-twelve', 'clock-one', 'clock-two', 'clock-three', 'clock', 'clock-five', 'clock-six', 'clock-seven', 'clock-eight', 'clock-nine', 'clock-ten', 'clock-eleven'];
+
+    let modeStart = {};
+    modeStart[nsTime.tsMain] = 4;
+    modeStart[nsTime.tsNow]  = (new Date()).getHours() % 12;
+
+    nsTime.getIcon = function(mode=nsTime.tsMain, offset=0, className=''){
+        let hour = (modeStart[mode] || 4) + offset;
+        while (hour < 0)
+            hour = hour + 24;
+        hour = hour % 12;
+
+        const icon = 'fa-'+hourIcons[hour] + ' ';
+		className = className ? ' '+className : '';
+        return [[
+            'fas ' + icon + nsTime.getIconClass(mode, offset) + className,
+            'far ' + icon + 'text-black' + className
+        ]];
+
+    };
+
+
+	/******************************************************************
+    TIME-MODE - for the primary map
+    There are four possible modes to display and select current time/moment:
     'FIXED', 'SELECT', 'RELATIVE', or 'ANIMATION'
     ******************************************************************/
     nsTime.tmFixed     = 'FIXED';
@@ -117,13 +219,14 @@ time-modes
     //nsTime.timeMode = The current selected time-mode
     nsTime.timeMode = nsTime.tmFixed;
 
-    var timeModeInfo = {}; //{TIMEMODE}{relative, name, description}
+    var timeModeInfo = nsTime.timeModeInfo = {}; //{TIMEMODE}{relative, name, description}
 
     timeModeInfo[nsTime.tmFixed] = {
         name: {
             da: 'Fast tidspunkt',
             en: 'Fixed time'
         },
+		icon: nsTime.getIcon(nsTime.tsMain),
         description: {
             da: 'Vælg et fast dato og klokkeslet.<br>F.eks. <em>12. juni kl. 13:00</em>.',
             en: 'Select a fixed date and time.<br>Eq. <em>July 12th at 13:00"</em>.'
@@ -136,6 +239,7 @@ time-modes
             da: 'Relativt til aktuelle klokkeslet',
             en: 'Relative to current time'
         },
+		icon: nsTime.getIcon(nsTime.tsNow),
         description: {
             da: 'Vælg relativt til aktuelle tidspunkt.<br>F.eks. <em>"Nu plus 2 timer".</em><br>Dato og klokkeslet opdateres automatisk, når aktuelle tidspunkt ændre sig.',
             en: 'Select relative to current time.<br>Eq. <em>"Now plus 2 hours".</em><br>The time is automatic updated when the current time change.',
@@ -146,6 +250,7 @@ time-modes
             da: 'SELECT',   //TODO
             en: 'SELECT'    //TODO
         },
+		icon: [['far fa-MANGLER']],			
         description: {
             da: '',
             en: ''
@@ -157,6 +262,7 @@ time-modes
             da: 'Animation',
             en: 'Animation'
         },
+		icon: [['far fa-film']],			
         description: {
             da: '',
             en: ''
@@ -248,78 +354,10 @@ time-modes
                 //textClass: 'font-size-0-9em',
                 text : helpText
             }],
-            buttons: buttons,
-            onSubmit: function(data){
-                ns.appSetting.set(data);
-            }
+            buttons : buttons,
+            onSubmit: function(data){ ns.appSetting.set(data); }
         }).edit({timeMode: nsTime.timeMode});
     };
-
-
-    /******************************************************************
-    SECONDARY MAP TIME-SYNC
-    Each secondary maps have a one of the following time-sync
-    tsMain: The time is the same as in the main-map with -24 - to +24 hours offset
-    tsNow : The time is the same as 'Now' with -24 - to +24 hours offset
-    ******************************************************************/
-    /*
-    "på nuværende tidspunkt" engelsk oversættelse
-    på nuværende tidspunkt {adv.}EN
-    "at this time" or "at the current moment"
-    */
-    nsTime.tsMain = 'MAIN';
-    nsTime.tsNow  = 'NOW';
-
-
-    //nsTime.timeSyncInfo = {TIMESYNC}{name, description, relativePrefix_List, relativePrefix_Ctrl}
-    nsTime.timeSyncInfo = {};
-    nsTime.timeSyncInfo[nsTime.tsMain] = {
-        name: {
-            da: 'Den samme som på hovedkortet',
-            en: 'The same as on the main map'
-        },
-        description: {
-            da: '',
-            en: ''
-        },
-        zeroOffset         : {da:'Samme som hovedkortet', en:'Same as main map'},
-        relativePrefix_List: {da: 'Hovedkort', en: 'Main map'}, //Prefix in list of offset in Setting
-        relativePrefix_Ctrl: {da: '', en: ''},                  //Prefix for offset in bsTimeInfoControl
-
-        iconColor      : ['icon-active', 'text-black', 'icon-active']
-    };
-
-    nsTime.timeSyncInfo[nsTime.tsNow] = {
-        name: {
-            da: 'Nuværende tidspunkt (Nu)',
-            en: 'Current moment (Now)'
-        },
-        description: {
-            da: '',
-            en: ''
-        },
-        zeroOffset         : {da: 'Nu', en: 'Now'},
-        relativePrefix_List: {da: 'Nu', en: 'Now'},     //Prefix in list of offset in Setting
-        relativePrefix_Ctrl: {da: 'Nu', en: 'Now'},   //Prefix for offset in bsTimeInfoControl
-
-        iconColor      : ['time-past-color', 'time-now-color', 'time-future-color'],
-    };
-
-    nsTime.timeSyncIconColors = '';
-    var timeSyncIconColorList = [];
-    $.each(nsTime.timeSyncInfo, function(id, opt){
-        timeSyncIconColorList.push(...opt.iconColor);
-    });
-    nsTime.timeSyncIconColors = timeSyncIconColorList.join(' ');
-
-    nsTime.getIconClass = function(mode, offset){
-        return nsTime.timeSyncInfo[mode].iconColor[
-                   offset < 0 ? 0 :
-                   offset == 0 ? 1 :
-                   2
-               ];
-    };
-
 
 
 
@@ -336,7 +374,7 @@ time-modes
         $.each(nsTime.timeSyncInfo, function(id, options){
             list.push({
                 id  : id,
-                icon: [['fas fa-clock text-white', 'far fa-clock ' + nsTime.getIconClass(id, 0)]],
+                icon: nsTime.getIcon(id),
                 text: options.name
             });
 
@@ -355,7 +393,7 @@ time-modes
 
                 timeItems.push({
                     id  : 'offset_'+offset,
-                    icon: [['fas fa-clock text-white', 'far fa-clock ' + nsTime.getIconClass(id, offset)]],
+                    icon: nsTime.getIcon(id, offset),
                     text: text
                 });
             });
@@ -2411,16 +2449,19 @@ Leaflet control to display current time and relative time in the maps
     L.Control.BsTimeInfoControl = L.Control.BsButtonBox.extend({
         options: {
             //small          : window.bsIsTouch,
-            icon           : 'far fa-lg fa-clock',
-            tooltipOnButton: true,
-            square         : true,
-            className      : 'time-info-control',   //Class-names for the container
-            class          : 'show-as-normal',      //Class-names for <a>-buttons To allow the button to be 'normal' when disabled
-            semiTransparent: false,
+            //icon           : 'ER-DET-HER far fa-lg fa-home',
+            icon			: nsTime.getIcon(),
+			iconClass		: 'fa-lg', 				
+            tooltipOnButton	: true,
+            square			: true,
+            className		: 'time-info-control',   //Class-names for the container
+            class			: 'show-as-normal',      //Class-names for <a>-buttons To allow the button to be 'normal' when disabled
+            semiTransparent	: false,
 
             extendedButton: {
                 //small          : window.bsIsTouch,
-                icon           : 'far fa-clock',
+                //icon           : 'ER-DET-HER far fa-home',
+				icon           : nsTime.getIcon(),
                 text           : ['12:00 am(+1)'],
                 textClass      : ['current-time'],
                 square         : false,
@@ -2442,7 +2483,7 @@ Leaflet control to display current time and relative time in the maps
                 //Secondary in normal-mode = icon and relative text
                 $.extend(/*this.*/options, {
                     square   : false,
-                    icon     : 'far fa-clock',
+                    icon     : nsTime.getIcon(),
                     text     : '+12t',
                     textClass: 'time-sync-info-text'
                 });
@@ -2456,13 +2497,6 @@ Leaflet control to display current time and relative time in the maps
             //Add items to popup-list: Main or global mode = select time-mode, secondary = select relative mode
             options.popupList = [];
 
-            //Header - MANGLER
-/*
-            options.popupList.push({
-                icon: 'far fa-clock',
-                text: 'MANGLER'
-            });
-*/
             if (window.bsIsTouch){
                 options.popupList.push({
                     type        : 'button',
@@ -2525,21 +2559,28 @@ Leaflet control to display current time and relative time in the maps
         onAdd
         ***********************************************************/
         onAdd: function(map){
-            var result = L.Control.BsButtonBox.prototype.onAdd.call(this, map);
+            let result = L.Control.BsButtonBox.prototype.onAdd.call(this, map),
+                $result = $(result);
 
             //Find this.$currentTime = $-elements holding the current time of the map
-            this.$currentTime = $(result).find('span.current-time');
+            this.$currentTime = $result.find('span.current-time');
 
             this.$currentTime.vfFormat('time_now_sup');
 
             //Find this.$relative = $-elements holding info on relative mode eq. "Now +12h"
-            this.$relative = $(result).find('span.time-sync-info-text');
+            this.$relative = $result.find('span.time-sync-info-text');
             this.$relative.css({
                 'border-left' : '1px solid gray',
                 'padding-left': '.35em'
             });
 
             map.on("momentchanged", this.onMomentChanged, this);
+			
+            if (this.options.isMainMap){
+				ns.events.on('TIMEMODECHANGED', function(id, mode){
+					this._changeIcon( nsTime.timeModeInfo[mode].icon );
+				}.bind(this));
+            }
 
             return result;
         },
@@ -2625,9 +2666,13 @@ Leaflet control to display current time and relative time in the maps
 
             forcedShown ? this.disable() : this.enable();
 
+
+            
             //Update sync time (Now or relative time)
+            const showRelativeText = !asMain || offset;
+            
             this.$relative.empty().hide();
-            if (!asMain || offset){
+            if (showRelativeText){
                 var text = $.extend({}, timeSyncInfo.relativePrefix_Ctrl);
                 if (offset){
                     var offsetText = (offset > 0 ? '+ ' : '- ') + Math.abs(offset);
@@ -2637,22 +2682,36 @@ Leaflet control to display current time and relative time in the maps
                 this.$relative.i18n(text, 'html').show();
             }
 
+            this.bsButton.find('.container-stacked-icons').toggleClass('fa-no-margin', !showRelativeText);
+
             //Adjust the button:
             //Set icon color for mode and offset
-            this.$container.find('i')
-                .removeClass(nsTime.timeSyncIconColors)
-                .addClass( nsTime.getIconClass(timeSyncMode, offset) );
-
-
-
+			this._changeIcon( nsTime.getIcon(timeSyncMode, offset) ); 
+				
             //If same as main map  => normal button: shape = square and big icon and no margin
             var isSquare = asMain && !offset;
             this.bsButton.toggleClass('square', isSquare);
-            this.bsButton.find('i').toggleClass('fa-lg fa-no-margin', isSquare);
+            this.bsButton.find('i').toggleClass('fa- lg fa-no-margin', isSquare);
 
             //Update current time of the map
             this._map._updateTime();
         },
+			
+        /***********************************************************
+        _changeIcon
+        ***********************************************************/
+		_changeIcon: function( newIconOptions ){ 
+			if (newIconOptions){ 
+				this.$container.find('i').parent().each( (index, elem) => {
+                    let $oldIcon = $(elem);
+                    $._bsCreateIcon(newIconOptions)
+                        .addClass( elem.className ) 
+                        .insertAfter( $oldIcon );
+                    $oldIcon.remove();
+                });
+			}
+			return this;
+		},		
     });
 
 
