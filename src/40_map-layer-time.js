@@ -9,9 +9,9 @@ Adjustments and extentions to classes from socib/Leaflet.TimeDimension https://g
     "use strict";
 
     //Create namespaces
-    var ns        = window.fcoo = window.fcoo || {},
-        nsMap     = ns.map = ns.map || {},
-        nsTime    = nsMap.time = nsMap.time || {};
+    let ns        = window.fcoo = window.fcoo || {};
+    let nsMap     = ns.map = ns.map || {};
+  //let nsTime    = nsMap.time = nsMap.time || {};
 
 
     /********************************************************************************
@@ -45,21 +45,21 @@ Adjustments and extentions to classes from socib/Leaflet.TimeDimension https://g
         } (L.TimeDimension.Layer.prototype.onRemove),
 
 
-        NYtimeloading: function(/*e*/){
+//HER           timeloading: function(/*e*/){
 //HER            var _this = this;
-//HERconsole.log('ON');
+//HER   console.log('ON', this);
 //HERsetTimeout(function(){
 //HER            _this.mapLayer.workingOn(0);
 //HER}, 100);
-        },
+//HER           },
 
-        NYtimeload: function(/*e*/){
+//HER           timeload: function(/*e*/){
 //HER            var _this = this;
-//HERconsole.log('OFF');
+//HER   console.log('OFF', this);
 //HERsetTimeout(function(){
 //HER            _this.mapLayer.workingOff(0);
 //HER}, 100);
-        }
+//HER           }
     });
 
 
@@ -68,6 +68,7 @@ Adjustments and extentions to classes from socib/Leaflet.TimeDimension https://g
     ********************************************************************************/
     L.TimeDimension.Layer.WMS.prototype.onAdd = function(onAdd) {
         return function (map) {
+
             if (map.timeDimension)
                 this.setAvailableTimes( map.timeDimension.getAvailableTimes() );
 
@@ -76,27 +77,25 @@ Adjustments and extentions to classes from socib/Leaflet.TimeDimension https://g
     } (L.TimeDimension.Layer.WMS.prototype.onAdd);
 
 /*
-
 GET COLOR BAR
 https://wms01.fcoo.dk/webmap/v2/data/ECMWF/DYSD/ECMWF_DYSD_MAPS_GLOBAL.nc.wms?request=GetColorbar&styles=horizontal,nolabel&cmap=AirTempGlobal_C_BWYR_16colors_1.0
 */
 
-/*
-From ifm-maps/src/fcoo-leaflet-tilelayer-wms.js
-
-        getLayer: function (options) {
-            var o = this.getLayerOptions(options),
-                layer = new L.TileLayer.WMS.Pydap(o.dataset, o.wmsParams, o.legendParams, o.options);
-            return layer;
-        },
-*/
-
+    /********************************************************************************
+    nsMap.layer_wms_dynamic_time
+    An extention to nsMap.layer_wms_dynamic adding the layer to timeDimention
+    ********************************************************************************/
+    nsMap.layer_wms_dynamic_time = function(options, map, defaultOptions = nsMap.wmsDynamic.options, url = nsMap.wmsDynamic.url, LayerConstructor){
+        const wmsLayer = nsMap.layer_wms_dynamic(options, map, defaultOptions, url, LayerConstructor);
+        return L.timeDimension.layer.wms(wmsLayer, {cache:12});
+    };
 
 
     /********************************************************************************
     MapLayer_Time
     A MapLayer representing a layer (layer_wms_time) with time dimentions
     ********************************************************************************/
+/*
     function MapLayer_Time(options) {
         //Adjust options
 
@@ -112,9 +111,9 @@ From ifm-maps/src/fcoo-leaflet-tilelayer-wms.js
 
     MapLayer_Time.prototype = $.extend({}, nsMap.MapLayer.prototype, {    //OR nsMap.MapLayer_ANOTHER.prototype, {
 
-        /********************************************************************************
-        createLayer - create and a L.timeDimension.layer.wms
-        ********************************************************************************/
+        //********************************************************************************
+        //createLayer - create and a L.timeDimension.layer.wms
+        //********************************************************************************
         createLayer: function(options){
             var result = L.timeDimension.layer.wms(
                     nsMap.layer_dynamic(options, undefined, options.url),
@@ -145,7 +144,7 @@ From ifm-maps/src/fcoo-leaflet-tilelayer-wms.js
 
     });
 
-
+*/
 
 
 
@@ -193,6 +192,57 @@ From ifm-maps/src/fcoo-leaflet-tilelayer-wms.js
 
 
 //_onNewTimeLoading, isReady and _update
+
+
+
+
+
+    /***********************************************************
+    MapLayer_wms_dynamic_time - Creates a MapLayer with dynamic static WMS-layer
+    See fcoo-maps for description on options
+    ***********************************************************/
+    function MapLayer_wms_dynamic_time(options) {
+        nsMap.MapLayer_wms.call(this, options);
+    }
+    nsMap.MapLayer_wms_dynamic_time = MapLayer_wms_dynamic_time;
+
+    MapLayer_wms_dynamic_time.prototype = Object.create(nsMap.MapLayer_wms.prototype);
+    MapLayer_wms_dynamic_time.prototype.createLayer = nsMap.layer_wms_dynamic_time;
+
+
+
+
+
+    /***********************************************************
+    DEMO
+    ***********************************************************/
+    var demo_options = {
+            text     : {da: 'DMI Vindhastighed', en: 'DMI Wind speed'},
+
+            legendOptions: {
+                showContent: false,
+                showIcons  : false,
+                //onWarning  : showGeolocationWarning,
+            },
+
+            layerOptions: {
+                dataset : 'VNETCDF/DMI/HARMONIE/DMI_NEA_MAPS_v005C.ncv',
+                layers  : 'windspeed',
+                styles  : {plot_method: 'contourf', legend: 'Wind_ms_BGYRP_11colors_1.1'},
+                cmap    : 'Wind_ms_BGYRP_11colors_1.1',
+            },
+        };
+
+
+
+    var id = "DMI_WIND_SPEED";
+    nsMap.createMapLayer[id] = function(options, addMenu){
+
+        let mapLayerOptions = $.extend({}, demo_options);
+        let mapLayer = nsMap._addMapLayer(id, nsMap.MapLayer_wms_dynamic_time, mapLayerOptions );
+        addMenu( mapLayer.menuItemOptions() );
+    };
+
 
 
 

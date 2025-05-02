@@ -9,8 +9,8 @@
     <meta name='copyright' content='FCOO'>
     <meta name='owner' content='FCOO'>
 
-  <link  href="bower_components.css" rel="stylesheet">    
-  <link  href="../src/fcoo-maps-time.css" rel="stylesheet">    
+  <link  href="bower_components.css" rel="stylesheet">
+  <link  href="../src/fcoo-maps-time.css" rel="stylesheet">
 
     <style>
         /* Unknown bug => when in test-mode the handle get invisible. Corrected by adding red border */
@@ -23,38 +23,38 @@
         --fc-time-now-color   : #7a839e;
         --fc-time-future-color: #94b5c2;
     }
-    
+
     :root.color2 {
         --fc-time-past-color  : #e7e1ef;
         --fc-time-now-color   : #dd1c77;
         --fc-time-future-color: #c994c7;
     }
-    
+
     :root.color3 {
         --fc-time-past-color  : #e6bfdb;
         --fc-time-now-color   : #5c242a;
         --fc-time-future-color: #9d5981;
     }
-    
+
     :root.color4 {
         --fc-time-past-color   : #e0c494;
         --fc-time-now-color    : #ee5f01;
         --fc-time-future-color : #d99149;
-    }    
-  
+    }
+
     :root.color5 {
-        --fc-time-past-color   : #AA7D00;  
-        --fc-time-now-color    : #3B7511;  
+        --fc-time-past-color   : #AA7D00;
+        --fc-time-now-color    : #3B7511;
         --fc-time-future-color : #573B93;
-    }    
+    }
 
     :root.color6 {
         --fc-time-past-color  : #eadcc1;
-        --fc-time-now-color   : #3B7511;  
+        --fc-time-now-color   : #3B7511;
         --jbn-time-future-color: #94b5c2;
     }
     </style>
-    
+
 </head>
 
 <body>
@@ -66,10 +66,10 @@
         if (window.location.href.includes('?testmode')){
             window.FCOOMAPSTIME_TEST = true;
             document.body.classList.add('FCOOMAPSTIME_TEST');
-        }            
+        }
         if (window.location.href.includes('?testmodenow'))
             window.FCOOMAPSTIME_TEST_NOW = true;
-   
+
     </script>
 
     <script src="bower_components.js"></script>
@@ -84,7 +84,7 @@
     <script src="../src/01_setup.js"></script>
     <script src="../src/03_time-mode.js"></script>
     <script src="../src/05_time-mode-data.js"></script>
-    
+
     <script src="../src/08_bsButtonTimeSlider.js"></script>
     <script src="../src/09_L.Map.js"></script>
 
@@ -93,7 +93,7 @@
     <script src="../src/15_bottom-menu-ElementSet.js"></script>
     <script src="../src/20_bottom-menu-content.js"></script>
     <script src="../src/30_L.Control.BsTimeInfoControl.js"></script>
-    <!-- <script src="../src/map-layer-time.js"></script> -->
+    <script src="../src/40_map-layer-time.js"></script>
 
     <script>
 // HER>         window.bsIsTouch = false;
@@ -101,10 +101,8 @@
         if (window.location.search =='?touch')
             window.bsIsTouch = true;
 
-//TEMP: No access to data-files on AWS. Read from old location instead 
-window.fcoo.path.setPath({host: 'bal.fcoo.dk'});
-       
-       
+        //TEMP: No access to data-files on AWS. Read from old location instead
+        //window.fcoo.path.setPath({host: 'bal.fcoo.dk'});
         window.fcoo.map.createApplication(
             //options
             {
@@ -113,13 +111,13 @@ window.fcoo.path.setPath({host: 'bal.fcoo.dk'});
             },
 
             //layerMenu
-            ["TIME"]
+            ["DMI_WIND_SPEED"]
         );
 
-    
 
-    
-    
+
+
+
     </script>
 </body>
 </html>

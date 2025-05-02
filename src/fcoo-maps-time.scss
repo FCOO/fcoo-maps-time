@@ -76,9 +76,9 @@ $time-mode-list: 'FIXED', 'RELATIVE', 'SELECT', 'ANIMATION';
 .time-future-color-as-text-color { color: $time-future-color      }
 
 //Colors and classes for time-mode = same as main map with offset
-$time-mode-MAIN       : $blue-200;
-$time-mode-MAIN-past  :	$blue-400;
-$time-mode-MAIN-future: $blue-600;
+$time-mode-MAIN       : $blue-100;  //$blue-200
+$time-mode-MAIN-past  :	$blue-300;  //$blue-400;
+$time-mode-MAIN-future: $blue-500;  //$blue-600;
 
 .time-mode-MAIN         { color: $time-mode-MAIN        }
 .time-mode-MAIN-past    { color: $time-mode-MAIN-past   }

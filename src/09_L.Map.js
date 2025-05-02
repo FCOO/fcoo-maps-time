@@ -9,7 +9,6 @@ L.Map
         nsTime    = nsMap.time = nsMap.time || {},
         unit      = nsTime.unit;
 
-
     nsTime.onSetupLoaded.push( function(){
         //Create extra options for L.Map
         var map_timeDimension_options = {

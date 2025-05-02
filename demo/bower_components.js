@@ -13097,8 +13097,8 @@ else {
 }(jQuery, this, document));
 ;
 /*!
-  * Bootstrap v5.3.3 (https://getbootstrap.com/)
-  * Copyright 2011-2024 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
+  * Bootstrap v5.3.5 (https://getbootstrap.com/)
+  * Copyright 2011-2025 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
   */
 (function (global, factory) {
@@ -13303,7 +13303,7 @@ else {
    * @param {HTMLElement} element
    * @return void
    *
-   * @see https://www.charistheo.io/blog/2021/02/restart-a-css-animation-with-javascript/#restarting-a-css-animation
+   * @see https://www.harrytheo.com/blog/2021/02/restart-a-css-animation-with-javascript/#restarting-a-css-animation
    */
   const reflow = element => {
     element.offsetHeight; // eslint-disable-line no-unused-expressions
@@ -13348,7 +13348,7 @@ else {
     });
   };
   const execute = (possibleCallback, args = [], defaultValue = possibleCallback) => {
-    return typeof possibleCallback === 'function' ? possibleCallback(...args) : defaultValue;
+    return typeof possibleCallback === 'function' ? possibleCallback.call(...args) : defaultValue;
   };
   const executeAfterTransition = (callback, transitionElement, waitForTransition = true) => {
     if (!waitForTransition) {
@@ -13670,7 +13670,7 @@ else {
       const bsKeys = Object.keys(element.dataset).filter(key => key.startsWith('bs') && !key.startsWith('bsConfig'));
       for (const key of bsKeys) {
         let pureKey = key.replace(/^bs/, '');
-        pureKey = pureKey.charAt(0).toLowerCase() + pureKey.slice(1, pureKey.length);
+        pureKey = pureKey.charAt(0).toLowerCase() + pureKey.slice(1);
         attributes[pureKey] = normalizeData(element.dataset[key]);
       }
       return attributes;
@@ -13745,7 +13745,7 @@ else {
    * Constants
    */
 
-  const VERSION = '5.3.3';
+  const VERSION = '5.3.5';
 
   /**
    * Class definition
@@ -15764,7 +15764,6 @@ else {
     var popperOffsets = computeOffsets({
       reference: referenceClientRect,
       element: popperRect,
-      strategy: 'absolute',
       placement: placement
     });
     var popperClientRect = rectToClientRect(Object.assign({}, popperRect, popperOffsets));
@@ -16092,7 +16091,6 @@ else {
     state.modifiersData[name] = computeOffsets({
       reference: state.rects.reference,
       element: state.rects.popper,
-      strategy: 'absolute',
       placement: state.placement
     });
   } // eslint-disable-next-line import/no-unused-modules
@@ -16799,7 +16797,7 @@ else {
     }
     _createPopper() {
       if (typeof Popper === 'undefined') {
-        throw new TypeError('Bootstrap\'s dropdowns require Popper (https://popper.js.org)');
+        throw new TypeError('Bootstrap\'s dropdowns require Popper (https://popper.js.org/docs/v2/)');
       }
       let referenceElement = this._element;
       if (this._config.reference === 'parent') {
@@ -16878,7 +16876,7 @@ else {
       }
       return {
         ...defaultBsPopperConfig,
-        ...execute(this._config.popperConfig, [defaultBsPopperConfig])
+        ...execute(this._config.popperConfig, [undefined, defaultBsPopperConfig])
       };
     }
     _selectMenuItem({
@@ -18065,7 +18063,7 @@ else {
       return this._config.sanitize ? sanitizeHtml(arg, this._config.allowList, this._config.sanitizeFn) : arg;
     }
     _resolvePossibleFunction(arg) {
-      return execute(arg, [this]);
+      return execute(arg, [undefined, this]);
     }
     _putElementInTemplate(element, templateElement) {
       if (this._config.html) {
@@ -18164,7 +18162,7 @@ else {
   class Tooltip extends BaseComponent {
     constructor(element, config) {
       if (typeof Popper === 'undefined') {
-        throw new TypeError('Bootstrap\'s tooltips require Popper (https://popper.js.org)');
+        throw new TypeError('Bootstrap\'s tooltips require Popper (https://popper.js.org/docs/v2/)');
       }
       super(element, config);
 
@@ -18210,7 +18208,6 @@ else {
       if (!this._isEnabled) {
         return;
       }
-      this._activeTrigger.click = !this._activeTrigger.click;
       if (this._isShown()) {
         this._leave();
         return;
@@ -18398,7 +18395,7 @@ else {
       return offset;
     }
     _resolvePossibleFunction(arg) {
-      return execute(arg, [this._element]);
+      return execute(arg, [this._element, this._element]);
     }
     _getPopperConfig(attachment) {
       const defaultBsPopperConfig = {
@@ -18436,7 +18433,7 @@ else {
       };
       return {
         ...defaultBsPopperConfig,
-        ...execute(this._config.popperConfig, [defaultBsPopperConfig])
+        ...execute(this._config.popperConfig, [undefined, defaultBsPopperConfig])
       };
     }
     _setListeners() {
@@ -58378,12 +58375,11 @@ module.exports = Yaml;
   }
 
   /*!
-   * GSAP 3.12.7
+   * GSAP 3.13.0
    * https://gsap.com
    *
    * @license Copyright 2008-2025, GreenSock. All rights reserved.
-   * Subject to the terms at https://gsap.com/standard-license or for
-   * Club GSAP members, the agreement issued with that membership.
+   * Subject to the terms at https://gsap.com/standard-license
    * @author: Jack Doyle, jack@greensock.com
   */
   var _config = {
@@ -58551,9 +58547,12 @@ module.exports = Yaml;
       tween && tween._lazy && (tween.render(tween._lazy[0], tween._lazy[1], true)._lazy = 0);
     }
   },
+      _isRevertWorthy = function _isRevertWorthy(animation) {
+    return !!(animation._initted || animation._startAt || animation.add);
+  },
       _lazySafeRender = function _lazySafeRender(animation, time, suppressEvents, force) {
     _lazyTweens.length && !_reverting && _lazyRender();
-    animation.render(time, suppressEvents, force || _reverting && time < 0 && (animation._initted || animation._startAt));
+    animation.render(time, suppressEvents, force || !!(_reverting && time < 0 && _isRevertWorthy(animation)));
     _lazyTweens.length && !_reverting && _lazyRender();
   },
       _numericIfPossible = function _numericIfPossible(value) {
@@ -60011,7 +60010,7 @@ module.exports = Yaml;
       var tTime = this.parent && this._ts ? _parentToChildTotalTime(this.parent._time, this) : this._tTime;
       this._rts = +value || 0;
       this._ts = this._ps || value === -_tinyNum ? 0 : this._rts;
-      this.totalTime(_clamp(-Math.abs(this._delay), this._tDur, tTime), suppressEvents !== false);
+      this.totalTime(_clamp(-Math.abs(this._delay), this.totalDuration(), tTime), suppressEvents !== false);
 
       _setEnd(this);
 
@@ -60068,7 +60067,7 @@ module.exports = Yaml;
       var prevIsReverting = _reverting;
       _reverting = config;
 
-      if (this._initted || this._startAt) {
+      if (_isRevertWorthy(this)) {
         this.timeline && this.timeline.revert(config);
         this.totalTime(-0.01, config.suppressEvents);
       }
@@ -60438,7 +60437,7 @@ module.exports = Yaml;
           prevTime = 0;
         }
 
-        if (!prevTime && time && !suppressEvents && !iteration) {
+        if (!prevTime && tTime && !suppressEvents && !prevIteration) {
           _callback(this, "onStart");
 
           if (this._tTime !== tTime) {
@@ -60480,7 +60479,7 @@ module.exports = Yaml;
                 return this.render(totalTime, suppressEvents, force);
               }
 
-              child.render(child._ts > 0 ? (adjustedTime - child._start) * child._ts : (child._dirty ? child.totalDuration() : child._tDur) + (adjustedTime - child._start) * child._ts, suppressEvents, force || _reverting && (child._initted || child._startAt));
+              child.render(child._ts > 0 ? (adjustedTime - child._start) * child._ts : (child._dirty ? child.totalDuration() : child._tDur) + (adjustedTime - child._start) * child._ts, suppressEvents, force || _reverting && _isRevertWorthy(child));
 
               if (time !== this._time || !this._ts && !prevPaused) {
                 pauseTween = 0;
@@ -61559,7 +61558,7 @@ module.exports = Yaml;
           this.ratio = ratio = 1 - ratio;
         }
 
-        if (time && !prevTime && !suppressEvents && !iteration) {
+        if (!prevTime && tTime && !suppressEvents && !prevIteration) {
           _callback(this, "onStart");
 
           if (this._tTime !== tTime) {
@@ -62443,6 +62442,7 @@ module.exports = Yaml;
       _buildModifierPlugin = function _buildModifierPlugin(name, modifier) {
     return {
       name: name,
+      headless: 1,
       rawVars: 1,
       init: function init(target, vars, tween) {
         tween._onInit = function (tween) {
@@ -62499,6 +62499,7 @@ module.exports = Yaml;
     }
   }, {
     name: "endArray",
+    headless: 1,
     init: function init(target, value) {
       var i = value.length;
 
@@ -62507,7 +62508,7 @@ module.exports = Yaml;
       }
     }
   }, _buildModifierPlugin("roundProps", _roundModifier), _buildModifierPlugin("modifiers"), _buildModifierPlugin("snap", snap)) || _gsap;
-  Tween.version = Timeline.version = gsap.version = "3.12.7";
+  Tween.version = Timeline.version = gsap.version = "3.13.0";
   _coreReady = 1;
   _windowExists() && _wake();
   var Power0 = _easeMap.Power0,
@@ -62952,6 +62953,10 @@ module.exports = Yaml;
     pt.e = end;
     start += "";
     end += "";
+
+    if (end.substring(0, 6) === "var(--") {
+      end = _getComputedProperty(target, end.substring(4, end.indexOf(")")));
+    }
 
     if (end === "auto") {
       startValue = target.style[prop];
@@ -63807,6 +63812,11 @@ module.exports = Yaml;
 
           if (isTransformRelated) {
             this.styles.save(p);
+
+            if (type === "string" && endValue.substring(0, 6) === "var(--") {
+              endValue = _getComputedProperty(target, endValue.substring(4, endValue.indexOf(")")));
+              endNum = parseFloat(endValue);
+            }
 
             if (!transformPropTween) {
               cache = target._gsap;
@@ -90033,10 +90043,13 @@ jquery-bootstrap-modal-promise.js
 
         alwaysMaxHeight: BOOLEAN - If true the modal is always the full height of it parent
 
+        allowFullScreen: BOOLEAN - if true the largest size (normal or extended) gets the possibility to be displayed in full-screen
+        noReopenFullScreen: BOOLEAN - if false and allowFullScreen = true and the modal was in full-screen when closed => It will reopen in full-screen. If true the modal will reopen in prevoius size (minimized, normal or extended)
 
         innerHeight     : The fixed height of the content
         innerMaxHeight  : The fixed max-height of the content
 
+        fitWidth
         flexWidth
         extraWidth
         megaWidth
@@ -90072,6 +90085,10 @@ jquery-bootstrap-modal-promise.js
         closeText
         noCloseIconOnHeader
         historyList         - The modal gets backward and forward icons in header to go backward and forward in the historyList. See demo and https://github.com/fcoo/history.js
+
+        keepScrollWhenReopen: false, - if true the scrolling of the content is reused. If false all content starts at scroll 0,0 when shown
+
+
 
     **********************************************************/
     var modalId = 0,
@@ -90169,6 +90186,7 @@ jquery-bootstrap-modal-promise.js
     3: fixed height. options.height
 
     The width of a modal is by default 300px.
+    options.fitWidth  : If true the width of the modal is set by the with of the content
     options.flexWidth : If true the width of the modal will adjust to the width of the browser up to 500px
     options.extraWidth: Only when flexWidth is set: If true the width of the modal will adjust to the width of the browser up to 800px
     options.megaWidth : Only when flexWidth is set: If true the width of the modal will adjust to the width of the browser up to 1200px
@@ -90187,6 +90205,7 @@ jquery-bootstrap-modal-promise.js
 
     function getWidthFromOptions( options ){
         return {
+            fitWidth            : !!options.fitWidth,
             flexWidth           : !!options.flexWidth,
             extraWidth          : !!options.extraWidth,
             megaWidth           : !!options.megaWidth,
@@ -90230,7 +90249,6 @@ jquery-bootstrap-modal-promise.js
         if (currentModal)
             currentModal._bsModalCloseElements();
 
-
         openModals++;
         this.previousModal = currentModal;
         currentModal = this;
@@ -90273,8 +90291,8 @@ jquery-bootstrap-modal-promise.js
     function hide_bs_modal() {
         currentModal = this.previousModal;
 
-        //If in full.screen mode => reset back
-        if (this.bsModal.isFullScreenMode)
+        //If in full-screen mode and dont reopen in full-screen => reset back
+        if (this.bsModal.isFullScreenMode && this.bsModal.noReopenFullScreen)
             this._bsModalFullScreenOff();
 
         //Close elements
@@ -90344,13 +90362,23 @@ jquery-bootstrap-modal-promise.js
     ******************************************************/
     var bsModal_prototype = {
         show  : function(){
-                    this.modal('show');
+            this.modal('show');
 
-                    this.data('bsModalDialog')._bsModalSetHeightAndWidth();
+            this.data('bsModalDialog')._bsModalSetHeightAndWidth();
 
-                    if (this.bsModal.onChange)
-                        this.bsModal.onChange( this.bsModal );
-                },
+            if (this.bsModal.onChange)
+                this.bsModal.onChange( this.bsModal );
+
+            //Scroll all "body" back if keepScrollWhenReopen = false is set
+            if (!this.keepScrollWhenReopen)
+                ['', 'extended', 'minimized'].forEach( size => {
+                    let obj = size ? this.bsModal[size] : this.bsModal;
+                    if (obj && obj.$body){
+                        obj.$body.scrollTop(0);
+                        obj.$body.scrollLeft(0);
+                    }
+                }, this);
+        },
 
         _close: function(){
             this.modal('hide');
@@ -90409,7 +90437,6 @@ jquery-bootstrap-modal-promise.js
                 }
             }
             //***********************************************************
-
             //Update header
             var $iconContainer = this.bsModal.$header.find('.header-icon-container').detach();
             updateElement(this.bsModal.$header, options, '_bsHeaderAndIcons', $.BSMODAL_USE_SQUARE_ICONS);
@@ -90428,6 +90455,8 @@ jquery-bootstrap-modal-promise.js
                     updateElement(containers.$footer,       contentOptions.footer,       '_bsAddHtml' );
                 }
             }, this);
+            
+            
             return this;
         },
 
@@ -90656,7 +90685,8 @@ jquery-bootstrap-modal-promise.js
 
         function useNormalWidth(options = {}){
             return (options.width == true) ||
-                    (   (options.flexWidth == undefined) &&
+                    (   (options.fitWidth == undefined) &&
+                        (options.flexWidth == undefined) &&
                         (options.extraWidth == undefined) &&
                         (options.megaWidth == undefined) &&
                         (options.maxWidth == undefined) &&
@@ -90980,8 +91010,6 @@ jquery-bootstrap-modal-promise.js
             return;
         }
 
-
-
         //Set height
         $modalContent
             .toggleClass('modal-fixed-height', !!cssHeight)
@@ -90992,6 +91020,7 @@ jquery-bootstrap-modal-promise.js
 
         //Set width
         $modalDialog
+            .toggleClass('modal-fit-width'              , cssWidth.fitWidth             )
             .toggleClass('modal-flex-width'             , cssWidth.flexWidth            )
             .toggleClass('modal-extra-width'            , cssWidth.extraWidth           )
             .toggleClass('modal-mega-width'             , cssWidth.megaWidth            )
@@ -91000,6 +91029,12 @@ jquery-bootstrap-modal-promise.js
             .toggleClass('modal-full-screen'            , cssWidth.fullScreen           )
             .toggleClass('modal-full-screen-with-border', cssWidth.fullScreenWithBorder )
             .css('width', cssWidth.width ? cssWidth.width : '' );
+
+
+        if (this.bsModal.isFullScreenMode){
+            this._bsModalFullScreenOff();
+            this._bsModalFullScreenOn();
+        }            
 
         //Call onChange (if any)
         if (bsModal.onChange)
@@ -91217,17 +91252,30 @@ jquery-bootstrap-modal-promise.js
         if (options.fullScreen || options.fullScreenWithBorder)
             options.allowFullScreen = false;
 
-        //Set options for full screen with border
-        if (options.fullScreenWithBorder)
-            options.fullScreen = true;
 
-        //Set options for full screen
-        if (options.fullScreen){
-            options.maxWidth             = true;
-            options.alwaysMaxHeight      = true;
-            options.relativeHeightOffset = 0;
+
+        function adjustFullScreenOptions( opt, defaultOpt={} ){
+            if (!opt) return;
+            ['fullScreenWithBorder', 'fullScreen'].forEach( id => {
+                if (opt[id] === undefined)
+                    opt[id] = defaultOpt[id] || false;
+            });
+            if (opt.fullScreenWithBorder)
+                opt.fullScreen = true;
+
+            //Set options for full screen
+            if (opt.fullScreen){
+                opt.maxWidth             = true;
+                opt.alwaysMaxHeight      = true;
+                opt.relativeHeightOffset = 0;
+            }
         }
 
+        //Set options for full screen with border
+        adjustFullScreenOptions(options);
+        adjustFullScreenOptions(options.minimized, options);
+        adjustFullScreenOptions(options.extended, options);
+        
         //Check $.MODAL_NO_VERTICAL_MARGIN
         if ($.MODAL_NO_VERTICAL_MARGIN){
             options.relativeHeightOffset = 0;
@@ -91253,6 +91301,10 @@ jquery-bootstrap-modal-promise.js
         //If allowFullScreen: Find the largest size-mode and set the differnet class-names etc.
         if (options.allowFullScreen)
             options.sizeWithFullScreen = options.extended ? MODAL_SIZE_EXTENDED : MODAL_SIZE_NORMAL;
+
+
+        //Set keepScrollWhenReopen to allow the content to be scrolled back to 0,0 when reopen a modal
+        this.keepScrollWhenReopen = options.keepScrollWhenReopen;
 
         //Create the modal
         $result =
@@ -91334,6 +91386,10 @@ jquery-bootstrap-modal-promise.js
                 $result.show();
         }
 
+        //Save some options in bsModal
+        ['noReopenFullScreen'].forEach( id => {
+            $result.bsModal[id] = options[id];
+        }); 
 
         return $result;
     };
@@ -93165,7 +93221,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
                             );
                         }
                     }.bind(this));
-                });
+                }.bind(this));
 
             var column = this._getColumn( sortInfo.column );
 
@@ -93269,6 +93325,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         sortId     = 0;
 
     $.bsTable = function( options ){
+        
         options = $._bsAdjustOptions( options, defaultOptions );
 
         //Fixed first column only needed when horizontal scrolling ( = full width)
@@ -93413,14 +93470,17 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
 
             multiSortList = []{columnIndex, sortIndex} sorted by sortIndex. Is used be each th to define alternative sort-order
         */
+        let anyColumnSortable = false;
         options.columns.forEach( ( columnOptions, index ) => {
-            if (columnOptions.sortable)
+            if (columnOptions.sortable){
                 multiSortList.push( {columnId: columnOptions.id, columnIndex: ''+index, sortIndex: columnOptions.sortIndex });
+                anyColumnSortable = true;
+            }                
         });
         multiSortList.sort(function( c1, c2){ return c1.sortIndex - c2.sortIndex; });
 
         //Create headers
-        if (options.showHeader){
+        if (options.showHeader || anyColumnSortable){
             let anyColumnMinimizable = false;
 
 
@@ -93483,7 +93543,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             }, this);
 
 
-            if (anyColumnMinimizable)
+            if (anyColumnMinimizable && options.showHeader)
                 $tr.on('dblclick', function(){
                     let minimize = true;
                     this.columns.forEach( columnOptions => {
@@ -111715,7 +111775,7 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
     //clone( elem ) return a cloned copy of elem
     function clone(elem){
         var result;
-        if ($.isArray(elem)){
+        if (Array.isArray(elem)){
             result = [];
             $.each(elem, function(index, subElem){
                 result.push( clone(subElem) );
@@ -111776,7 +111836,7 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
         nextLiId = 0;
 
     $.BsMmenuItem = function(options, parent, owner){
-        var _this = this;
+
         owner = owner || this;
         this.options = options;
 
@@ -111808,6 +111868,12 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
         this.parent = parent;
         this.menu = parent.menu;
 
+        //Use forced events if given
+        if (options.onChange && this.menu.options.forceOnChange)
+            options.onChange = this.menu.options.forceOnChange;
+        if (options.onClick && this.menu.options.forceOnClick)
+            options.onClick = this.menu.options.forceOnClick;
+
         //Using global events (if any) if non is given
         if (!options.onChange && !options.onClick){
             options.onChange = this.menu.options.onChange || null;
@@ -111823,10 +111889,13 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
                 this.state = 'semi';
         }
 
+        options.getState = options.getState || this.menu.options.getState || null;
+
         //Set element ids
         nextLiId++;
-        this.liId = 'bsmm_li_'+nextLiId;
-        this.ulId = 'bsmm_ul_'+nextLiId;
+        this.liId       = 'bsmm_li_'+nextLiId;
+        this.checkboxId = 'bsmm_cb_'+nextLiId;
+        this.ulId       = 'bsmm_ul_'+nextLiId;
 
         //Create the DOM-element
         this.createLi(owner);
@@ -111839,9 +111908,8 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
         var list = this.options.list || this.options.items || this.options.itemList || [];
         if (list.length)
             this._createUl();
-        $.each(list, function(index, opt){
-            _this.append($.bsMmenuItem(opt, _this));
-        });
+
+        list.forEach( opt => this.append($.bsMmenuItem(opt, this)), this );
     };
 
     $.bsMmenuItem = function(options, parent, owner){
@@ -111882,6 +111950,8 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
                         .i18n(this.options.link, 'href')
                         .prop('target', '_blank');
 
+                if (this.options.simpleFullWidth)
+                    this.$content.addClass('simple-full-width');
 
                 var originalContent = this.options.content || this.options,
                     adjustIcon = this.menu.options.adjustIcon;
@@ -111889,11 +111959,16 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
                 if (originalContent && originalContent.icon && adjustIcon)
                     originalContent.icon = adjustIcon(originalContent.icon);
 
+                let onClick = owner._onClick.bind(owner);
+
                 content = clone(originalContent);
-                content = $.isArray(content) ? content : [content];
+                content = Array.isArray(content) ? content : [content];
 
                 //If first content-item is the text => make it full-width inside a div. Adjust the icon if menu.options.adjustIcon = function(icon) is given
                 var firstContent = content[0];
+
+                if (firstContent.onClick)
+                    firstContent.onClick = onClick;
 
                 if ( $.isPlainObject(firstContent) && (!firstContent.type || (firstContent.type == 'text')) )
                     content[0] = $('<div/>')._bsAddHtml(firstContent);
@@ -111910,13 +111985,13 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
                 }
                 else {
                     this.checkbox = $.bsCheckbox({
-                        id          : this.id,
+                        id          : this.checkboxId,
                         type        : this.type,
                         multiLines  : true,
                         icon        : this.options.icon,
                         text        : this.options.text,
                         content     : content,
-                        onClick     : $.proxy(owner._onClick, owner)
+                        onClick     : onClick
                     })
                     .appendTo( this.$content );
 
@@ -111944,7 +112019,7 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
                                 noBorder    : true,
                                 class       :'flex-shrink-0 mm-favorite-icons',
                                 selected    : inFavorites,
-                                onChange    : $.proxy(this._toggleFavorite, this)
+                                onChange    : this._toggleFavorite.bind(this)
                             }).appendTo(this.$outer);
 
                         this.$outer.addClass('pe-0');
@@ -111963,7 +112038,7 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
                             square      : true,
                             noBorder    : true,
                             class       :'flex-shrink-0 mm-favorite-icons',
-                            onClick     : $.proxy(owner._toggleFavorite, owner)
+                            onClick     : owner._toggleFavorite.bind(owner)
                         }).appendTo(this.$outer);
                         this.$outer.addClass('pe-0');
                     }
@@ -111978,14 +112053,14 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
 
             if (this.hasCheckbox || this.buttonPaddingLeft)
                 paddingClass = paddingClass + ' padding-left';
-            if (this.$favoriteButton || this.buttonPaddingRight)
+            if (this.$favoriteButton || this.options.removeFavoriteButton || this.buttonPaddingRight)
                 paddingClass = paddingClass + ' padding-right';
 
-            if (buttonList){
+            if (buttonList && !this.menu.options.noButtons){
                 //Buttons added inside button-bar. If button-options have first: true => new 'line' = new bsButtonGroup
                 var currentList = [];
 
-                buttonList.forEach( function(buttonOptions){
+                buttonList.forEach( buttonOptions => {
                     if (buttonOptions.isFirstButton && currentList.length){
                         groupList.push( currentList );
                         currentList = [];
@@ -112000,6 +112075,7 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
                 });
                 if (currentList.length)
                     groupList.push( currentList );
+
 
                 groupList.forEach( function( list ){
                     $.bsButtonBar({
@@ -112183,7 +112259,6 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
         Insert this.$li in DOM
         ***********************************/
         _updateElement: function(){
-
             this.parent._createUl();
 
             if (this.$li){
@@ -112201,7 +112276,6 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
                     this._getApi().initPanel( this.menu.panel );
                 }
             }
-
             this.menu._updateFavorites();
 
             return this;
@@ -112272,21 +112346,104 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
             this.menu._updateFavorites();
         },
 
+
+        /***********************************
+        _getChildIndex
+        Get the index of childItem
+        ***********************************/
+        _getChildIndex: function( childItem ){
+            let index = 0,
+                nextItem = this.first;
+            while (nextItem){
+                if (nextItem === childItem)
+                    return index;
+                else {
+                    nextItem = nextItem.next;
+                    index++;
+                }
+            }
+            return -1;
+        },
+
+        /***********************************
+        _getPlacement
+        Return a array with the index of this in it parents for this and all is parent elements
+        ***********************************/
+        _getPlacement: function(){
+            let getChildIndex = function( childItem, placement = [] ){
+                let parent = childItem.parent;
+                if (parent){
+                    let index = 0,
+                        nextItem = parent.last;
+                    while (nextItem){
+                        if (nextItem === childItem){
+                            placement.push(index);
+                            return getChildIndex( parent, placement );
+                        }
+                        else {
+                            nextItem = nextItem.prev;
+                            index++;
+                        }
+                    }
+                }
+                return placement;
+            };
+
+            return getChildIndex( this );
+        },
+
+
+        /***********************************
+        getSiblingItem( menu )
+        Returns the equal item in a cloned or original menu
+        ***********************************/
+        getSiblingItem: function( menu ){
+            return menu._getItemByPlacment( this._getPlacement() );
+        },
+
         /***********************************
         open
         ***********************************/
         open: function(closeAllOther){
             if (closeAllOther)
                 this.menu.closeAll();
+
             if (this.$ul)
                 this._getApi().openPanel(this.$ul.get(0));
+
+            //For unknown reasons this is also needed.....
+            if (this.$li && this.$ul){
+                this.$li.addClass('mm-listitem_opened');
+                this.$ul.parent().removeClass('mm-hidden');
+            }
+
         },
 
+        /***********************************
+        close
+        ***********************************/
+        close: function(){
+            if (this.$ul)
+                this._getApi().closePanel(this.$ul.get(0));
 
+            //For unknown reasons this is also needed.....
+            if (this.$li && this.$ul){
+                this.$li.removeClass('mm-listitem_opened');
+                this.$ul.parent().addClass('mm-hidden');
+            }
+        },
         /***********************************
         _onClick
         ***********************************/
         _onClick: function(/*id, state*/){
+            //If the menu is a full clone => use the original menu to handle events
+            if (this.menu.cloneOf && this.menu.options.isFullClone){
+                let siblingItem = this.getSiblingItem( this.menu.cloneOf );
+                if (siblingItem)
+                    siblingItem._onClick.bind(siblingItem).apply(arguments);
+                return;
+            }
+
             //There are two ways to change the state:
             //options.onChange => simple true/false state
             //options.onClick(id, state, item) => onClick will do all setting
@@ -112297,7 +112454,6 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
             else
                 if (this.options.onClick)
                     this.options.onClick(this.id, this.state, this);
-
         },
 
         /***********************************
@@ -112332,15 +112488,27 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
         setState
         ***********************************/
         setState: function(state, callOnChange){
-            this.state = state;
+            this.state = this.options.getState ? this.options.getState(this, state) : state;
             if (this.checkbox)
-                this.checkbox.cbxSetState(state);
+                this.checkbox.cbxSetState(this.state);
 
             if (this.favoriteCheckbox)
-                this.favoriteCheckbox.cbxSetState(state);
+                this.favoriteCheckbox.cbxSetState(this.state);
 
             if (callOnChange && this.options.onChange)
                 this.options.onChange(this.id, this.state, this);
+
+            //If the menu has any cloned menus => update the items
+            if (this.menu.clones){
+                let state = this.state;
+                $.each(this.menu.clones, function(id, menu){
+                    let menuItem = this.getSiblingItem( menu );
+                    if (menuItem && menuItem.setState)
+                        menuItem.setState( state, false );
+                }.bind(this));
+            }
+
+
 
             return this;
         },
@@ -112371,7 +112539,7 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
             //(*)slidingSubmenus: false,   //Whether or not submenus should come sliding in from the right.
                                            //If false, submenus expand below their parent. To expand a single submenu below its parent item, add the class "Vertical" to it.
 
-            offCanvas      : true,   //https://mmenujs.com/docs/core/off-canvas.html
+            offCanvas      : false, //https://mmenujs.com/docs/core/off-canvas.html
 
             preventDefault : true,
             extensions: [
@@ -112395,6 +112563,10 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
             },
 
 
+            //Events
+            onOpenOrClose: null, //function(menuItem, open, menu)
+            forceOnChange: null, //function(menuItem, state, menu) Overwrites any onChange given. Normally used in cloned menues
+            forceOnClick : null, //function(menuItem, state, menu) Overwrites any onClick given. Normally used in cloned menues
             /*
             navbar - see https://mmenujs.com/docs/addons/navbars.html
             */
@@ -112425,6 +112597,7 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
         }
     };
 
+
     /************************************************
     BsMmenu
     options = {
@@ -112435,6 +112608,8 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
         }
         inclBar    : BOOLEAN, if true a bar top-right with buttons from items with options.addToBar = true and favorites (optional) and close-all (if barCloseAll=true) and reset (if options.reset is given)
         barCloseAll: BOOLEAN, if true a top-bar button is added that closes all open submenus
+
+        noButtons   : BOOLEAN, if true no buttons are added to menu-items
 
         adjustIcon  : function(icon): retur icon (optional). Adjust the icon of each menu-items
 
@@ -112449,8 +112624,6 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
 
     ************************************************/
     $.BsMmenu = function(options = {}, mmenuOptions = {}, configuration = {}){
-        var _this = this;
-
         this.prev = null;
         this.next = null;
         this.first = null;
@@ -112460,6 +112633,12 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
         this.removeFavoriteIcon = [[$.FONTAWESOME_PREFIX_STANDARD + ' fa-star fa-fw', $.FONTAWESOME_STANDARD + " fa-slash fa-fw"]];
 
         this.ulId = 'bsmm_ul_0';
+
+        this.options = options;
+
+        //Save mmenuOptions and configuration in options. Needed for clone
+        this.options.mmenuOptions = mmenuOptions;
+        this.options.configuration = configuration;
 
         //Setting and adjusting mmenuOptions = the options for Mmenu
         //Using sliding submenus and navbar with title if it is a touch device
@@ -112471,7 +112650,7 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
                     add   : !!window.bsIsTouch || !!options.title,
                     title : options.title || ' ',
                 },
-/* mangler
+/* @todo
                 backButton: {
                     // back button options
                 }
@@ -112523,23 +112702,23 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
         }
 
         //Create and add sub-items
-        var list = $.isArray(options) ? options : (options.list || options.items || options.itemList || []);
-        $.each(list, function(index, opt){
-           _this.append($.bsMmenuItem(opt, _this));
-        });
+        var list = Array.isArray(options) ? options : (options.list || options.items || options.itemList || []);
+        list.forEach( opt => this.append($.bsMmenuItem(opt, this)), this );
+
+        this.list = list;
 
     };
 
 
-    $.bsMmenu = function(options, mmenuOptions){
-        return new $.BsMmenu(options, mmenuOptions);
+    $.bsMmenu = function(options, mmenuOptions, configuration){
+        return new $.BsMmenu(options, mmenuOptions, configuration);
     };
 
     //bsMMenu as jQuery prototype
-    $.fn.bsMmenu = function(options, mmenuOptions){
+    $.fn.bsMmenu = function(options, mmenuOptions, configuration){
         return this.each(function() {
             if (!$.data(this, "bsMmenu"))
-                new $.BsMmenu(options, mmenuOptions);
+                new $.BsMmenu(options, mmenuOptions, configuration);
             $.data(this, "bsMmenu").create($(this));
         });
     };
@@ -112576,7 +112755,10 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
             this._createUl();
             this.$ul.appendTo($elem);
 
-            $elem.addClass( $._bsGetSizeClass({baseClass: 'mm-menu', useTouchSize: true}) );
+            $elem
+                .addClass( $._bsGetSizeClass({baseClass: 'mm-menu', useTouchSize: true}) )
+                .toggleClass('mm-menu-no-button', !!this.options.noButtons);
+
 
             if (this.options.inclBar){
                 buttonList = [];
@@ -112586,7 +112768,7 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
                         title: {da:'Luk alle', en:'Close all'},
                         square : true,
                         tagName: 'div',
-                        onClick: $.proxy(this.closeAll, this)}
+                        onClick: this.closeAll.bind(this)}
                     ).get(0) );
 
                 var item = this.first;
@@ -112598,7 +112780,7 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
                                 title   : item.options.text || null,
                                 square  : true,
                                 tagName : 'div',
-                                onClick : $.proxy(item.open, item, true)
+                                onClick : item.open.bind(item, true)
                             }).get(0)
                         );
                     item = item.next;
@@ -112611,7 +112793,8 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
                         //bottom: []ELEMENT
                     };
             }
-
+            else
+                this.mmenuOptions.iconbar = false;
 
             //Add button to reset all selected menu-items (if any)
             if (this.options.reset){
@@ -112633,7 +112816,7 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
                         title   : resetOptions.title,
                         square  : true,
                         tagName : 'div',
-                        onClick : $.proxy(this.reset, this)
+                        onClick : this.reset.bind(this)
                     }).get(0)
                 );
             }
@@ -112644,9 +112827,40 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
             this.panel = $elem.find('#'+this.ulId).get(0);
             this.api = this.mmenu.API;
 
+            //Add event for open/close menus. Other events: 'closePanel:before', 'closePanel:after', 'openPanel:before', 'openPanel:after', 'setSelected:before', 'setSelected:after'
+            this.api.bind('openPanel:after',  this._onOpen.bind(this) );
+            this.api.bind('closePanel:after', this._onClose.bind(this) );
+
             $elem.data('bsMmenu', this.mmenu);
 
+
+            this.setOpenAndClosedItems();
+
             return this;
+        },
+
+        /**********************************
+        setOpenAndClosedItems
+        Open/close items according to the setting in this.openItemIdList
+        **********************************/
+        setOpenAndClosedItems: function(){
+            this.openItemIdList = this.openItemIdList || {};
+
+            let save_openItemIdList = $.extend({}, this.openItemIdList);
+            $.each(this.openItemIdList, function(id, isOpen){
+                let item = this.getItem(id);
+                if (item && isOpen)
+                    item.open();
+            }.bind(this));
+
+            //Need to re-close other items
+            this.openItemIdList = save_openItemIdList;
+
+            this.visitAllItems( function(menuItem){
+                if (!this.openItemIdList || !this.openItemIdList[menuItem.id])
+                    menuItem.close();
+            }.bind(this));
+
         },
 
         /**********************************
@@ -112667,6 +112881,7 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
                 else
                     item = item.next;
             }
+
             return result;
         },
 
@@ -112675,6 +112890,48 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
         **********************************/
         getItem: function(id, findByLiId){
             return this._getItem(id, this, findByLiId);
+        },
+
+        /**********************************
+        _getItemByPlacment
+        **********************************/
+        _getItemByPlacment( placement ){
+            let getChildByIndex = function( parent, placement ){
+                if (!placement.length || !parent)
+                    return parent;
+
+                let nextIndex = placement.pop(),
+                    index = 0,
+                    nextItem = parent.last;
+                while (nextItem){
+                    if (index == nextIndex)
+                        return getChildByIndex( nextItem, placement );
+                    else {
+                        nextItem = nextItem.prev;
+                        index++;
+                    }
+                }
+                return null;
+            };
+
+            return getChildByIndex( this, placement );
+        },
+
+        /**********************************
+        visitAllItems
+        func = function(menuItem)
+        **********************************/
+        visitAllItems: function( func ){
+            function visitAll( menuItem ){
+                let nextChild = menuItem.first;
+                while (nextChild){
+                    func(nextChild);
+                    visitAll(nextChild);
+                    nextChild = nextChild.next;
+                }
+            }
+            visitAll( this );
+
         },
 
         /**********************************
@@ -112692,7 +112949,7 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
         **********************************/
         reset: function(){
             if (this.options.reset.promise)
-                this.options.reset.promise( $.proxy(this._reset_resolve, this) );
+                this.options.reset.promise( this._reset_resolve.bind(this) );
         },
 
         _reset_resolve: function( closeAll ){
@@ -112706,6 +112963,28 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
                 this.closeAll();
 
             this.options.reset.finally(this);
+        },
+
+        /**********************************
+        _onOpenClose
+        **********************************/
+        _onOpen: function(panel) { return this._onOpenOrClose(panel, true);  },
+        _onClose: function(panel){ return this._onOpenOrClose(panel, false); },
+
+        _onOpenOrClose( panel, isOpen=false){
+            let liId     = panel.parentElement ? $(panel.parentElement).attr('id') : null,
+                menuItem = liId ? this.getItem(liId, true) : null;
+
+            if (menuItem){
+                //Update openItemIdList
+                this.openItemIdList = this.openItemIdList || {};
+                this.openItemIdList[menuItem.id] = isOpen;
+
+                if (this.options.onOpenOrClose)
+                    this.options.onOpenOrClose(menuItem, isOpen, this);
+            }
+
+            return this;
         },
 
         /**********************************
@@ -112774,7 +113053,198 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
 
                 });
             }
+        },
+
+        /**********************************
+        clone
+        Create a cloned version of the menu
+        ***********************************/
+        clone: function( options = {}, mmenuOptions = {}, configuration = {}  ){
+
+            options = $.extend({
+                inclFavorites: false,
+                noButtons    : true,
+                inclBar      : false,
+                reset        : false,
+                favorites    : false,
+                isFullClone  : true     //true => All items are an exact copy
+            }, options);
+
+            let c_options       = $.extend(true, {}, this.options,               options      ),
+                c_mmenuOptions  = $.extend(true, {}, this.options.mmenuOptions,  mmenuOptions ),
+                c_configuration = $.extend(true, {}, this.options.configuration, configuration);
+
+            let c_menu = $.bsMmenu(c_options, c_mmenuOptions, c_configuration);
+
+            this.nrOfClones = this.nrOfClones || 0;
+            this.clones = this.clones || {};
+
+            c_menu.cId = 'clone'+this.nrOfClones;
+            c_menu.cloneOf = this;
+            this.nrOfClones++;
+            this.clones[c_menu.cId] = c_menu;
+
+            //Copy the open/close state from the original menu
+            c_menu.openItemIdList = {};
+            $.each(this.openItemIdList, function(id, isOpen){
+                let origialItem = this.getItem(id),
+                    cloneItem = origialItem ? origialItem.getSiblingItem( c_menu ) : null;
+                if (cloneItem)
+                    c_menu.openItemIdList[cloneItem.id] = isOpen;
+            }.bind(this));
+
+            return c_menu;
+        },
+
+        /**********************************
+        destroy
+        Destroy the menu and clean up
+        ***********************************/
+        destroy: function(){
+            if (this.cloneOf)
+                delete this.cloneOf.clones[this.cId];
+            $(this.mmenu.node.menu).empty();
+        },
+
+        /**********************************
+        showInModal
+        Show the menu in a modal
+        ***********************************/
+        showInModal: function(modalOptions = {}, destroyOnClose){
+
+            let width = null;
+
+            //If the menu is a clone and modalOptions.sameWidthAsCloneOf = true => the modal inner-wisth gets the same as the original menu
+            if (this.cloneOf && modalOptions.sameWidthAsCloneOf && !modalOptions.width)
+                width = this.cloneOf.$ul.width();
+            else
+                width = modalOptions.width;
+
+            let offCanvas = this.mmenuOptions.offCanvas;
+            this.mmenuOptions.offCanvas = false;
+
+            if (destroyOnClose){
+                modalOptions.show   = false;
+                modalOptions.remove = true;
+            }
+
+            this.bsModal = $.bsModal(
+                $.extend( modalOptions, {
+                    scroll   : true,
+                    fitWidth : !!width,
+                    flexWidth: !width,
+
+                    content: function(modalOptions, $container){
+                        let $outerContent =
+                                $('<div></div>')
+                                    .addClass('mm-menu-modal-content')
+                                    .appendTo($container);
+
+                        if (modalOptions.minHeight)
+                            $outerContent.css('minHeight', modalOptions.minHeight);
+
+                        if (width)
+                            $outerContent.width(width);
+
+                        let $content = $('<div></div>')
+                                .appendTo($outerContent);
+
+                        this.create($content);
+                    }.bind(this, modalOptions),
+                })
+            );
+
+            this.mmenuOptions.offCanvas = offCanvas;
+
+            if (destroyOnClose)
+                //Destroy the cloned menu on close + show it!
+                this.bsModal
+                    .on('hidden.bs.modal', this.destroy.bind(this) )
+                    .show();
+        },
+
+        /**********************************
+        asSimpleMenu
+        Special method to return the menu as a new simple bsMenu
+        The returned menu do not only contain any pure text or buttons or checkbox/radio
+        Instead eaach menu-item is just a click-item calling onClick
+        Optional: include(menuItem) return true/false
+        Optional: adjust(menuItem) return menuItem adjusted (icon, text etc)
+        ***********************************/
+        asSimpleMenu: function(
+            onClick = (/*menuItem*/) => {/* Do sometning with item*/},
+            include = (  menuItem  ) => {return !!menuItem.onClick || !!menuItem.onChange;},
+            adjust  = (  menuItem  ) => {return menuItem; }){
+
+
+            let onClickSimple = function(id, state, menuItem){
+                onClick(menuItem);
+            };
+
+
+            let getIcon = function( opt ){
+                let icon = opt.icon;
+                if (icon && this.options.adjustIcon)
+                    icon = this.options.adjustIcon(icon);
+                return icon;
+            }.bind(this);
+
+
+            let getSimpleOptions = function( menuList = []){
+                let result = [];
+
+                menuList.forEach( menuItem => {
+                    menuItem = adjust(menuItem);
+
+                    let simpleOptions = null;
+                    let list = getSimpleOptions( menuItem.list);
+
+                    if (list.length)
+                        simpleOptions = {
+                            id  : menuItem.id,
+                            icon: getIcon(menuItem),
+                            text: menuItem.text,
+                            list: list
+                        };
+                    else
+                        //Menu-item has no children => Add it if it is included (default = has a onClick/onChange )
+                        if (include(menuItem))
+                            simpleOptions = {
+                                id      : menuItem.id,
+                                icon    : getIcon(menuItem),
+                                text    : menuItem.text || {da:'Mangler', en:'Missing'},
+                                onClick : onClickSimple,
+                                simpleFullWidth: true
+                            };
+
+                    if (simpleOptions)
+                        result.push( simpleOptions );
+                }, this);
+
+                return result;
+
+            }.bind(this);
+
+
+            let bsMenu = $.bsMmenu(
+                    {list: getSimpleOptions( this.list ) },
+                    this.options.mmenuOptions,
+                    this.options.configuration
+                );
+
+            //Copy the open/close state from the original menu
+            bsMenu.openItemIdList = {};
+            $.each(this.openItemIdList, function(id, isOpen){
+                let origialItem = this.getItem(id),
+                    cloneItem = origialItem ? origialItem.getSiblingItem( bsMenu ) : null;
+                if (cloneItem)
+                    bsMenu.openItemIdList[cloneItem.id] = isOpen;
+            }.bind(this));
+
+            return bsMenu;
+
         }
+
     };
 
     /******************************************
@@ -117788,6 +118258,9 @@ Objects and methods to set up Mmenu via $.bsMmenu
     var favoriteSetting = null, //SettingGroup to hold the favorites in the menus
         favoriteSettingId = '__FAVORITES__',
 
+        menuSetting = null, //SettingGroup to hold the state of the menu (open/closed)
+        menuSettingId = '__MENU__',
+
         bsMenus = {}; //{id:BsMenu}
 
 
@@ -117800,9 +118273,7 @@ Objects and methods to set up Mmenu via $.bsMmenu
     }
 
     function favoritesSetting_afterLoad(){
-        $.each(bsMenus, function(id, bsMenu){
-            setFavorites(bsMenu);
-        });
+        $.each(bsMenus, (id, bsMenu) => setFavorites(bsMenu) );
     }
 
     function favorite_get(menuId, itemId){
@@ -117820,11 +118291,46 @@ Objects and methods to set up Mmenu via $.bsMmenu
         }
     }
 
+
+
+    function menusSetting_afterLoad(){
+        if (menuSetting && menuSetting.data)
+            $.each(bsMenus, (id, bsMenu) => {
+
+                bsMenu.openItemIdList = bsMenu.openItemIdList || {};
+
+                (menuSetting.data[id] || '').split(' ').forEach( menuItemId => {
+                    bsMenu.openItemIdList[menuItemId] = true;
+                });
+
+                bsMenu.setOpenAndClosedItems();
+            });
+    }
+
+
+    function menu_onOpenOrClose(menuItem, open, bsMenu){
+        //Save a list of all open menu-item-ids
+        let data = [];
+        $.each(bsMenu.openItemIdList || {}, (id, open) => { if (open) data.push(id); });
+
+        if (menuSetting && menuSetting.data){
+            menuSetting.data = menuSetting.data || {};
+            menuSetting.data[bsMenu.id] = data.join(' ');
+            menuSetting.saveAs(menuSettingId);
+        }
+    }
+
     ns.createMmenu = function( menuId, options, $container ){
         if (!favoriteSetting){
             favoriteSetting = new ns.SettingGroup({simpleMode: true});
             favoriteSetting.load( favoriteSettingId, favoritesSetting_afterLoad );
         }
+
+        if (!menuSetting){
+            menuSetting = new ns.SettingGroup({simpleMode: true});
+            menuSetting.load( menuSettingId, menusSetting_afterLoad );
+        }
+
 
 
         if (options.favorites === true)
@@ -117849,12 +118355,18 @@ Objects and methods to set up Mmenu via $.bsMmenu
             options.reset.title = ns.texts.reset;
 
         }
+
+        //Set default save open/close
+        if (!options.onOpenOrClose)
+            options.onOpenOrClose = menu_onOpenOrClose;
+
+
         //Create the menu
         var bsMenu =
                 $.bsMmenu(
                     options, {
                         offCanvas      : false,
-                        slidingSubmenus: ns.modernizrDevice.isPhone
+                        slidingSubmenus: false,//ns.modernizrDevice.isPhone
                     }).create( $container );
 
         bsMenu.id = bsMenu.options.id || menuId;
@@ -138125,7 +138637,7 @@ Options for selectiong position-format and to activate context-menu
             tooltipDirection: 'top',
 
             content     : {
-                semiTransparent    : false,
+                //semiTransparent    : false,
                 clickable          : true,
                 noHeader           : true,
                 noVerticalPadding  : true,
@@ -138237,10 +138749,10 @@ Options for selectiong position-format and to activate context-menu
             var cursorOptions = {
                     insideFormGroup  : true,
                     noValidation     : true,
-                    noBorder         : true,
+                    noBorder         : false, //true,
                     noVerticalPadding: true,
                     noPadding        : true,
-                    type             : 'textbox',
+                    type             : 'text', //'textbox',
 
                     text           : function( $inner ){ $inner.addClass('cursor'); },
                     class          :'show-for-control-position-cursor',
@@ -138248,13 +138760,13 @@ Options for selectiong position-format and to activate context-menu
                         type  : 'button',
                         square: true,
                         icon  : iconCursorPosition,
-                        transparent: true,
+                        //transparent: true,
                     },
                     after: !this.options.inclContextmenu ? null : {
                         type  :'button',
                         square: true,
                         icon  : L.BsControl.prototype.options.rightClickIcon,
-                        transparent: true,
+                        //transparent: true,
                         onClick: function(){
                             window.notyInfo(
                                 { icon: L.BsControl.prototype.options.rightClickIcon,
@@ -138350,6 +138862,7 @@ Options for selectiong position-format and to activate context-menu
 
                 if (_this.options.inclContextmenu)
                     options.after = options.after || {};
+                
                 return options;
             }
 
@@ -138760,7 +139273,7 @@ Options for selectiong position-format and to activate context-menu
                     text   : '',
                     square : true,
                     class  : 'disabled show-as-normal',
-                    semiTransparent: true
+                    //semiTransparent: true,
                 },
                 after: {
                     type   : 'button',
@@ -138768,7 +139281,7 @@ Options for selectiong position-format and to activate context-menu
                     text   : '',
                     square : true,
                     class  : 'disabled show-as-normal',
-                    semiTransparent: true
+                    //semiTransparent: true,
                 }
             };
 
@@ -141576,7 +142089,8 @@ ctx.fillRect(0, 0, shapeDim, shapeDim);
             //TODO zIndexWhenHover         : null,   //zIndex applied when the polyline/polygon is hover
             //TODO zIndexWhenPopupOpen     : null,   //zIndex applied when the a popup is open on the polyline/polygon
 
-            className       : 'lpl-base',
+            baseClassName   : 'lpl-base',
+            className       : '',
 
             borderWidth     : 1, //Width of border
             shadowWidth     : 3, //Width of shadow
@@ -141595,14 +142109,16 @@ ctx.fillRect(0, 0, shapeDim, shapeDim);
         *****************************************************/
         initialize: function( initialize ){
             return function( latLngs, options ){
-                var _this = this;
-                function getOptions( className, interactive ){
-                    return $.extend({}, _this.options, defaultOptions, {
-                               className     : className,
-                               addInteractive: false,
-                               interactive   : interactive,
-                            });
-                }
+
+                const getOptions = function( baseClassName='', interactive ){
+                    let result = $.extend({}, this.options, defaultOptions, {
+//                            className     : className,
+                            addInteractive: false,
+                            interactive   : interactive,
+                        });
+                    result.className = baseClassName + ' ' + (this.options.className || '');
+                    return result;                
+                }.bind(this);
 
                 options = options || {};
                 if (!options.addInteractive)
@@ -141668,7 +142184,7 @@ ctx.fillRect(0, 0, shapeDim, shapeDim);
 
                 //If there are options in options.polyline or options.LineString for polyline etc. => copy them into options.
                 //This makes it possible to add options in geoJSON-layer with different options for polygons and lines
-                $.each(this instanceof L.Polygon ? ['polygon', 'Polygon'] : ['polyline', 'Polyline', 'lineString', 'LineString'], function(index, name){
+                (this instanceof L.Polygon ? ['polygon', 'Polygon'] : ['polyline', 'Polyline', 'lineString', 'LineString']).forEach( name => {
                     if (options[name])
                         $.extend(options, adjust(options[name]));
                 });
@@ -141685,7 +142201,7 @@ ctx.fillRect(0, 0, shapeDim, shapeDim);
                 this.polylineList[interactiveIndex].setStyle({weight: options.weight + 2*options.interactiveWidth});
 
                 //Add class and colors to this and shadow
-                this._addClass(thisIndex, options.className);
+                this._addClass(thisIndex, (options.baseClassName || '') + ' ' + (options.className || ''));
                 this.setColor(options.colorName);
                 this.setBorderColor(options.borderColorName);
                 this._toggleClass(thisIndex, 'lpl-transparent', !!options.transparent);
@@ -141794,7 +142310,6 @@ ctx.fillRect(0, 0, shapeDim, shapeDim);
         Add, remove and toggle class from a polyline
         *****************************************************/
         _eachPolyline: function( onlyPolyline, methodName, arg ){
-            var _this = this;
             if (onlyPolyline != null){
                 if ($.isNumeric(onlyPolyline))
                     onlyPolyline = this.polylineList[onlyPolyline];
@@ -141804,9 +142319,7 @@ ctx.fillRect(0, 0, shapeDim, shapeDim);
                 }
             }
             else
-                $.each(this.polylineList, function( index, polyline ){
-                   _this._eachPolyline( polyline, methodName, arg );
-                });
+                this.polylineList.forEach( polyline => this._eachPolyline( polyline, methodName, arg ), this);
         },
 
         _addClass: function( polyline, className ){
@@ -145838,16 +146351,44 @@ Objects and methods to handle map-sync
                     text = {da: 'Samme som hovedkort', en:'Same as main map'};
                 else
                     text = {da: zoomOffset+ ' x zoom ind', en: zoomOffset+ ' x zoom in'};
-            zoomItems.push( {id: 'zoomOffset_'+zoomOffset, text: text} );
+
+            //Create zoom-mode-icon
+            let outerIcon = 'fa-square-full', 
+                innerIcon = '';
+            switch (Math.abs(zoomOffset)){
+                case 0:  innerIcon = outerIcon; break;
+                case 1:  innerIcon = 'fa-square fa-1xzoom'; break;
+                case 2:  innerIcon = 'fa-square-small fa-2xzoom'; break;
+            }                
+
+            if (zoomOffset < 0){
+                outerIcon = 'fas text-multi-maps-current '  + outerIcon;
+                innerIcon = 'far text-multi-maps-main '     + innerIcon;                
+            }
+            else {
+                outerIcon = 'far text-multi-maps-main '     + outerIcon;
+                innerIcon = 'fas text-multi-maps-current  ' + innerIcon;                
+            }
+                
+            zoomItems.push({
+                id: 'zoomOffset_'+zoomOffset, 
+                icon: [[
+                    zoomOffset ? outerIcon : innerIcon, 
+                    zoomOffset ? innerIcon : outerIcon
+                ]],
+                text: text
+            });
         }
+        
         let showWhen = {};
         showWhen[controlId + (controlId?'_':'')+'enabled'+idPostfix] = true;
         content.push({
-            id      : 'zoomOffset'+idPostfix,
-            label   : {da:'Zoom-niveau', en:'Zoom level'},
-            type    : 'select',
-            items   : zoomItems,
-            showWhen: showWhen
+            id       : 'zoomOffset'+idPostfix,
+            label    : {da:'Zoom-niveau', en:'Zoom level'},
+            type     : 'selectbutton',
+            fullWidth: true,            
+            items    : zoomItems,
+            showWhen : showWhen
         });
 
         return content;
@@ -147664,6 +148205,16 @@ Methods to adjust and display latLng-values
         latLngFormats,
         clipboard;
 
+/*
+@todo Add link to Google maps
+https://www.google.com/maps/@?api=1&map_action=map&center=latitude,longitude&zoom=<zoom level
+Måske som knap i context-menu og/eller knap i latLngModal
+
+
+
+
+
+*/
     nsMap.latLngAsModal = function(latLng, options){
         options = options || {};
         var modalOptions = {
@@ -148033,7 +148584,7 @@ that includes current position, and use this other map to get the color
         bbox=-626172.1357121639,8766409.899970293,0,9392582.035682464
 
 
-    https://wms02.fcoo.dk/webmap/v2/data/DMI/HARMONIE/DMI_NEA_MAPS_v005C.nc.wms?
+    https://wms02.fcoo.dk/webmap/v3/data/DMI/HARMONIE/DMI_NEA_MAPS_v005C.nc.wms?
         service=WMS&
         request=GetMap&
         version=1.3.0&
@@ -148078,7 +148629,7 @@ that includes current position, and use this other map to get the color
             staticOptions: {
                 version: '1.1.1'
             },
-            dynamicUrl: "{protocol}//{s}.fcoo.dk/webmap/v2/data/{dataset}.wms",
+            dynamicUrl: "{protocol}//{s}.fcoo.dk/webmap/v3/data/{dataset}.wms",
             dynamicOptions: {
                 updateInterval: 50,
                 transparent   : 'TRUE',
@@ -148156,6 +148707,12 @@ that includes current position, and use this other map to get the color
         service         : STRING ("WMS")
         request         : STRING ("GetMap")
         layers          : STRING,
+
+        dataset     : STRING,
+        styles      : STRING, OBJECT or ARRAY
+        cmap        : STRING,
+
+
         zIndex          : NUMBER
         deltaZIndex     : NUMBER (optional)
         minZoom         : NUMBER (optional)
@@ -148172,6 +148729,9 @@ that includes current position, and use this other map to get the color
                         request         : "GetMap",
                     }, defaultOptions, options );
 
+
+        url              = options.url || url;
+        LayerConstructor = options.LayerConstructor || LayerConstructor;
 
         //Convert layers: []STRING => STRING,STRING and styles = {ID: VALUE} => ID:VALUE;ID:VALUE
         function convertToStr(id, separator){
@@ -148199,19 +148759,22 @@ that includes current position, and use this other map to get the color
 
 
     /***********************************************************
-    layer_static - Creates a L.TileLayer.WMS (layer_wms) with options for static layers
+    layer_wms_static - Creates a L.TileLayer.WMS (layer_wms) with options for static layers
+    Also as layer_static for backward combability
     ***********************************************************/
-    nsMap.layer_static = function(options, map, defaultOptions = nsMap.wmsStatic.options, url = nsMap.wmsStatic.url, LayerConstructor){
+    nsMap.layer_wms_static = nsMap.layer_static = function(options, map, defaultOptions = nsMap.wmsStatic.options, url = nsMap.wmsStatic.url, LayerConstructor){
         return nsMap.layer_wms(options, map, defaultOptions, url, LayerConstructor);
     };
 
 
     /***********************************************************
-    layer_dynamic - Creates a L.TileLayer.WMS (layer_wms) with options for dynamic layers
+    layer_wms_dynamic - Creates a L.TileLayer.WMS (layer_wms) with options for dynamic layers
+    Also as layer_dynamic for backward combability
     ***********************************************************/
-    nsMap.layer_dynamic = function(options, map, defaultOptions = nsMap.wmsDynamic.options, url = nsMap.wmsDynamic.url, LayerConstructor){
+    nsMap.layer_wms_dynamic = nsMap.layer_dynamic = function(options, map, defaultOptions = nsMap.wmsDynamic.options, url = nsMap.wmsDynamic.url, LayerConstructor){
         //Adjust url to include eq. dataset
         url = adjustString(url, options);
+
 
         return nsMap.layer_wms(options, map, defaultOptions, url, LayerConstructor);
     };
@@ -148455,7 +149018,7 @@ Objects and methods to handle leaflet-maps
         maxZoom: 12,
 
         zoomSnap: 0.25,
-
+            
         //Hide attribution
         attributionControl: false,
 
@@ -148882,9 +149445,17 @@ Global context-menu for all maps
 
 
 
-
+    //Selct layer
     map_contextmenu_itemList.push({
-        //Map-setting
+        icon       : 'fa-layer-group',
+        text       : {da:'Vælg lag...', en:'Select layers...'},
+        spaceBefore: true,
+        onClick    : (id, latlng, $button, map) => nsMap.selectLayerInModal(map)
+    });
+
+    
+    //Map setting
+    map_contextmenu_itemList.push({
         icon       : ns.icons.mapSettingSingle,
         text       : ns.texts.mapSettingSingle,
         spaceBefore: true,
@@ -148894,6 +149465,7 @@ Global context-menu for all maps
                 nsMap.editMapSetting(map.fcooMapIndex);
         }
     });
+
 
 
     L.Map.addInitHook(function () {
@@ -148943,8 +149515,15 @@ options = {
 
     //Menu
     menuOptions: {
-        buttonList : []bsButton-options
+        buttonList         : []bsButton-options. options.onClick = function( id, selected, $button, map ). If useLegendButtonList = true map is null if the button is clicked from the menu
         useLegendButtonList: BOOLEAN, if true and menuOptions.buttonList is not given => use legendOptions.buttonList as in menu
+
+        showAllways        : BOOLOAN. When true the buttons are visible even when the layer is not visible in any maps. Can also be set directly in buttonOptions
+        buttonListMode     : {button-id: MODE} or MODE. When useLegendButtonList = true =>
+                                buttonListMode[id]/buttonListMode = "allMaps", "selectedMaps", "mainMap", or "noMaps" (default)
+                                The mode sets witch maps to be called with the onClick-method for the legend-button-list
+                                The mode can also be set direct in the options for the button in buttonList as options.menuButtonMode
+
     },
 
     //Legend
@@ -149232,8 +149811,6 @@ L.Layer.addInitHook(function(){
         },
 
         _applySetting: function(data){
-            var _this = this;
-
             //Apply common setting
             this.applyCommonSetting(data.common || null);
 
@@ -149242,15 +149819,15 @@ L.Layer.addInitHook(function(){
                 var mapIndex = map.fcooMapIndex,
                     setting = data[mapIndex] || {};
                 if (setting.show)
-                    _this.addTo(map);
+                    this.addTo(map);
                 else
-                    _this.removeFrom(map);
+                    this.removeFrom(map);
 
                 //colorInfo - TODO
 
                 //Individual setting
-                _this.applySetting(setting, map, _this.info[mapIndex], mapIndex);
-            });
+                this.applySetting(setting, map, this.info[mapIndex], mapIndex);
+            }.bind(this));
         },
 
         //saveSetting: function() - Return individuel setting for the Map_layer at map
@@ -149263,8 +149840,7 @@ L.Layer.addInitHook(function(){
         },
 
         _saveSetting: function(){
-            var _this = this,
-                data = {},
+            var data = {},
                 commonSetting = this.saveCommonSetting() || null;
 
             if (commonSetting !== null)
@@ -149273,12 +149849,12 @@ L.Layer.addInitHook(function(){
             $.each(this.info, function(index, info){
                 data[index] =
                     $.extend({
-                        show: _this.isAddedToMap(index)
+                        show: this.isAddedToMap(index)
                         //colorInfo - TODO
                     },
-                        _this.saveSetting(info ? info.map : null, info, index) || {}
+                        this.saveSetting(info ? info.map : null, info, index) || {}
                     );
-            });
+            }.bind(this));
             ns.appSetting.set(this.id, data);
             return ns.appSetting.save();
         },
@@ -149287,11 +149863,9 @@ L.Layer.addInitHook(function(){
         addTo
         *********************************************************/
         addTo: function(mapOrIndex){
-
-            var _this = this;
-            if ($.isArray(mapOrIndex)){
-                $.each(mapOrIndex, function(index, _map){ _this.addTo(_map); });
-                return _this;
+            if (Array.isArray(mapOrIndex)){
+                mapOrIndex.forEach(map => this.addTo(map), this);
+                return this;
             }
 
             var map = nsMap.getMap(mapOrIndex),
@@ -149325,10 +149899,10 @@ L.Layer.addInitHook(function(){
                         buttonList = legendOptions.buttonList || legendOptions.buttons || [];
 
                     //If a button has onlyShowWhenLayer = true => the button is only visible if the layer is visible/shown
-                    $.each(buttonList, function(dummy, buttonOptions){
+                    buttonList.forEach( buttonOptions => {
                         if (buttonOptions.onlyShowWhenLayer)
-                            buttonOptions.class = (buttonOptions.class || '') + ' ' + _this.showAndHideClasses + '-visibility';
-                    });
+                            buttonOptions.class = (buttonOptions.class || '') + ' ' + this.showAndHideClasses + '-visibility';
+                    }, this);
 
 
                     //Find index for legend
@@ -149347,13 +149921,13 @@ L.Layer.addInitHook(function(){
                     }
 
                     legendOptions = $.extend(true, {}, {
-                        index       : parseInt(indexAsStr), //this.index,
+                        index       : parseInt(indexAsStr),
                         icon        : this.options.legendIcon || this.options.icon,
                         iconClass   : this.options.legendIconClass || this.options.iconClass || null,
                         text        : this.options.legendText || this.options.text || null,
 
                         //content            : this.options.content,
-                        contentArg         : [_this, map],
+                        contentArg         : [this, map],
                         //noVerticalPadding  : this.options.noVerticalPadding,
                         //noHorizontalPadding: this.options.noHorizontalPadding,
 
@@ -149492,13 +150066,13 @@ L.Layer.addInitHook(function(){
             if ( this.hasColorInfo && !info.colorInfoLayer ){
                 this.hasColorInfo = false;
                 //Get the tileLayer used for colorInfo (if any)
-                $.each(layer.getLayers ? layer.getLayers() : [layer], function(index, singleLayer){
+                (layer.getLayers ? layer.getLayers() : [layer]).forEach( singleLayer => {
                     //The layre used for color-info is the first GridLayer or the GridLayer with options.useForColorInfo
                     if  ( (singleLayer instanceof L.GridLayer) && (!info.colorInfoLayer || singleLayer.options.useForColorInfo) ){
                         info.colorInfoLayer = singleLayer;
-                        _this.hasColorInfo = true;
+                        this.hasColorInfo = true;
                     }
-                });
+                }, this);
 
                 //Add id and loading and load events to update legend and/or colorInfo icon
                 var colorInfoLayer = info.colorInfoLayer;
@@ -149528,9 +150102,9 @@ L.Layer.addInitHook(function(){
             //If it is a radio-group layer => remove all other layers with same radioGroup
             if (this.options.radioGroup)
                 $.each(nsMap.mapLayers, function(id, mapLayer){
-                    if ((mapLayer.options.radioGroup == _this.options.radioGroup) && (mapLayer.id != _this.id))
+                    if ((mapLayer.options.radioGroup == this.options.radioGroup) && (mapLayer.id != this.id))
                         mapLayer.removeFrom(mapOrIndex);
-                });
+                }.bind(this));
 
 
             //Update checkbox/radio in menuItem
@@ -149641,10 +150215,9 @@ L.Layer.addInitHook(function(){
 
         //visitAllLayers: Call method( layer, mapLayer) for all layer
         visitAllLayers: function(method, onlyIndexOrMapId){
-            var _this = this;
-            $.each( this._getAllInfoChild('layer', onlyIndexOrMapId), function(index, layer){
-                method(layer, _this);
-            });
+            this._getAllInfoChild('layer', onlyIndexOrMapId).forEach(layer => {
+                method(layer, this);
+            }, this);
             return this;
         },
 
@@ -149725,9 +150298,8 @@ L.Layer.addInitHook(function(){
         },
 
         removeFrom: function(mapOrIndex){
-            var _this = this;
             if ($.isArray(mapOrIndex)){
-                $.each(mapOrIndex, function(index, _map){ _this.removeFrom(_map); });
+                mapOrIndex.forEach( map => this.removeFrom(map), this);
                 return this;
             }
 
@@ -149833,13 +150405,12 @@ L.Layer.addInitHook(function(){
         },
 
         _updateLoadingStatus: function(event, loading){
-            var _this = this,
-                mapIndex = this._getMapIndex(event),
+            var mapIndex = this._getMapIndex(event),
                 info = this.info[mapIndex];
             info.loading = loading;
 
             window.clearTimeout(info.timeout);
-            info.timeout = window.setTimeout( function(){ _this._updateLoadingIcon(mapIndex); }, 400);
+            info.timeout = window.setTimeout( function(){ this._updateLoadingIcon(mapIndex); }.bind(this), 400);
 
         },
         _updateLoadingIcon: function(mapIndex){
@@ -149885,10 +150456,9 @@ L.Layer.addInitHook(function(){
         hideColorInfo: function(mapOrIndex){ return this.toggleColorInfo(mapOrIndex, false); },
 
         toggleColorInfo: function(mapOrIndex, show){
-            var _this = this;
             if ($.isArray(mapOrIndex)){
-                $.each(mapOrIndex, function(index, _map){ _this.toggleColorInfo(_map, show); });
-                return _this;
+                mapOrIndex.forEach( map => this.toggleColorInfo(map, show), this);
+                return this;
             }
             var map = nsMap.getMap(mapOrIndex),
                 mapIndex = map.fcooMapIndex,
@@ -149924,11 +150494,64 @@ L.Layer.addInitHook(function(){
 
 
             //Use legend-buttons if no direct menu-button is given
-            if (!result.buttonList && menuOptions.useLegendButtonList && legendOptions.buttonList)
-                result.buttonList = legendOptions.buttonList;
+            if (!result.buttonList && menuOptions.useLegendButtonList && legendOptions.buttonList){
+
+                let menuButtonList = [];
+                legendOptions.buttonList.forEach( (buttonOptions, index) => {
+                    let menuButtonOptions = $.extend(true, {}, buttonOptions );
+
+                    menuButtonOptions.legendOnClick = menuButtonOptions.onClick;
+                    menuButtonOptions.onClick = this._menuButton_onClick.bind(this, index);
+
+                    menuButtonList.push(menuButtonOptions);
+                });
+                result.buttonList = menuButtonList;
+            }
+
+            if (result.buttonList){
+                //Add class to buttons to control if the button is enabled/disabled when the layer is visible in any maps
+                result.buttonList.forEach( buttonOptions => {
+                    const showAllways = buttonOptions.showAllways !== undefined ? buttonOptions.showAllways : menuOptions.showAllways;
+                    buttonOptions.class = (buttonOptions.class || '') + (showAllways ? '' : ' disabled-when-no-selected');
+                });
+            }
 
             return result;
         },
+
+        _menuButton_onClick: function(buttonIndex, id, selected, $button/*, map*/){
+            const buttonOptions = this.options && this.options.legendOptions && this.options.legendOptions.buttonList ? this.options.legendOptions.buttonList[buttonIndex] : null;
+
+            if (!buttonOptions)
+                return this;
+
+            /*
+            buttonListMode: {button-id: MODE}. When useLegendButtonList = true => buttonListMode[id] = "allMaps", "selectedMaps", "mainMap", or "noMaps" (default)
+                                               The mode sets witch maps to be called with the onClick-method for the legend-button-list
+                                            The mode can also be set direct in the options for the button in buttonList as options.menuButtonMode
+            */
+            const menuOptions = this.options.menuOptions;
+
+            let mode = buttonOptions.menuButtonMode;
+
+            if (!mode && menuOptions.buttonListMode);
+                mode = Array.isArray(menuOptions.buttonListMode) ? menuOptions.buttonListMode[buttonIndex] : menuOptions.buttonListMode;
+            mode = mode || "noMaps";
+
+            let mapList = [];
+            switch (mode.toUpperCase()){
+                case "ALLMAPS"      :   nsMap.visitAllVisibleMaps( map => mapList.push(map) ); break;
+                case "SELECTEDMAPS" :   nsMap.visitAllVisibleMaps( function(map){ if (this.isAddedToMap(map)) mapList.push(map); }.bind(this) ); break;
+                case "MAINMAP"      :   mapList = [nsMap.mainMap]; break;
+                default             :   mapList = [null];
+            }
+
+            let onClick = buttonOptions.onClick.bind(buttonOptions.context);
+            mapList.forEach( map => onClick(id, selected, $button, map) );
+
+            return this;
+        },
+
 
         /******************************************************************
         updateMenuItem
@@ -149937,24 +150560,34 @@ L.Layer.addInitHook(function(){
         updateMenuItem: function(){
             if (!this.menuItem) return;
 
+                let notAdded = true;
+
             if (nsMap.hasMultiMaps){
-                var _this       = this,
-                    maps        = nsMap.multiMaps.setup.maps,
+                var maps        = nsMap.multiMaps.setup.maps,
                     addedToMaps = 0;
 
-                $.each(nsMap.multiMaps.mapList, function(index, map){
-                    if (map.isVisibleInMultiMaps && _this.isAddedToMap(index))
+                nsMap.multiMaps.mapList.forEach( (map, index) => {
+                    if (map.isVisibleInMultiMaps && this.isAddedToMap(index))
                         addedToMaps++;
-                });
+                }, this);
 
                 this.menuItem.setState(
                     addedToMaps == 0 ? false :
                     addedToMaps == maps ? true :
                     'semi'
                );
+               notAdded = (addedToMaps == 0);
             }
-            else
+            else {
                 this.menuItem.setState(!!this.isAddedToMap(0));
+                notAdded = !this.isAddedToMap(0);
+            }
+
+            this.menuItem.$li.toggleClass('not-shown-in-any-maps', !!notAdded);
+            this.menuItem.$li.find('.disabled-when-no-selected').toggleClass('disabled', !!notAdded);
+            if (this.menuItem.favoriteItem && this.menuItem.favoriteItem.$li)
+                this.menuItem.favoriteItem.$li.find('.disabled-when-no-selected').toggleClass('disabled', !!notAdded);
+
         },
 
         /******************************************************************
@@ -150042,7 +150675,7 @@ layer_wms.js
 Classes to creraet static and dynamic WMS-layers
 
 ****************************************************************************/
-(function ($, L, window/*, document, undefined*/) {
+(function ($, L, window, document, undefined) {
     "use strict";
 
     //Create namespaces
@@ -150056,20 +150689,33 @@ Classes to creraet static and dynamic WMS-layers
         text,
         static      : BOOLEAN
         creatLayer  : FUNCTION - Create the Leaflet-layer
-        layerOptions: OBJECT
-        layers      : STRING,
+        layerOptions: {
+            service     : STRING ("WMS")            (1)
+            request     : STRING ("GetMap")         (1)
+            dataset     : STRING,                   (1)
+            layers      : STRING, OBJECT or ARRAY   (1)
+            styles      : STRING, OBJECT or ARRAY   (1)
+            cmap        : STRING,                   (1)
+            LayerConstructor                        (1)
+            etc.
+        }
+
         zIndex      : NUMBER
         deltaZIndex : NUMBER (optional)
         minZoom     : NUMBER (optional)
         maxZoom     : NUMBER (optional)
     }
+    (1) Can for convenience also be set direct in options
     ***********************************************************/
     function MapLayer_wms(options) {
-        //Move options regarding tileLayer into layerOptions
+        //Move options regarding tileLayer into layerOptions (if any)
         options.layerOptions = options.layerOptions || {};
-        ['layers', 'zIndex', 'deltaZIndex', 'minZoom', 'maxZoom', 'LayerConstructor'].forEach( id => {
-            options.layerOptions[id] = options[id];
-            delete options[id];
+
+        ['service', 'request', 'dataset', 'layers', 'styles', 'cmap', 'zIndex', 'deltaZIndex', 'minZoom', 'maxZoom', 'LayerConstructor'].forEach( id => {
+            if (options[id] !== undefined){
+                options.layerOptions[id] = options.layerOptions[id] || options[id];
+                delete options[id];
+            }
         });
         nsMap.MapLayer.call(this, options);
     }
@@ -150079,24 +150725,16 @@ Classes to creraet static and dynamic WMS-layers
     MapLayer_wms.prototype.createLayer = nsMap.layer_wms;
 
     /***********************************************************
-    MapLayer_static - Creates a MapLayer with static WMS-layer
-    options = {
-        icon,
-        text,
-        layers     : STRING,
-        zIndex     : NUMBER
-        deltaZIndex: NUMBER (optional)
-        minZoom    : NUMBER (optional)
-        maxZoom    : NUMBER (optional)
-    }
+    MapLayer_wms_static - Creates a MapLayer with static WMS-layer
+    Also as MapLayer_static for backward combability
     ***********************************************************/
-    function MapLayer_static(options) {
+    function MapLayer_wms_static(options) {
         nsMap.MapLayer_wms.call(this, options);
     }
-    nsMap.MapLayer_static = MapLayer_static;
+    nsMap.MapLayer_wms_static = nsMap.MapLayer_static = MapLayer_wms_static;
 
-    MapLayer_static.prototype = Object.create(nsMap.MapLayer_wms.prototype);
-    MapLayer_static.prototype.createLayer = nsMap.layer_static;
+    MapLayer_wms_static.prototype = Object.create(nsMap.MapLayer_wms.prototype);
+    MapLayer_wms_static.prototype.createLayer = nsMap.layer_wms_dynamic;
 
 
 
@@ -150340,6 +150978,88 @@ coast-lines, and name of cites and places
             this.addControl(this.backgroundLayerControl);
         }
     });
+
+}(jQuery, L, this, document));
+
+;
+/****************************************************************************
+map-layer-mmenu
+
+Objects and methods to show a modal with select of layer for one map
+****************************************************************************/
+(function ($, L, window/*, document, undefined*/) {
+    "use strict";
+
+    let ns = window.fcoo = window.fcoo || {},
+        nsMap = ns.map = ns.map || {};
+
+
+    function map_reset(){
+        $.each(nsMap.mapLayers, function(id, mapLayer){
+            if (mapLayer.isAddedToMap(this))
+                mapLayer.removeFrom(this);
+        }.bind(this));
+    }
+
+
+    nsMap.selectLayerInModal = function( map ){
+        let bsMenu = nsMap.main[nsMap.setupOptions.standardMenuId].mmenu;
+
+        if (!bsMenu) return;
+
+        let clonedBsMenu = bsMenu.clone({
+			isFullClone: false,
+
+            getState: function(menuItem){
+                let mapLayer = nsMap.getMapLayer(menuItem.id);
+                return mapLayer.isAddedToMap(this);
+            }.bind(map),
+
+            forceOnClick: function(id, state, menuItem){
+                let mapLayer = nsMap.getMapLayer(menuItem.id);
+                if (mapLayer){
+                    if (mapLayer.isAddedToMap(this))
+                        mapLayer.removeFrom(this);
+                    else
+                        mapLayer.addTo(this);
+                }
+            }.bind(map)
+        });
+
+        //Create fixed-content
+        const miniMapDim  = 80;
+        let $fixedContent = null;
+        if (nsMap.hasMultiMaps && (nsMap.multiMaps.setup.maps > 1)){
+            $fixedContent = $('<div></div>')
+                                .windowRatio(miniMapDim, miniMapDim*2)
+                                .addClass('mx-auto map-sync-zoom-offset') //map-sync-zoom-offset to have claasses for sub-maps
+                                .css('margin', '5px');
+
+            L.multiMaps($fixedContent, {
+                local : true,
+                border: true,
+                update: function( index, map, $mapContainer ){
+                    $mapContainer.toggleClass('current-map', this._multiMapsIndex == index);
+                }.bind(map)
+            }).set( nsMap.multiMaps.setup.id );
+        }
+
+        clonedBsMenu.showInModal({
+            header: {
+                icon: 'fa-layer-group',
+                text: {da:'Vælg lag', en:'Select layers'},
+            },
+			show              : false,
+			minHeight         : 300,
+			sameWidthAsCloneOf: true,
+            fixedContent      : $fixedContent,
+            buttons: [{
+                icon    : ns.icons.reset,
+                text    : ns.texts.reset,
+                onClick : map_reset.bind(map)
+            }]
+        }, true);
+    };
 
 }(jQuery, L, this, document));
 
@@ -152652,7 +153372,7 @@ search-mapLayer.js
             buttonList : this.buttonList(),
         };
         options.menuOptions = {
-            useLegendButtonList: true
+            useLegendButtonList: true,
         };
 
         nsMap.MapLayer.call(this, options);
@@ -152667,7 +153387,7 @@ search-mapLayer.js
         /*****************************************************
         searchButton and buttonList = ´Buttons for legend, menu etc.
         *****************************************************/
-        _searchButton_onClick: function(id, selected, $button, map){
+        _searchButton_onClick: function(id, selected, $button, map){ 
             if (this.searchResultListModal)
                 this.searchResultListModal.close();
             nsMap.showSearchModalForm('', map || ns.showSearchResultInMap );
@@ -152675,12 +153395,13 @@ search-mapLayer.js
 
         searchButton: function(){
             return {
-                type   : 'button',
-                icon   : 'fa-search',
-                class  : 'min-width',
-                text   : {da:'Søg', en:'Search'},
-                onClick: this._searchButton_onClick,
-                context: this
+                type        : 'button',
+                icon        : 'fa-search',
+                class       : 'min-width',
+                text        : {da:'Søg', en:'Search'},
+                showAllways : true,                    
+                onClick     : this._searchButton_onClick,
+                context     : this
             };
         },
         removeAllButton: function(){
@@ -153040,6 +153761,10 @@ search-result.js
     var ns = window.fcoo = window.fcoo || {},
         nsMap = ns.map = ns.map || {};
 
+    function removeDuplicates(arr){
+        return arr.filter(function(item, pos, self) { return self.indexOf(item) == pos; });
+    }
+
 
     var searchResultLineColor = 'black',
         searchResultColor     = 'search-result';
@@ -153207,16 +153932,29 @@ search-result.js
         _getModalOptions: function(options){
             this.update(options[0]);
 
-            //Create the dynamic part of the modal-options
-            var lang = ns.globalSetting.get('language'),
-                content = [{
-                    label    : {da:'Navn(e)', en:'Name(s)'},
-                    type     : 'text',
-                    text     : this.names[lang].split('&nbsp;/&nbsp;').join('<br>'),
-                    center   : true,
-                    textStyle: 'fw-bold'
-                }];
+            const lang = ns.globalSetting.get('language');
 
+
+            //Create the dynamic part of the modal-options
+            let langList = [lang, 'en', this.localLang],
+                nameList = [];
+            
+            langList.forEach( lang => {
+                if (lang && this.name[lang])
+                    nameList.push(this.name[lang]);
+            }, this);                
+
+            nameList = removeDuplicates(nameList);
+            nameList[0] = '<strong>' + nameList[0] + '</strong>';
+            
+            let content = [{
+                    label    : nameList.length == 1 ? {da:'Navn', en:'Name'} : {da:'Navne', en:'Names'},
+                    type     : 'text',
+                    text     : nameList.join('<br>'),
+                    center   : true,
+                    //textStyle: 'fw-bold'
+                }];
+            
             //Add position.
             if (this.inclPositionIsDetails)
                 content.push({
@@ -153234,19 +153972,40 @@ search-result.js
             //Add content from details
             content = content.concat( nsMap.osm_details_list(this, {type: 'text', center: true} ) );
 
-            //Special case: Add flag
-            if (this.options.extratags && this.options.extratags.flag)
+
+            //Add flag lang-flag-icon
+            if (this.countryCode && (this.options.addresstype == "country"))
                 content.push({
                     label    : {da:'Flag', en:'Flag'},
                     type     : 'text',
-                    text     : '<img src="'+this.options.extratags.flag+'" style="border: 1px solid gray; height:100px"/>',
+                    text     : '<img src="images/'+this.countryCode+'_4x3.svg" style="border: 1px solid gray; height:100px"/>',
                     center   : true
                 });
 
+            //@TODO Test if it should be a accordion
+            //Convert conternt to accordion-content
+            content.forEach( (part, index) => {
+                let newPart = {
+                        text: part.label
+                    };
+                part.noLabel = true;
+                part.type = null;
+                newPart.content = part;
+                content[index] = newPart;
+            });                
+
+            content = {
+                type        : 'accordion',
+                list        : content,
+                neverClose  : true,                      
+                multiOpen   : true,                     
+                allOpen     : true,
+            };
+
             this.langDetails = this.langDetails || {};
             this.langDetails[lang] = this.langDetails[lang] || {
-                header      : this.header,
-                content     : content,
+                header : this.header,
+                content: content    
             };
             return this.langDetails[lang];
         },
@@ -153255,8 +154014,6 @@ search-result.js
         //update - append new options and update object
         **********************************************/
         update: function(newOptions){
-            var _this = this;
-
             this.optionsLang = ns.globalSetting.get('language'); //The lang used to get the new options
 
             this.options = this.options || {};
@@ -153265,53 +154022,60 @@ search-result.js
             var opt = this.options;
 
             this.countryCode = opt.address && opt.address.country_code ? opt.address.country_code : '';
-            this.flagIcon = this.countryCode ? 'fa fa-flag-' + this.countryCode : '';
-            this.typeText = nsMap.osm_type_text(opt) || opt.type;
-            this.name = opt.name || '';
+            this.localLang   = ns.country2lang(this.countryCode),
+            this.flagIcon    = this.countryCode ? 'fa fa-flag-' + this.countryCode : '';
+            this.typeText    = nsMap.osm_type_text(opt) || opt.type;
+            this.name        = opt.name || '';
             this.displayName = nsMap.osm_display_name(opt);
 
-            if (opt.isPosition)
+            if (opt.isPosition){
                 this.names = this.name;
+            }                
             else {
-                if (!this.name && opt.namedetails){
-                    //Construct name and name = {lang:STRING} for all lang in i18next.languages and the local language (if found)
-                    var localLang = ns.country2lang(this.countryCode),
-                        localName = opt.namedetails.name || opt.namedetails['name:'+localLang] || '',
+                if (opt.namedetails){
+                    //There are multi-language names for the Search-Result
+                    
+                    let localName   = opt.namedetails.name || opt.namedetails['name:'+this.localLang] || '',
                         defaultName = opt.namedetails['name:en'] || '';
 
                     //Set local name (if not allerady set)
-                    opt.namedetails['name:'+localLang] = opt.namedetails['name:'+localLang] || localName;
-                    $.each(i18next.languages, function(index, lang){
-                        //Create list of language-code with localLang, lang, all other
-                        var namedetailsId = [localLang, lang].concat(i18next.languages);
+                    opt.namedetails['name:'+this.localLang] = opt.namedetails['name:'+this.localLang] || localName;
 
-                        //Find all names in namedetils with language-code in namedetailsId
-                        var nameList = [];
-                        $.each(namedetailsId, function(index, id){
-                            var name = opt.namedetails['name:'+id];
-                            if (name && (nameList.indexOf(name) == -1))
-                                nameList.push(name);
+                    //langList = []Language-code for lang in i18next.languages and the local language (if found)
+                    let langList = [];
+                    i18next.languages.forEach( lang => langList.push(lang) );
+                    if (this.localLang){
+                        langList.push(this.localLang);
+                        langList = removeDuplicates(langList);
+                    }                        
+                     
+                    //Set name = {lang:STRING}
+                    this.name = {};
+                    langList.forEach( lang => {
+                        this.name[lang] = opt.namedetails['name:'+lang] || opt.name || defaultName;                         
+                    }, this);                        
 
-                            _this.name = _this.name || {};
-                            name = name || defaultName;
-                            if (name){
-                                //Add [localname / ]name/defaultNme as name[id]
-                                if (localName && (localName != name))
-                                    _this.name[id] = localName + ' / ' + name;
-                                else
-                                    _this.name[id] = name;
-                            }
-                        });
-                        _this.names = _this.names || {};
-                        _this.names[lang] = nameList.join('&nbsp;/&nbsp;');
-                    });
+                    /*
+                    Construct names = {lang:STRING} for all lang in i18next.languages
+                    The STRING = name in language + (localName) - if any
+                    Eq. names = {
+                            da: "Danmark",
+                            en: "Denmark (Danmark)"
+                        }                            
+                    */
+                    const localNameStr = localName ? ' (' + localName + ')' : '';
+                    this.names = {};
+                    i18next.languages.forEach( lang => {
+                        const nextName = this.name[lang];
+                        this.names[lang] = nextName + (nextName != localName ? localNameStr : '');
+                    }, this);
                 }
 
                 //If only one name is given => convert to {lang:name}
                 if (this.name && (typeof this.name == 'string')){
                     var nameStr = this.name;
                     this.name = {};
-                    this.name[this.optionsLang] =  nameStr;
+                    this.name[this.optionsLang] = nameStr;
                 }
 
                 //Sync between name and names
@@ -153319,13 +154083,13 @@ search-result.js
                 this.names = this.names || {};
 
                 $.each(this.names, function(lang, names){
-                    if (!_this.name[lang])
-                        _this.name[lang] = names.split('&nbsp;/&nbsp;')[0];
-                });
+                    if (!this.name[lang])
+                        this.name[lang] = names.split('&nbsp;/&nbsp;')[0];
+                }.bind(this));
                 $.each(this.name, function(lang, name){
-                    if (!_this.names[lang])
-                        _this.names[lang] = name;
-                });
+                    if (!this.names[lang])
+                        this.names[lang] = name;
+                }.bind(this));
             }
 
             //Remove display_name if if it is contained in names
@@ -153342,7 +154106,7 @@ search-result.js
 		listContent - Return content for the list of results
         **********************************************/
 		listContent: function( listIndex ){
-            var thisOpt     = this.options,
+            var thisOpt = this.options,
                 options = {
                     id       : 'item_'+listIndex,
                     selected : !listIndex,
@@ -153391,8 +154155,9 @@ search-result.js
         addTo(layerGroup, map) - Create marker and/or polyline and add them to layerGroup
         **********************************************/
         addTo: function(layerGroup, map){
-            var mapIndex = map ? map.fcooMapIndex : layerGroup.fcooMapIndex,
-                markerClassName = '';
+            let mapIndex = map ? map.fcooMapIndex : layerGroup.fcooMapIndex,
+                markerClassName = '',
+                poly = null;
 
             if (this.showPoly){
                 markerClassName = 'show-for-leaflet-zoom-'+this.visibleAtZoom+'-down';
@@ -153401,22 +154166,25 @@ search-result.js
                     poly = this.polys[mapIndex];
                 else {
                     //Create polyline
-                    var poly = L.polyline(this.latLngs, {
-                            fill         : false,
-                            lineColorName: searchResultColor,
-                            weight       : 5,
-                            border       : true,
-                            shadow       : true,
-                            hover        : true,
-                            transparent  : true,
+                    poly = L.polyline(this.latLngs, {
+                        fill         : false,
+                        lineColorName: searchResultColor,
+                        weight       : 5,
+                        border       : true,
+                        shadow       : true,
+                        hover        : true,
+                        transparent  : true,
 
-                            tooltipHideWhenPopupOpen: true,
-                            shadowWhenPopupOpen     : true,
-                            shadowWhenInteractive   : true,
+                        tooltipHideWhenPopupOpen: true,
+                        shadowWhenPopupOpen     : true,
+                        shadowWhenInteractive   : true,
 
-                            addInteractive     : true,
-                            interactive        : true,
-                        });
+                        addInteractive     : true,
+                        interactive        : true,
+
+                        className: 'hide-for-leaflet-zoom-'+this.visibleAtZoom+'-down'
+                            
+                    });
 
                     poly.bindTooltip(this.header);
                     this._addPopupAndContextMenu(poly, layerGroup);
@@ -153425,11 +154193,6 @@ search-result.js
                 }
 
                 layerGroup.addLayer( this.polys[mapIndex] );
-
-                //Add class to hide  on when marker is visible - done after the poly is added
-                poly._addClass(null, 'hide-for-leaflet-zoom-'+this.visibleAtZoom+'-down');
-
-
             }
 
             //Create the marker - is allways created to be used for initial popup

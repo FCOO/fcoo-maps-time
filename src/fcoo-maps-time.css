@@ -434,15 +434,15 @@ html.time-mode-ANIMATION .bold-for-time-mode-ANIMATION {
 }
 
 .time-mode-MAIN {
-  color: #9ec5fe;
+  color: #cfe2ff;
 }
 
 .time-mode-MAIN-past {
-  color: #3d8bfd;
+  color: #6ea8fe;
 }
 
 .time-mode-MAIN-future {
-  color: #0a58ca;
+  color: #0d6efd;
 }
 
 .time-is-past .btn.btn-jb.border-color-as-time {
