@@ -2821,7 +2821,7 @@ https://wms01.fcoo.dk/webmap/v2/data/ECMWF/DYSD/ECMWF_DYSD_MAPS_GLOBAL.nc.wms?re
     ********************************************************************************/
     nsMap.layer_wms_dynamic_time = function(options, map, defaultOptions = nsMap.wmsDynamic.options, url = nsMap.wmsDynamic.url, LayerConstructor){
         const wmsLayer = nsMap.layer_wms_dynamic(options, map, defaultOptions, url, LayerConstructor);
-        return L.timeDimension.layer.wms(wmsLayer, {cache:12});
+        return L.timeDimension.layer.wms( wmsLayer, nsMap.tdLayerWmsOptions );
     };
 
 
