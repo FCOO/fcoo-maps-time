@@ -5,172 +5,370 @@ wms-layer and Map-Layer with time-dimension
 Adjustments and extentions to classes from socib/Leaflet.TimeDimension https://github.com/socib/Leaflet.TimeDimension
 
 ****************************************************************************/
-(function ($, L, window/*, document, undefined*/) {
+(function ($, L, window, document, undefined) {
     "use strict";
 
     //Create namespaces
     let ns        = window.fcoo = window.fcoo || {};
     let nsMap     = ns.map = ns.map || {};
-  //let nsTime    = nsMap.time = nsMap.time || {};
+    let nsTime    = nsMap.time = nsMap.time || {};
 
 
     /********************************************************************************
-    Extend different classes in L.TimeDimension
+    *********************************************************************************
+    Extend L.TimeDimension
+    *********************************************************************************
     ********************************************************************************/
+    $.extend(L.TimeDimension.prototype, {
+
+        initialize: function(_initialize){
+            return function(){
+                let result = _initialize.apply(this, arguments);
+
+                this.on('timeloading', this.timeLoading, this);
+                this.on('timeload',    this.timeLoad,    this);
+
+                return result;
+
+            };
+        }(L.TimeDimension.prototype.initialize),
+
+        getMapLayerList: function(){
+            let result = [];
+            this._syncedLayers.forEach( layer => {
+                result.push(layer.mapLayer);
+            });
+            return result;
+        },
+
+        eachMapLayer: function( method, arg = [] ){
+            let callThis = typeof method == 'string';
+            arg = Array.isArray(arg) ? arg : [arg];
+            if (callThis)
+                arg.unshift('', this);
+            this.getMapLayerList().forEach( function( mapLayer ){
+                if (callThis)
+                    mapLayer[method].apply(mapLayer, arg);
+                else {
+                    arg[0] = mapLayer;
+                    method.apply(mapLayer, arg);
+                }
+            });
+            return this;
+        },
+
+        setCurrentTime: function(_setCurrentTime){
+            return function(time){
+                this._syncedLayers.forEach( layer => layer._hideOrShowMapLayer(time) );
+                return _setCurrentTime.apply(this, arguments);
+            };
+        }(L.TimeDimension.prototype.setCurrentTime),
+
+
+        setLoading: function(on){
+            if (this._syncedLayers.length){
+                let fcooMapIndex = this._syncedLayers[0].fcooMapIndex;
+                let method = on ? 'workingOn' : 'workingOff';
+                this.eachMapLayer( mapLayer => mapLayer[method](fcooMapIndex) );
+            }
+            return this;
+        },
+
+        timeLoading: function( e ){
+            this.setLoading(true);
+            this.eachMapLayer( function( mapLayer ){
+                if (mapLayer.onTimeLoading)
+                    mapLayer.onTimeLoading(e.time);
+            });
+            return true;
+        },
+
+        timeLoad: function( e ){
+            this.eachMapLayer( function( mapLayer ){
+                if (mapLayer.onTimeLoad)
+                    mapLayer.onTimeLoad(e.time);
+            });
+            return true;
+        },
+
+        _getTimeList: function(range = {}){
+            let min      = nsTime.timeOptions.min,
+                max      = nsTime.timeOptions.max,
+                mom      = moment(nsTime.nowMoment).add(min, nsTime.unit),
+                timeList = [];
+
+            range = $.extend({
+                        min: Number.NEGATIVE_INFINITY,
+                        max: Number.POSITIVE_INFINITY
+                    }, range);
+
+            for (var i=min; i<=max; i++){
+                let nextTime = mom.toDate().getTime();
+                if ((nextTime >= range.min) && (nextTime <= range.max))
+                    timeList.push( nextTime );
+                mom.add(1, nsTime.unit);
+            }
+            return timeList;
+        },
+
+        _updateNow: function(){
+            //set the range of this.timeDimension based on current 'now' and global min and max relative range
+            this.setAvailableTimes(this._getTimeList(), 'replace');
+
+            //Force updating
+            this.nowAsStr = nsTime.nowMoment.toString();
+
+            this.eachMapLayer( this._updateMapLayerTimeRange.bind(this) );
+        },
+
+
+        _updateMapLayerTimeRange: function(mapLayer){
+            if (!this.nowAsStr || !mapLayer.lastNowStr || (mapLayer.lastNowStr != this.nowAsStr)){
+                if (mapLayer.setTimeRange)
+                    mapLayer.setTimeRange();
+                else
+                    mapLayer.timeRange = {
+                        min: Number.NEGATIVE_INFINITY,
+                        max: Number.POSITIVE_INFINITY
+                    };
+                mapLayer.lastNowStr = this.nowAsStr;
+            }
+        }
+    });
 
     /*********************************************************************
-    Add and remove default event-handler
+    **********************************************************************
+    Extend L.TimeDimension.Layer
+    ***********************************************************************
     **********************************************************************/
-//    L.TimeDimension.Layer.prototype.onAdd = function(onAdd) {
     $.extend(L.TimeDimension.Layer.prototype, {
-        onAdd: function(onAdd) {
-            return function (/*map*/) {
-                var result = onAdd.apply(this, arguments);
 
-                this._timeDimension.on("timeloading", this.NYtimeloading, this);
-                this._timeDimension.on("timeload",    this.NYtimeload,    this);
+        //Overwrite onAdd to use the avaiable times from the timeDimension of the map (if any)
+        onAdd: function(onAdd) {
+            return function (map) {
+                let result = onAdd.apply(this, arguments);
+
+                if (map.timeDimension){
+                    this.setAvailableTimes( map.timeDimension.getAvailableTimes() );
+                    this._hideOrShowMapLayer(map.timeDimension.getCurrentTime());
+                }
+
+                this._timeDimension.on("timeload", this.timeLoad, this);
 
                 return result;
             };
         } (L.TimeDimension.Layer.prototype.onAdd),
 
-//HER    L.TimeDimension.Layer.prototype.onRemove = function(onRemove) {
+
         onRemove: function(onRemove) {
             return function () {
-                this._timeDimension.off("timeloading", this.NYtimeloading, this);
-                this._timeDimension.off("timeload",    this.NYtimeload,    this);
-
+                this._timeDimension.off("timeload", this.timeLoad, this);
                 return onRemove.apply(this, arguments);
             };
         } (L.TimeDimension.Layer.prototype.onRemove),
 
+        timeLoad: function(/*e*/){
+            this.mapLayer.workingOff(this.fcooMapIndex);
 
-//HER           timeloading: function(/*e*/){
-//HER            var _this = this;
-//HER   console.log('ON', this);
-//HERsetTimeout(function(){
-//HER            _this.mapLayer.workingOn(0);
-//HER}, 100);
-//HER           },
+        },
 
-//HER           timeload: function(/*e*/){
-//HER            var _this = this;
-//HER   console.log('OFF', this);
-//HERsetTimeout(function(){
-//HER            _this.mapLayer.workingOff(0);
-//HER}, 100);
-//HER           }
-    });
-
-
-    /********************************************************************************
-    Force layer to use the avaiable times from the timeDimension of the map (if any)
-    ********************************************************************************/
-    L.TimeDimension.Layer.WMS.prototype.onAdd = function(onAdd) {
-        return function (map) {
-
-            if (map.timeDimension)
-                this.setAvailableTimes( map.timeDimension.getAvailableTimes() );
-
-            return onAdd.apply(this, arguments);
-        };
-    } (L.TimeDimension.Layer.WMS.prototype.onAdd);
-
-/*
-GET COLOR BAR
-https://wms01.fcoo.dk/webmap/v2/data/ECMWF/DYSD/ECMWF_DYSD_MAPS_GLOBAL.nc.wms?request=GetColorbar&styles=horizontal,nolabel&cmap=AirTempGlobal_C_BWYR_16colors_1.0
-*/
-
-    /********************************************************************************
-    nsMap.layer_wms_dynamic_time
-    An extention to nsMap.layer_wms_dynamic adding the layer to timeDimention
-    ********************************************************************************/
-    nsMap.layer_wms_dynamic_time = function(options, map, defaultOptions = nsMap.wmsDynamic.options, url = nsMap.wmsDynamic.url, LayerConstructor){
-        const wmsLayer = nsMap.layer_wms_dynamic(options, map, defaultOptions, url, LayerConstructor);
-        return L.timeDimension.layer.wms( wmsLayer, nsMap.tdLayerWmsOptions );
-    };
-
-
-    /********************************************************************************
-    MapLayer_Time
-    A MapLayer representing a layer (layer_wms_time) with time dimentions
-    ********************************************************************************/
-/*
-    function MapLayer_Time(options) {
-        //Adjust options
-
-
-        nsMap.MapLayer.call(this, options);
-
-    }
-    nsMap.MapLayer_Time = MapLayer_Time;
-
-    MapLayer_Time.prototype = Object.create(nsMap.MapLayer.prototype);
-
-
-
-    MapLayer_Time.prototype = $.extend({}, nsMap.MapLayer.prototype, {    //OR nsMap.MapLayer_ANOTHER.prototype, {
-
-        //********************************************************************************
-        //createLayer - create and a L.timeDimension.layer.wms
-        //********************************************************************************
-        createLayer: function(options){
-            var result = L.timeDimension.layer.wms(
-                    nsMap.layer_dynamic(options, undefined, options.url),
-                    nsMap.tdLayerWmsOptions
-                );
-            result.mapLayer = this;
-            return result;
+        _isInTimeRange: function(time){
+            this._timeDimension._updateMapLayerTimeRange(this.mapLayer);
+            let timeRange = this.mapLayer.timeRange || {min: Number.NEGATIVE_INFINITY, max: Number.POSITIVE_INFINITY};
+            return (time >= timeRange.min) && (time <= timeRange.max);
         },
 
 
-        //Extend METHOD
-        METHOD: function (METHOD) {
-            return function () {
+        _hideOrShowMapLayer: function(time){
+            this.mapLayer.toggleVisibility(this.fcooMapIndex, this._isInTimeRange(time));
+        },
 
-                //New extended code
-                //......extra code
+        /*********************************************************************
+        _setTimeRange: Set the time-range (setAvailableTimes) based on
+        the time-range from this.mapLayer
+        **********************************************************************/
+        _setTimeRange: function(){
+            if (!this.nowAsStr || (this._timeDimension.nowAsStr != this.nowAsStr)){
+                if (this.mapLayer.setTimeRange)
+                    this.mapLayer.setTimeRange();
+                else
+                    this.mapLayer.timeRange = {
+                        min: Number.NEGATIVE_INFINITY,
+                        max: Number.POSITIVE_INFINITY
+                    };
 
-                //Original function/method
-                METHOD.apply(this, arguments);
+                this.nowAsStr = this._timeDimension.nowAsStr;
+                this.setAvailableTimes( this._timeDimension._getTimeList(this.mapLayer.timeRange) );
+            }
+        }
+    });
+
+
+    /*********************************************************************
+    Extend L.TimeDimension.Layer.WMS
+    **********************************************************************/
+    $.extend(L.TimeDimension.Layer.WMS.prototype, {
+        //Overwrite _showLayer to hide the layer if the layer isn't in time-range. Prevents unnecessary load of tiles
+        _showLayer: function(_showLayer) {
+            return function(layer, time){
+                if (this._isInTimeRange(time))
+                    _showLayer.apply(this, arguments);
+                else {
+                    if (this._currentLayer)
+                        this._currentLayer.hide();
+                    if (this._baseLayer)
+                        this._baseLayer.hide();
+                }
             };
-        } (nsMap.MapLayer.prototype.METHOD),
+        }(L.TimeDimension.Layer.WMS.prototype._showLayer),
+
+        //Overwrite _getLayerForTime to return baseLayer if the layer isn't in time-range
+        _getLayerForTime: function(_getLayerForTime) {
+            return function (time) {
+                return this._isInTimeRange(time) ? _getLayerForTime.apply(this, arguments) : this._baseLayer;
+            };
+        } (L.TimeDimension.Layer.WMS.prototype._getLayerForTime),
+    });
 
 
-        //Overwrite METHOD2
-        METHOD2: function(){
-
-        },
+    /********************************************************************************
+    *********************************************************************************
+    Extend nsMap.MapLayer
+    *********************************************************************************
+    ********************************************************************************/
+    $.extend( nsMap.MapLayer.prototype, {
 
     });
 
-*/
+    /********************************************************************************
+    *********************************************************************************
+    MapLayer_time
+    A MapLayer representing a layer with time dimentions
+    *********************************************************************************
+    ********************************************************************************/
+    function MapLayer_time(options) {
+        nsMap.MapLayer.call(this, options);
+        this.tdLayerConstructor = this.tdLayerConstructor || options.tdLayerConstructor || L.TimeDimension.Layer;
+    }
+
+    nsMap.MapLayer_time = MapLayer_time;
+
+    MapLayer_time.prototype = Object.create(nsMap.MapLayer.prototype);
+    $.extend(MapLayer_time.prototype, {
+
+        //Overwrite _createLayer to use this.tdLayerConstructor as a 'outer' constructor
+        _createLayer: function(_createLayer) {
+            return function () {
+                let layer = _createLayer.apply(this, arguments);
+                return this.tdLayerConstructor(layer, nsMap.tdLayerWmsOptions);
+            };
+        } (nsMap.MapLayer.prototype._createLayer),
 
 
 
+        /*
+        setTimeRange: Sets the time-range for the layer.
+        options.timeRange.min/max can be a
+            1: NUMBER = Relative to now
+            2: DATE
+            3: MOMENT
+            4: STRING = Date-string
+            5: function() return 1,2,3, or 4
+        */
+        setTimeRange: function(timeRange){
+            this.timeRange = {
+                min: Number.NEGATIVE_INFINITY,
+                max: Number.POSITIVE_INFINITY
+            };
+            this.options.timeRange = timeRange || this.options.timeRange || {};
+            ['min', 'max'].forEach( function(id){
+                if (this.options.timeRange[id] !== undefined){
+                    let range = this.options.timeRange[id];
+                    let rangeMoment = typeof range == 'number' ? moment(nsTime.nowMoment).add(range, nsTime.unit) : moment(range);
+
+                    this.timeRange[id] = rangeMoment.valueOf();
+                }
+            }.bind(this));
+        },
 
 
-//HER    //createMapLayer = {MAPLAYER_ID: CREATE_MAPLAYER_AND_MENU_FUNCTION} See fcoo-maps/src/map-layer_00.js for description
-//HER    nsMap.createMapLayer = nsMap.createMapLayer || {};
+        //onTimeLoading = called from timeDimension when a new time-step is starting to load. Can be overwriten by child-classes
+        onTimeLoading: function(/* time */){
+        },
 
-
-//HER    /***********************************************************
-//HER    Add MapLayer_NAME to createMapLayer
-//HER    ***********************************************************/
-//HER    nsMap.createMapLayer[ID] = function(options, addMenu){
-//HER
-//HER        adjust default options with options info mapLayerOptions
-//HER
-//HER        var mapLayer = nsMap._addMapLayer(id, nsMap.MapLayer_NAME, mapLayerOptions )
-//HER
-//HER        addMenu( mapLayer.menuItemOptions() ); OR list of menu-items
-//HER    };
-//HER
+        //onTimeLoad = called from timeDimension when a new time-step is loaded. Can be overwriten by child-classes
+        onTimeLoad: function(/* time */){
+        }
+    });
 
 
 
+    /********************************************************************************
+    MapLayer_time_geojson
+    A MapLayer representing a geojson-layer with time dimentions
+    See fcoo-maps for description on options
+    ********************************************************************************/
+    function MapLayer_time_geojson(options) {
+        nsMap.MapLayer_time.call(this, options);
+    }
+
+    nsMap.MapLayer_time_geojson = MapLayer_time_geojson;
+
+    MapLayer_time_geojson.prototype = Object.create(nsMap.MapLayer_time.prototype);
+
+    MapLayer_time_geojson.prototype.createLayer        = L.geoJSON; //@todo mangler - Skal nok være noget andet
+    MapLayer_time_geojson.prototype.tdLayerConstructor = L.TimeDimension.Layer.GeoJSON;
 
 
+    /********************************************************************************
+    MapLayer_time_wms
+    A MapLayer representing any wms-layer with time dimentions
+    See fcoo-maps for description on options
+    ********************************************************************************/
+    function MapLayer_time_wms(options) {
+        nsMap.MapLayer_time.call(this, options);
+    }
+
+    nsMap.MapLayer_time_wms = MapLayer_time_wms;
+
+    MapLayer_time_wms.prototype = Object.create(nsMap.MapLayer_time.prototype);
+
+    MapLayer_time_wms.prototype.createLayer        = nsMap.layer_wms;
+    MapLayer_time_wms.prototype.tdLayerConstructor = L.timeDimension.layer.wms;
+
+
+    /********************************************************************************
+    MapLayer_time_wms_static
+    A MapLayer representing a static wms-layer with time dimentions (self-contradictory?)
+    See fcoo-maps for description on options
+    ********************************************************************************/
+    function MapLayer_time_wms_static(options) {
+        nsMap.MapLayer_time_wms.call(this, options);
+    }
+
+    nsMap.MapLayer_time_wms_static = MapLayer_time_wms_static;
+
+    MapLayer_time_wms_static.prototype = Object.create(nsMap.MapLayer_time_wms.prototype);
+
+    MapLayer_time_wms_static.prototype.createLayer = nsMap.layer_wms_static;
+    //MapLayer_time_wms.prototype.tdLayerConstructor = L.timeDimension.layer.wms;
+
+
+    /********************************************************************************
+    MapLayer_time_wms_dynamic
+    A MapLayer representing a dynamic wms layer with time dimentions
+    See fcoo-maps for description on options
+    ********************************************************************************/
+    function MapLayer_time_wms_dynamic(options) {
+        nsMap.MapLayer_time_wms.call(this, options);
+    }
+
+    nsMap.MapLayer_time_wms_dynamic = MapLayer_time_wms_dynamic;
+
+    MapLayer_time_wms_dynamic.prototype = Object.create(nsMap.MapLayer_time_wms.prototype);
+
+    MapLayer_time_wms_dynamic.prototype.createLayer = nsMap.layer_wms_dynamic;
+    //MapLayer_time_wms_dynamic.prototype.tdLayerConstructor = L.timeDimension.layer.wms;
 
 
     /********************************************************************************
@@ -188,62 +386,5 @@ https://wms01.fcoo.dk/webmap/v2/data/ECMWF/DYSD/ECMWF_DYSD_MAPS_GLOBAL.nc.wms?re
         }
     } (L.{CLASS}.prototype.{METHOD});
 */
-
-
-
-//_onNewTimeLoading, isReady and _update
-
-
-
-
-
-    /***********************************************************
-    MapLayer_wms_dynamic_time - Creates a MapLayer with dynamic static WMS-layer
-    See fcoo-maps for description on options
-    ***********************************************************/
-    function MapLayer_wms_dynamic_time(options) {
-        nsMap.MapLayer_wms.call(this, options);
-    }
-    nsMap.MapLayer_wms_dynamic_time = MapLayer_wms_dynamic_time;
-
-    MapLayer_wms_dynamic_time.prototype = Object.create(nsMap.MapLayer_wms.prototype);
-    MapLayer_wms_dynamic_time.prototype.createLayer = nsMap.layer_wms_dynamic_time;
-
-
-
-
-
-    /***********************************************************
-    DEMO
-    ***********************************************************/
-    var demo_options = {
-            text     : {da: 'DMI Vindhastighed', en: 'DMI Wind speed'},
-
-            legendOptions: {
-                showContent: false,
-                showIcons  : false,
-                //onWarning  : showGeolocationWarning,
-            },
-
-            layerOptions: {
-                dataset : 'VNETCDF/DMI/HARMONIE/DMI_NEA_MAPS_v005C.ncv',
-                layers  : 'windspeed',
-                styles  : {plot_method: 'contourf', legend: 'Wind_ms_BGYRP_11colors_1.1'},
-                cmap    : 'Wind_ms_BGYRP_11colors_1.1',
-            },
-        };
-
-
-
-    var id = "DMI_WIND_SPEED";
-    nsMap.createMapLayer[id] = function(options, addMenu){
-
-        let mapLayerOptions = $.extend({}, demo_options);
-        let mapLayer = nsMap._addMapLayer(id, nsMap.MapLayer_wms_dynamic_time, mapLayerOptions );
-        addMenu( mapLayer.menuItemOptions() );
-    };
-
-
-
 
 }(jQuery, L, this, document));

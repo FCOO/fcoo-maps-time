@@ -136,7 +136,6 @@
         save
         ********************************************************/
         save: function(){
-            //console.log('>>>>>>>>>> SAVE', this.mode, this.data.currentRelative );
             var data = {
                     currentRelative: this.data.currentRelative
                 };
@@ -161,8 +160,6 @@
         set: function( relative, redrawTimeSlider  ){
             if (this.updatingTimeSliders || !nsTime.ready)
                 return;
-
-            //console.log('>>>>>>>>>>> SET', this.mode, relative );
 
             this.data.currentRelative = relative;
             this.adjust();

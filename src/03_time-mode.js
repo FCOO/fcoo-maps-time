@@ -3,7 +3,7 @@ time-modes
 
 There are two primary time mode:
 1: For the main map = A:FIXED', B:SELECT, C:RELATIVE, or D:ANIMATION (only A and C are implemented yet
-2: For all the other secondary maps the time mode is relative to eighter 
+2: For all the other secondary maps the time mode is relative to eighter
 	a: The main map, or
 	b: Current time ('Now')
 	Both a: and b; can be with a offset +/-24 hours
@@ -75,9 +75,7 @@ The four main modes have icons and A: uses the same icon as b: and C: uses the s
 
     nsTime.timeSyncIconColors = '';
     var timeSyncIconColorList = [];
-    $.each(nsTime.timeSyncInfo, function(id, opt){
-        timeSyncIconColorList.push(...opt.iconColor);
-    });
+    $.each(nsTime.timeSyncInfo, (id, opt) => timeSyncIconColorList.push(...opt.iconColor) );
     nsTime.timeSyncIconColors = timeSyncIconColorList.join(' ');
 
     nsTime.getIconClass = function(mode, offset=0){
@@ -154,7 +152,7 @@ The four main modes have icons and A: uses the same icon as b: and C: uses the s
             da: 'SELECT',   //TODO
             en: 'SELECT'    //TODO
         },
-		icon: [['far fa-MANGLER']],			
+		icon: [['far fa-MANGLER']],
         description: {
             da: '',
             en: ''
@@ -166,7 +164,7 @@ The four main modes have icons and A: uses the same icon as b: and C: uses the s
             da: 'Animation',
             en: 'Animation'
         },
-		icon: [['far fa-film']],			
+		icon: [['far fa-film']],
         description: {
             da: '',
             en: ''
@@ -182,7 +180,7 @@ The four main modes have icons and A: uses the same icon as b: and C: uses the s
                 if (nsTime.timeOptions.timeModeList.indexOf(timeMode) >= 0)
                     nsTime.timeMode = timeMode;
 
-                $.each(timeModeInfo, function(id){
+                $.each(timeModeInfo, id => {
                     window.modernizrToggle('time-mode-'+id, id == nsTime.timeMode);
                 });
             },
@@ -207,7 +205,7 @@ The four main modes have icons and A: uses the same icon as b: and C: uses the s
                 en: (allowDifferentTime ? 'The time for the ' + (nsMap.hasMultiMaps ? 'main' : '') + ' map' : 'The time') + ' is selected using the scale or the forward- and backward-buttons at the bottom.'
             };
 
-        $.each(timeModeInfo, function(id, timeMode){
+        $.each(timeModeInfo, (id, timeMode) => {
             if (nsTime.timeOptions.timeModeList.includes(id)){
                 list.push({
                     id  : id,
@@ -215,7 +213,7 @@ The four main modes have icons and A: uses the same icon as b: and C: uses the s
                     text: timeMode.name
                 });
 
-                $.each( helpText, function(lang){
+                $.each( helpText, lang => {
                     helpText[lang] = helpText[lang] + '<br>&nbsp;<br><strong>' + timeMode.name[lang] + '</strong><br>' + timeMode.description[lang];
                 });
             }
@@ -275,7 +273,7 @@ The four main modes have icons and A: uses the same icon as b: and C: uses the s
         let content = [],
             list    = [];
 
-        $.each(nsTime.timeSyncInfo, function(id, options){
+        $.each(nsTime.timeSyncInfo, (id, options) => {
             list.push({
                 id  : id,
                 icon: nsTime.getIcon(id),

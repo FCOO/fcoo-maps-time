@@ -49783,6 +49783,25 @@ ZOOM MODERNIZR https://github.com/fcoo/leaflet-zoom-modernizr
 }
 
 /**********************************************************
+HIDE/SHOW LAYER
+**********************************************************/
+.layer-visible .hide-for-layer-visible {
+  display: none !important;
+}
+
+.no-layer-visible .show-for-layer-visible {
+  display: none !important;
+}
+
+.no-layer-visible .hide-for-layer-visible {
+  display: initial !important;
+}
+
+.no-layer-visible .modal-body.show-for-modal-extended > * {
+  visibility: hidden;
+}
+
+/**********************************************************
 POSITION-CONTROL
 InfoBox in bsPositionControl: (bsp = bsPosition)
 

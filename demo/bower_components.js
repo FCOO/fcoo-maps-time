@@ -13097,7 +13097,7 @@ else {
 }(jQuery, this, document));
 ;
 /*!
-  * Bootstrap v5.3.5 (https://getbootstrap.com/)
+  * Bootstrap v5.3.6 (https://getbootstrap.com/)
   * Copyright 2011-2025 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
   */
@@ -13745,7 +13745,7 @@ else {
    * Constants
    */
 
-  const VERSION = '5.3.5';
+  const VERSION = '5.3.6';
 
   /**
    * Class definition
@@ -13771,6 +13771,8 @@ else {
         this[propertyName] = null;
       }
     }
+
+    // Private
     _queueCallback(callback, element, isAnimated = true) {
       executeAfterTransition(callback, element, isAnimated);
     }
@@ -14702,11 +14704,11 @@ else {
       this._element.style[dimension] = '';
       this._queueCallback(complete, this._element, true);
     }
+
+    // Private
     _isShown(element = this._element) {
       return element.classList.contains(CLASS_NAME_SHOW$7);
     }
-
-    // Private
     _configAfterMerge(config) {
       config.toggle = Boolean(config.toggle); // Coerce string values
       config.parent = getElement(config.parent);
@@ -16786,6 +16788,9 @@ else {
       this._element.setAttribute('aria-expanded', 'false');
       Manipulator.removeDataAttribute(this._menu, 'popper');
       EventHandler.trigger(this._element, EVENT_HIDDEN$5, relatedTarget);
+
+      // Explicitly return focus to the trigger element
+      this._element.focus();
     }
     _getConfig(config) {
       config = super._getConfig(config);
@@ -19307,7 +19312,6 @@ else {
     }
 
     // Private
-
     _maybeScheduleHide() {
       if (!this._config.autohide) {
         return;
@@ -149764,12 +149768,12 @@ L.Layer.addInitHook(function(){
 
         this.info = []; //[] of {map, layer, legend, infoBox, colorInfoLayer, loading, timeout, updateColorInfoOnWorkingOff, dataset}
 
-        this.showAndHideClasses = '';
-        this.inversShowAndHideClasses = '';
+        this.showAndHideClasses = 'show-for-layer-visible';
+        this.inversShowAndHideClasses = 'hide-for-layer-visible';
         var minZoom = this.options.minZoom || this.options.layerOptions.minZoom || 0;
         if (minZoom){
-            this.showAndHideClasses       = 'show-for-leaflet-zoom-'+minZoom+'-up';
-            this.inversShowAndHideClasses = 'hide-for-leaflet-zoom-'+minZoom+'-up';
+            this.showAndHideClasses       += ' show-for-leaflet-zoom-'+minZoom+'-up';
+            this.inversShowAndHideClasses += ' hide-for-leaflet-zoom-'+minZoom+'-up';
         }
 
         var maxZoom = this.options.maxZoom || this.options.layerOptions.maxZoom || 0;
@@ -149790,6 +149794,64 @@ L.Layer.addInitHook(function(){
     nsMap.MapLayer = MapLayer;
 
     nsMap.MapLayer.prototype = {
+
+        /*********************************************************
+        getInfo: function(mapOrMapIndexOrMapId)
+        Return the info-record for the given map
+        *********************************************************/
+        getInfo: function(mapOrMapIndexOrMapId){
+            let map = nsMap.getMap(mapOrMapIndexOrMapId),
+                index = map ? map.fcooMapIndex : null;
+
+            return index === null ? null : this.info[index];
+        },
+
+
+        /*********************************************************
+        isInvisible: function(mapOrMapIndexOrMapId)
+        Return true if the layer is hidden in the given map
+        *********************************************************/
+        isInvisible: function(mapOrMapIndexOrMapId){
+            let info = this.getInfo(mapOrMapIndexOrMapId);
+            return info && info.isInvisible;
+        },
+
+        /*********************************************************
+        visible, invisible, toggleVisibility: Hide/show the layer in the given map
+        *********************************************************/
+        visible  : function(mapOrMapIndexOrMapId){ return this.toggleVisibility(mapOrMapIndexOrMapId, true);  },
+        invisible: function(mapOrMapIndexOrMapId){ return this.toggleVisibility(mapOrMapIndexOrMapId, false);  },
+        toggleVisibility: function(mapOrMapIndexOrMapId, visible){
+            function set(layer){
+                if (!layer)
+                    return;
+
+                if (layer.setOpacity)
+                    layer.setOpacity(visible ? 1 : 0);
+
+                if (layer.getElement)
+                    $(layer.getElement()).toggle(visible);
+
+                if (layer.eachLayer)
+                    layer.eachLayer( set );
+            }
+
+            let info = this.getInfo(mapOrMapIndexOrMapId);
+            if (info){
+                visible = typeof visible == 'boolean' ? visible : !!info.isInvisible;
+
+                if (!!info.isInvisible == !!visible){
+                    info.isInvisible = !visible;
+
+                    set(info.layer);
+
+                    info.legend.$modalContent.modernizrToggle('layer-visible', visible);
+
+                    this._saveSetting();
+                }
+            }
+        },
+
         /*********************************************************
         isAddedTo(mapOrIndex) - return true if the MapLayer is added to the map
         *********************************************************/
@@ -149823,7 +149885,10 @@ L.Layer.addInitHook(function(){
                 else
                     this.removeFrom(map);
 
-                //colorInfo - TODO
+                if (setting.isInvisible)
+                    this.invisible(mapIndex);
+
+                //colorInfo - @TODO
 
                 //Individual setting
                 this.applySetting(setting, map, this.info[mapIndex], mapIndex);
@@ -149849,8 +149914,9 @@ L.Layer.addInitHook(function(){
             $.each(this.info, function(index, info){
                 data[index] =
                     $.extend({
-                        show: this.isAddedToMap(index)
-                        //colorInfo - TODO
+                        show       : this.isAddedToMap(index),
+                        isInvisible: info ? info.isInvisible : false,
+                        //colorInfo - @TODO
                     },
                         this.saveSetting(info ? info.map : null, info, index) || {}
                     );
@@ -149877,7 +149943,6 @@ L.Layer.addInitHook(function(){
 
             var info = this.info[mapIndex] = {};
             info.map = map;
-
 
             //Create dataset
             if (this.options.dataset && !info.dataset){
@@ -150052,8 +150117,9 @@ L.Layer.addInitHook(function(){
                         info.dataset ? info.dataset.data || {} : {}
                     );
 
-                info.layer = this.createLayer(newLayerOptions, map);
+                info.layer = this._createLayer(newLayerOptions, map);
                 info.layer.fcooMapIndex = map.fcooMapIndex; //Prevent the index when the layer is removed => layer._map is set to null
+                info.layer.mapLayer = this;
 
                 //Sets options._popupContainerClass = this.showAndHideClasses to hide open popups when the layer is hidden and visa versa
                 info.layer.options._popupContainerClass = this.showAndHideClasses;
@@ -150062,7 +150128,6 @@ L.Layer.addInitHook(function(){
 
             //Add map to list and layer(s) to map
             layer.addTo(map);
-
             if ( this.hasColorInfo && !info.colorInfoLayer ){
                 this.hasColorInfo = false;
                 //Get the tileLayer used for colorInfo (if any)
@@ -150113,7 +150178,13 @@ L.Layer.addInitHook(function(){
             if (this.options.onAdd)
                 this.options.onAdd(map, layer);
 
+
+            if (info.isInvisible)
+                this.invisible(map);
+
+
             this._saveSetting();
+
 
             return this;
         },
@@ -150312,7 +150383,6 @@ L.Layer.addInitHook(function(){
 
             var info  = this.info[mapIndex];
 
-
             //Remove legned (if any) and use legend.onRemove to do the removing
             if (!this.wasRemovedViaLegend && map.bsLegendControl){
                 map.bsLegendControl.removeLegend(info.legend);
@@ -150438,6 +150508,15 @@ L.Layer.addInitHook(function(){
 
         },
 
+
+        /*********************************************************
+        _createLayer: function(layerOptions, map)
+        Simple calls createLayer.
+        Can be overwriten by different types of MapLayer
+        *********************************************************/
+        _createLayer: function(/*layerOptions, map*/){
+            return this.createLayer.apply(this, arguments);
+        },
 
         /*********************************************************
         createLayer: function(layerOptions, map)
@@ -150734,11 +150813,20 @@ Classes to creraet static and dynamic WMS-layers
     nsMap.MapLayer_wms_static = nsMap.MapLayer_static = MapLayer_wms_static;
 
     MapLayer_wms_static.prototype = Object.create(nsMap.MapLayer_wms.prototype);
-    MapLayer_wms_static.prototype.createLayer = nsMap.layer_wms_dynamic;
+    MapLayer_wms_static.prototype.createLayer = nsMap.layer_wms_static;
 
 
+    /***********************************************************
+    MapLayer_wms_dynamic - Creates a MapLayer with dynamic WMS-layer
+    Also as MapLayer_dynamic for backward combability
+    ***********************************************************/
+    function MapLayer_wms_dynamic(options) {
+        nsMap.MapLayer_wms.call(this, options);
+    }
+    nsMap.MapLayer_wms_dynamic = nsMap.MapLayer_dynamic = MapLayer_wms_dynamic;
 
-
+    MapLayer_wms_dynamic.prototype = Object.create(nsMap.MapLayer_wms.prototype);
+    MapLayer_wms_dynamic.prototype.createLayer = nsMap.layer_wms_dynamic;
 
 }(jQuery, L, this, document));
 

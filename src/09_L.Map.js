@@ -66,7 +66,7 @@ L.Map
 
         var bsTimeInfoControlPosition = "bottomcenter";
 
-        //MANGLER - Check hvor mange forskellige time-sync-modes, der er tilladt. Ryd ikke-tilladte fra nsTime.timeSyncInfo
+        //@todo MANGLER - Check hvor mange forskellige time-sync-modes, der er tilladt. Ryd ikke-tilladte fra nsTime.timeSyncInfo
 
         //Add bsTimeInfoControl to default map-settings
         nsMap.mainMapOptions.bsTimeInfoControl = true;
@@ -136,18 +136,7 @@ L.Map
     Called when 'now' changes
     ******************************************************************/
     L.Map.prototype._updateNow = function(){
-        //set the range of this.timeDimension based on current 'now' and global min and max relative range
-        var min   = nsTime.timeOptions.min,
-            max   = nsTime.timeOptions.max,
-            mom   = moment(nsTime.nowMoment).add(min, unit),
-            times = [];
-
-        for (var i=0; i<=max-min; i++){
-            times.push( mom.toDate().getTime() );
-            mom.add(1, unit);
-        }
-        this.timeDimension.setAvailableTimes(times, 'replace');
-
+        this.timeDimension._updateNow();
         this._updateTime();
     };
 
@@ -194,15 +183,10 @@ L.Map
         if (this.bsTimeInfoControl)
             this.bsTimeInfoControl.$currentTime.vfValue(this.time.current);
 
-//**************************************************
-//MANGLER Skal også opdaterer timeDimension!!!!!
-//**************************************************
-//console.log(this.timeDimension);
+        //Update timeDimension
         this.timeDimension.setCurrentTime(this.time.current.toDate().getTime());
 
-
-
-        //Call events - MANGLER: SKAL MÅSKE FJERNES....
+        //Call events
         this.fire("momentchanged", this.time);
         this.fire("datetimechange", {datetime: this.time.current.toISOString()});
 

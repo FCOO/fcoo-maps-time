@@ -53,6 +53,7 @@
         --fc-time-now-color   : #3B7511;
         --jbn-time-future-color: #94b5c2;
     }
+
     </style>
 
 </head>
@@ -64,8 +65,8 @@
         //OR window.fcoo.LOCAL_DATA = true;
 
         if (window.location.href.includes('?testmode')){
-            window.FCOOMAPSTIME_TEST = true;
-            document.body.classList.add('FCOOMAPSTIME_TEST');
+//HER               window.FCOOMAPSTIME_TEST = true;
+//HER               document.body.classList.add('FCOOMAPSTIME_TEST');
         }
         if (window.location.href.includes('?testmodenow'))
             window.FCOOMAPSTIME_TEST_NOW = true;
@@ -101,6 +102,103 @@
         if (window.location.search =='?touch')
             window.bsIsTouch = true;
 
+        var nsMap = window.fcoo.map;
+
+        //Create two demo-layer
+        var demo_windspeed_options = {
+                icon: 'fa-map',
+                text: {da: 'DMI Vindhastighed (0 til +12)', en: 'DMI Wind speed (0 to +12)'},
+
+                timeRange: {
+                    min: 0, max:12
+                },
+                legendOptions: {
+                    content: '<img width="100%" src="https://wms01.fcoo.dk/webmap/v3/data/VNETCDF/DMI/HARMONIE/DMI_NEA_MAPS_v005C.ncv.wms?request=GetColorbar&amp;styles=horizontal%2Cnolabel&amp;cmap=Wind_ms_BGYRP_11colors">'
+                },
+                layerOptions: {
+                    dataset : 'VNETCDF/DMI/HARMONIE/DMI_NEA_MAPS_v005C.ncv',
+                    layers  : 'windspeed',
+                    styles  : {
+                        plot_method : 'contourf',
+                        legend      : 'Wind_ms_BGYRP_11colors_1.1'
+                    },
+                    cmap    : 'Wind_ms_BGYRP_11colors_1.1',
+                },
+            };
+
+        var id_windspeed = "DMI_WIND_SPEED";
+
+        nsMap.createMapLayer[id_windspeed] = function(options, addMenu){
+            let mapLayerOptions = $.extend({}, demo_windspeed_options);
+            let mapLayer = nsMap._addMapLayer(id_windspeed, nsMap.MapLayer_time_wms_dynamic, mapLayerOptions );
+            addMenu( mapLayer.menuItemOptions() );
+        };
+
+
+         var demo_wind_options = {
+                icon: 'fa-map',
+                text: {da: 'DMI Vind (-6 til +6)', en: 'DMI Wind (-6 to +6)'},
+
+                timeRange: {
+                    min: -6, max:+6
+                },
+
+                legendOptions: {
+                    content: 'Her kommer der vektorer og farveskala',
+                    buttons:[{text: 'Button', onClick: function(){console.log(arguments)}}]
+                },
+
+                layerOptions: {
+                    zIndex: 2001,
+//maxZoom: 6,
+
+
+                    dataset : 'VNETCDF/DMI/HARMONIE/DMI_NEA_MAPS_v005C.ncv',
+                    layers  : 'UGRD:VGRD',
+                    styles  : {
+                        plot_method     : 'color_quiver1',
+                        vector_spacing  : 80,
+                        vector_offset   : 20,
+                        legend          : 'Wind_ms_BGYRP_11colors'
+                    },
+                    //cmap    : 'Wind_ms_BGYRP_11colors_1.1',
+                },
+            };
+
+        let id_wind = "DMI_WIND";
+        nsMap.createMapLayer[id_wind] = function(options, addMenu){
+            let mapLayerOptions = $.extend({}, demo_wind_options);
+            let mapLayer = nsMap._addMapLayer(id_wind, nsMap.MapLayer_time_wms_dynamic, mapLayerOptions );
+            addMenu( mapLayer.menuItemOptions() );
+        };
+
+
+        /*
+
+        "wind": store.getLayer({ 'dataset': 'DMI/HARMONIE/NEA', 'parameter': 'windDirection', 'options': atmOpts, wmsParams: { styles: 'plot_method=color_quiver1;vector_spacing=80;vector_offset=20;legend=Wind_ms_BGYRP_11colors' }, legendParams: { show: true } }),
+        https://wms01.fcoo.dk/webmap/v3/data/VNETCDF/DMI/HARMONIE/DMI_NEA_MAPS_v005C.ncv.wms?service=WMS&request=GetMap&version=1.3.0&layers=UGRD%3AVGRD&styles=plot_method%3Dcolor_quiver1%3Bvector_spacing%3D80%3Bvector_offset%3D20%3Blegend%3DWind_ms_BGYRP_11colors&format=image%2Fpng&transparent=TRUE&cma//HER   p=Wind_ms_BGYRP_11colors&width=512&height=512&time=2025-05-06T15%3A00%3A00.000Z&crs=EPSG%3A3857&bbox=626172.1357121639,7514065.628545967,1252344.2714243277,8140237.764258131
+
+        GET COLOR BAR
+        https://wms01.fcoo.dk/webmap/v2/data/ECMWF/DYSD/ECMWF_DYSD_MAPS_GLOBAL.nc.wms?request=GetColorbar&styles=horizontal,nolabel&cmap=AirTempGlobal_C_BWYR_16colors_1.0
+        */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         //TEMP: No access to data-files on AWS. Read from old location instead
         //window.fcoo.path.setPath({host: 'bal.fcoo.dk'});
         window.fcoo.map.createApplication(
@@ -111,7 +209,7 @@
             },
 
             //layerMenu
-            ["DMI_WIND_SPEED"]
+            ["DMI_WIND", "DMI_WIND_SPEED"]
         );
 
 
