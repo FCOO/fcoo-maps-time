@@ -24056,6 +24056,17 @@ Bootstrap default = normal size
 Accordion
 ***********************************************/
 /***********************************************
+Grid columns
+Set the number of columns and specify the width of the gutters.
+
+$grid-columns:                12 !default;
+$grid-gutter-width:           1.5rem !default;
+$grid-row-columns:            6 !default;
+
+// Container padding
+$container-padding-x: $grid-gutter-width !default;
+***********************************************/
+/***********************************************
 Card
 ***********************************************/
 /***********************************************
@@ -24832,7 +24843,7 @@ progress {
 .container-lg,
 .container-md,
 .container-sm {
-  --bs-gutter-x: 1.5rem;
+  --bs-gutter-x: 0.5em;
   --bs-gutter-y: 0;
   width: 100%;
   padding-right: calc(var(--bs-gutter-x) * 0.5);
@@ -24876,7 +24887,7 @@ progress {
 }
 
 .row {
-  --bs-gutter-x: 1.5rem;
+  --bs-gutter-x: 0.5em;
   --bs-gutter-y: 0;
   display: flex;
   flex-wrap: wrap;
@@ -28418,7 +28429,7 @@ textarea.form-control-lg {
   --bs-card-color: ;
   --bs-card-bg: var(--bs-body-bg);
   --bs-card-img-overlay-padding: 1rem;
-  --bs-card-group-margin: 0.75rem;
+  --bs-card-group-margin: 0.25em;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -28564,24 +28575,24 @@ textarea.form-control-lg {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
   }
-  .card-group > .card:not(:last-child) .card-img-top,
-  .card-group > .card:not(:last-child) .card-header {
+  .card-group > .card:not(:last-child) > .card-img-top,
+  .card-group > .card:not(:last-child) > .card-header {
     border-top-right-radius: 0;
   }
-  .card-group > .card:not(:last-child) .card-img-bottom,
-  .card-group > .card:not(:last-child) .card-footer {
+  .card-group > .card:not(:last-child) > .card-img-bottom,
+  .card-group > .card:not(:last-child) > .card-footer {
     border-bottom-right-radius: 0;
   }
   .card-group > .card:not(:first-child) {
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
   }
-  .card-group > .card:not(:first-child) .card-img-top,
-  .card-group > .card:not(:first-child) .card-header {
+  .card-group > .card:not(:first-child) > .card-img-top,
+  .card-group > .card:not(:first-child) > .card-header {
     border-top-left-radius: 0;
   }
-  .card-group > .card:not(:first-child) .card-img-bottom,
-  .card-group > .card:not(:first-child) .card-footer {
+  .card-group > .card:not(:first-child) > .card-img-bottom,
+  .card-group > .card:not(:first-child) > .card-footer {
     border-bottom-left-radius: 0;
   }
 }
@@ -29276,7 +29287,7 @@ textarea.form-control-lg {
   --bs-toast-zindex: 1090;
   --bs-toast-padding-x: 0.75rem;
   --bs-toast-padding-y: 0.5rem;
-  --bs-toast-spacing: 1.5rem;
+  --bs-toast-spacing: 0.5em;
   --bs-toast-max-width: 350px;
   --bs-toast-font-size: 0.875rem;
   --bs-toast-color: ;
@@ -30401,6 +30412,10 @@ textarea.form-control-lg {
 .visually-hidden:not(caption),
 .visually-hidden-focusable:not(:focus):not(:focus-within):not(caption) {
   position: absolute !important;
+}
+.visually-hidden *,
+.visually-hidden-focusable:not(:focus):not(:focus-within) * {
+  overflow: hidden !important;
 }
 
 .stretched-link::after {
@@ -41602,6 +41617,17 @@ Bootstrap default = normal size
 Accordion
 ***********************************************/
 /***********************************************
+Grid columns
+Set the number of columns and specify the width of the gutters.
+
+$grid-columns:                12 !default;
+$grid-gutter-width:           1.5rem !default;
+$grid-row-columns:            6 !default;
+
+// Container padding
+$container-padding-x: $grid-gutter-width !default;
+***********************************************/
+/***********************************************
 Card
 ***********************************************/
 /***********************************************
@@ -41748,6 +41774,7 @@ COLORS AND STYLE
   --mm-color-background: var(--bs-modal-bg);
   --mm-item-opened-color: null;
   --mm-item-opened-bg: null;
+  --mm-sub-item-left-border: null;
   --mm-item-closed-color: null;
   --mm-item-closed-bg: null;
   --mm-panel-opened-bg: rgba(0,0,0, 0.05);
@@ -43100,7 +43127,13 @@ ADJUST MMENU AND JQUERY-BOOTSTRAP ELEMENTS
 }
 
 .mm-listitem_vertical > .mm-panel {
-  padding: 0 0 0 5px !important;
+  padding: 0 0 0 0 !important;
+  border-left: 1em solid var(--mm-sub-item-left-border);
+  margin-left: 1px;
+}
+
+.mm-panels > .mm-panel > .mm-listview > .mm-listitem_vertical > .mm-panel {
+  margin-left: -1px;
 }
 
 .mm-menu .mm-listitem_opened > .mm-listitem__btn {
@@ -43289,6 +43322,17 @@ Bootstrap default = normal size
 ************************************************************/
 /***********************************************
 Accordion
+***********************************************/
+/***********************************************
+Grid columns
+Set the number of columns and specify the width of the gutters.
+
+$grid-columns:                12 !default;
+$grid-gutter-width:           1.5rem !default;
+$grid-row-columns:            6 !default;
+
+// Container padding
+$container-padding-x: $grid-gutter-width !default;
 ***********************************************/
 /***********************************************
 Card
@@ -43691,6 +43735,7 @@ Adjust different parts in jquery-bootstrap and fcoo-application
   --mm-item-closed-hover-bg: var(--fcoo-app-darken-bg-color-63);
   --mm-item-opened-color: var(--fcoo-app-text-color-50);
   --mm-item-opened-bg: var(--fcoo-app-bg-color-50);
+  --mm-sub-item-left-border: var(--fcoo-app-bg-color-50);
   --mm-item-opened-hover-color: var(--fcoo-app-active-text-color-50);
   --mm-item-opened-hover-bg: var(--fcoo-app-darken-bg-color-50);
 }
@@ -43773,17 +43818,17 @@ WARIABLES
 Global scss-variables for fcoo-application
 *****************************************************/
 :root {
-  --fcoo-app-menu-padding: 0.375rem;
+  --fcoo-app-panel-padding: 0.375rem;
 }
 
 .mm-menu {
   --mm-iconbar-button-dim: 2.375rem;
-  --mm-iconbar-size: calc( 2 * var(--fcoo-app-menu-padding) + var(--mm-iconbar-button-dim) );
+  --mm-iconbar-size: calc( 2 * var(--fcoo-app-panel-padding) + var(--mm-iconbar-button-dim) );
 }
 
-.touch-menu-container-sm, top-menu-container-sm, .mm-menu-sm {
+.touch-panel-container-sm, top-panel-container-sm, .mm-menu-sm {
   --mm-iconbar-button-dim: 1.9375rem;
-  --fcoo-app-menu-padding: 0.25rem;
+  --fcoo-app-panel-padding: 0.25rem;
 }
 
 /*
@@ -43869,18 +43914,18 @@ body .main-container.scroll-smooth {
 }
 
 /*****************************************************
-Style for top menu
+Style for top panel
 *****************************************************/
 /*****************************************************
 TOP-MENU
 
-Style for top menu and items (logo, buttons etc)
+Style for top panel and items (logo, buttons etc)
 *****************************************************/
 /***************************************************
-top-menu is like Bootstrap navbar but to avoid
+top-panel is like Bootstrap navbar but to avoid
 confussions another name is used
 ***************************************************/
-.top-menu-container > * {
+.top-panel-container > * {
   position: fixed;
   top: 0;
   right: 0;
@@ -43890,34 +43935,34 @@ confussions another name is used
   transition: opacity 0.15s ease-in-out;
   cursor: default;
 }
-.top-menu-container .top-menu {
+.top-panel-container .top-panel {
   margin-top: 0px;
-  padding: var(--fcoo-app-menu-padding);
+  padding: var(--fcoo-app-panel-padding);
   font-size: 0.875rem;
 }
-.top-menu-container .top-menu .top-menu-header {
+.top-panel-container .top-panel .top-panel-header {
   text-shadow: -1px 0 var(--fcoo-app-shadow-color), 0 1px var(--fcoo-app-shadow-color), 1px 0 var(--fcoo-app-shadow-color), 0 -1px var(--fcoo-app-shadow-color);
 }
-.touchevents .top-menu-container .top-menu {
+.touchevents .top-panel-container .top-panel {
   font-size: 1rem;
 }
-.top-menu-container .top-menu .top-menu-element-hide {
+.top-panel-container .top-panel .top-panel-element-hide {
   display: none;
 }
-.top-menu-container .top-menu > .top-menu-item {
+.top-panel-container .top-panel > .top-panel-item {
   flex-shrink: 0;
   flex-grow: 0;
 }
-.top-menu-container .top-menu > .top-menu-item:not(:first-child) {
-  margin-left: var(--fcoo-app-menu-padding) !important;
+.top-panel-container .top-panel > .top-panel-item:not(:first-child) {
+  margin-left: var(--fcoo-app-panel-padding) !important;
 }
-.top-menu-container .top-menu .left-side {
+.top-panel-container .top-panel .left-side {
   margin-right: auto !important;
 }
-.top-menu-container .top-menu .right-side {
+.top-panel-container .top-panel .right-side {
   margin-left: auto !important;
 }
-.top-menu-container .top-menu .icon-fcoo-logo-contrast {
+.top-panel-container .top-panel .icon-fcoo-logo-contrast {
   padding: 0;
   margin: 0;
   line-height: 0.5;
@@ -43927,7 +43972,7 @@ confussions another name is used
   text-shadow: -1px 0 var(--fcoo-app-shadow-color), 0 1px var(--fcoo-app-shadow-color), 1px 0 var(--fcoo-app-shadow-color), 0 -1px var(--fcoo-app-shadow-color);
   --bs-btn-border-width: 0px;
 }
-.top-menu-container .top-menu .top-menu-header {
+.top-panel-container .top-panel .top-panel-header {
   flex-shrink: 1;
   flex-grow: 1;
   text-align: center;
@@ -43938,21 +43983,21 @@ confussions another name is used
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.top-menu-container .top-menu .top-menu-header.top-menu-element-hide {
+.top-panel-container .top-panel .top-panel-header.top-panel-element-hide {
   display: block;
   visibility: hidden;
 }
-.top-menu-container .top-menu .form-inline .form-control {
+.top-panel-container .top-panel .form-inline .form-control {
   padding: 0.25rem 0.25rem;
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
   border-right: none;
   width: 6rem;
 }
-.small-up .top-menu-container .top-menu .form-inline .form-control {
+.small-up .top-panel-container .top-panel .form-inline .form-control {
   width: 10rem;
 }
-.top-menu-container .top-menu .form-inline .form-control.top-menu-element-show + .btn {
+.top-panel-container .top-panel .form-inline .form-control.top-panel-element-show + .btn {
   border-left: none;
   border-bottom-left-radius: 0;
   border-top-left-radius: 0;
@@ -43964,16 +44009,16 @@ a.no-all-read .show-for-all-read {
 }
 
 /*****************************************************
-TOP-MENU-BTN-SHAKE
+TOP-PANEL-BTN-SHAKE
 
-Style for shaking icon in buttons in top menu
+Style for shaking icon in buttons in top panel
 *****************************************************/
 /*****************************************************
 Created with csshake and modified to have interval between
 animations and to apply to button even when no-hover
 
 *****************************************************/
-.top-menu .btn.shake-constant i.far, .top-menu .btn.shake-constant i.fas {
+.top-panel .btn.shake-constant i.far, .top-panel .btn.shake-constant i.fas {
   animation-name: shake-little;
   animation-duration: 10000ms;
   animation-timing-function: ease-in-out;
@@ -44229,90 +44274,90 @@ Style for 'About FCOO' modal-content
 }
 
 /*****************************************************
-Style for touch menus and mmmenu
+Style for touch panels and mmenu
 *****************************************************/
 /*****************************************************
 TOUCH-MENU
 
-Style for touch-menus at the left, right, top and bottom edge
+Style for touch-panels at the left, right, top and bottom edge
 *****************************************************/
 /*
 Two modes:
-    side: Touch menu side-by-side with content
-    over: Touch menu over content
+    side: Touch panel side-by-side with content
+    over: Touch panel over content
 */
-.touch-menu-container {
+.touch-panel-container {
   position: absolute;
   background-color: var(--bs-body-bg);
 }
-.touch-menu-container.left {
+.touch-panel-container.left {
   border-right: 1px solid var(--fcoo-app-bg-color);
 }
-.touch-menu-container.right {
+.touch-panel-container.right {
   border-left: 1px solid var(--fcoo-app-bg-color);
 }
-.touch-menu-container.top {
+.touch-panel-container.top {
   border-bottom: 1px solid var(--fcoo-app-bg-color);
 }
-.touch-menu-container.bottom {
+.touch-panel-container.bottom {
   border-top: 1px solid var(--fcoo-app-bg-color);
 }
-.touch-menu-container.mode-over {
+.touch-panel-container.mode-over {
   z-index: 1054;
 }
-.touch-menu-container.mode-over.closed {
+.touch-panel-container.mode-over.closed {
   z-index: 1048;
 }
-.touch-menu-container.mode-side {
+.touch-panel-container.mode-side {
   z-index: 1048;
 }
-.touch-menu-container.opened {
+.touch-panel-container.opened {
   transition-property: all;
   transition-duration: 0.3s;
   transition-timing-function: ease-out;
 }
-html.loading .touch-menu-container.opened, .touch-menu-container.opened.no-animation {
+html.loading .touch-panel-container.opened, .touch-panel-container.opened.no-animation {
   transition: none !important;
 }
-.touch-menu-container.closed {
+.touch-panel-container.closed {
   transition-property: all;
   transition-duration: 0.3s;
   transition-timing-function: ease-out;
   transform: none !important;
 }
-html.loading .touch-menu-container.closed, .touch-menu-container.closed.no-animation {
+html.loading .touch-panel-container.closed, .touch-panel-container.closed.no-animation {
   transition: none !important;
 }
-.touch-menu-container .touch-menu {
+.touch-panel-container .touch-panel {
   position: relative;
 }
-.touch-menu-container.vertical-auto-width {
+.touch-panel-container.vertical-auto-width {
   width: auto !important;
 }
-.touch-menu-container.horizontal-auto-height {
+.touch-panel-container.horizontal-auto-height {
   height: auto !important;
 }
 
-.touch-menu-handle {
+.touch-panel-handle {
   position: absolute;
 }
-.touch-menu-handle.left {
+.touch-panel-handle.left {
   left: 0;
 }
-.touch-menu-handle.right {
+.touch-panel-handle.right {
   right: 0;
 }
-.touch-menu-handle.top {
+.touch-panel-handle.top {
   top: 0;
 }
-.touch-menu-handle.bottom {
+.touch-panel-handle.bottom {
   bottom: 0;
 }
-.touch-menu-handle.hide-when-open.opened, .touch-menu-handle.hide-when-open.closing {
+.touch-panel-handle.hide-when-open.opened, .touch-panel-handle.hide-when-open.closing {
   display: none;
 }
 
-.touch-menu-mask {
+.touch-panel-mask {
   position: absolute;
   opacity: 0;
   z-index: -1;
@@ -44322,10 +44367,10 @@ html.loading .touch-menu-container.closed, .touch-menu-container.closed.no-anima
   left: 0;
   background-color: #000;
 }
-.touch-menu-mask.opened, .touch-menu-mask.closed {
+.touch-panel-mask.opened, .touch-panel-mask.closed {
   transition: opacity 0.3s ease-out;
 }
-.touch-menu-mask.visible {
+.touch-panel-mask.visible {
   z-index: 1053;
 }
 
@@ -44338,10 +44383,10 @@ html.loading .touch-menu-container.closed, .touch-menu-container.closed.no-anima
   background-color: transparent;
 }
 
-.vertical-pre-menu {
+.vertical-pre-panel {
   border-bottom: 1px solid var(--fcoo-app-bg-color);
   background-color: var(--bs-gray-200);
-  padding: var(--fcoo-app-menu-padding);
+  padding: var(--fcoo-app-panel-padding);
 }
 
 .neighbour-container {
@@ -44353,35 +44398,35 @@ html.loading .neighbour-container, .neighbour-container.no-animation {
   transition-duration: 0s !important;
 }
 
-html.top-menu-open .hide-for-top-menu-open {
+html.top-panel-open .hide-for-top-panel-open {
   display: none !important;
 }
 
-html.no-top-menu-open .show-for-top-menu-open {
+html.no-top-panel-open .show-for-top-panel-open {
   display: none !important;
 }
 
-html.bottom-menu-open .hide-for-bottom-menu-open {
+html.bottom-panel-open .hide-for-bottom-panel-open {
   display: none !important;
 }
 
-html.no-bottom-menu-open .show-for-bottom-menu-open {
+html.no-bottom-panel-open .show-for-bottom-panel-open {
   display: none !important;
 }
 
-html.left-menu-open .hide-for-left-menu-open {
+html.left-panel-open .hide-for-left-panel-open {
   display: none !important;
 }
 
-html.no-left-menu-open .show-for-left-menu-open {
+html.no-left-panel-open .show-for-left-panel-open {
   display: none !important;
 }
 
-html.right-menu-open .hide-for-right-menu-open {
+html.right-panel-open .hide-for-right-panel-open {
   display: none !important;
 }
 
-html.no-right-menu-open .show-for-right-menu-open {
+html.no-right-panel-open .show-for-right-panel-open {
   display: none !important;
 }
 
@@ -47478,30 +47523,47 @@ leaflet-bootstrap-control-position.scss
 
 ************************************************/
 .lpl-base {
-  stroke-opacity: 1;
-  fill-opacity: 1;
+  --stroke-opacity: 1;
+  --fill-opacity: 1;
+  stroke-opacity: var(--stroke-opacity);
+  fill-opacity: var(--fill-opacity);
   fill: none;
   outline: none;
 }
 .lpl-base.lpl-popup-open {
-  stroke-opacity: 1;
-  fill-opacity: 1;
+  --stroke-opacity: 1;
+  --fill-opacity: 1;
+}
+.lpl-base.lpl-popup-open.lpl-any-transparent {
+  --stroke-opacity: .9;
 }
 .lpl-base.lpl-popup-open.lpl-transparent {
-  stroke-opacity: 0.9;
-  fill-opacity: 0.8;
+  --fill-opacity: .8;
+}
+.lpl-base.lpl-popup-open.lpl-extra-transparent {
+  --fill-opacity: .4;
 }
 .lpl-base:not(.lpl-popup-open).lpl-only-show-on-hover {
-  stroke-opacity: 0;
-  fill-opacity: 0;
+  --stroke-opacity: 0;
+  --fill-opacity: 0;
+}
+.lpl-base:not(.lpl-popup-open).lpl-any-transparent:not(.lpl-only-show-on-hover) {
+  --stroke-opacity: .7;
+}
+.lpl-base:not(.lpl-popup-open).lpl-any-transparent:not(.lpl-only-show-on-hover).lpl-hover {
+  --stroke-opacity: .9;
 }
 .lpl-base:not(.lpl-popup-open).lpl-transparent:not(.lpl-only-show-on-hover) {
-  stroke-opacity: 0.7;
-  fill-opacity: 0.35;
+  --fill-opacity: .35;
 }
 .lpl-base:not(.lpl-popup-open).lpl-transparent:not(.lpl-only-show-on-hover).lpl-hover {
-  stroke-opacity: 0.9;
-  fill-opacity: 0.7;
+  --fill-opacity: .7;
+}
+.lpl-base:not(.lpl-popup-open).lpl-extra-transparent:not(.lpl-only-show-on-hover) {
+  --fill-opacity: .17;
+}
+.lpl-base:not(.lpl-popup-open).lpl-extra-transparent:not(.lpl-only-show-on-hover).lpl-hover {
+  --fill-opacity: .35;
 }
 
 .lpl-border {
@@ -48693,6 +48755,17 @@ Bootstrap default = normal size
 ************************************************************/
 /***********************************************
 Accordion
+***********************************************/
+/***********************************************
+Grid columns
+Set the number of columns and specify the width of the gutters.
+
+$grid-columns:                12 !default;
+$grid-gutter-width:           1.5rem !default;
+$grid-row-columns:            6 !default;
+
+// Container padding
+$container-padding-x: $grid-gutter-width !default;
 ***********************************************/
 /***********************************************
 Card
