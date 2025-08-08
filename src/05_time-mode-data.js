@@ -172,7 +172,7 @@
             this.save();
 
             if (this.mode == nsTime.timeMode){
-                this.updateBottomMenuElements(redrawTimeSlider);
+                this.updateBottomPanelElements(redrawTimeSlider);
 
                 //Update current time on all maps
                 nsMap.callAllMaps('_updateTime');
@@ -195,13 +195,13 @@
         },
 
         /********************************************************
-        updateBottomMenuElements
+        updateBottomPanelElements
         ********************************************************/
-        updateBottomMenuElements: function(redrawTimeSlider){
+        updateBottomPanelElements: function(redrawTimeSlider){
             var currentRelative = this.data.currentRelative,
-                $container = nsMap.main.bottomMenu.$container;
+                $container = nsMap.main.bottomPanel.$container;
 
-            //Update elements in bottom-menu with current time and current relative
+            //Update elements in bottom-panel with current time and current relative
             $container.find('.is-current-moment').vfValue(this.data.currentMoment);
 
             //Releative time needs to be relative to 'true now' = moment()
@@ -215,7 +215,7 @@
             $container.find('.btn-time-step-forward').toggleClass('disabled', isLast);
 
             //Update style etc. for all elementSets
-            nsTime.bottomMenu_onCurrentRelativeChanged(currentRelative);
+            nsTime.bottomPanel_onCurrentRelativeChanged(currentRelative);
 
             //Update value for buttons with time-slider
             nsTime.updateSliderButtons(currentRelative);

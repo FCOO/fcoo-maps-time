@@ -27,11 +27,11 @@ L.Map
         nsMap.secondaryMapOptions = $.extend(nsMap.secondaryMapOptions, map_timeDimension_options);
 
 /*
-        //Add button to open button menu - only visible when single map and bottom menu is closed
+        //Add button to open button panel - only visible when single map and bottom-panel is closed
         if (false){
             nsMap.mainMapOptions = $.extend(nsMap.mainMapOptions, {
-                bsToggleBottomMenuControl: true,
-                bsToggleBottomMenuOptions: {class:'MANGLER'}
+                bsToggleBottomPanelControl: true,
+                bsToggleBottomPanelOptions: {class:'MANGLER'}
             });
         }
 */
@@ -72,8 +72,8 @@ L.Map
         nsMap.mainMapOptions.bsTimeInfoControl = true;
 
         nsMap.mainMapOptions.bsTimeInfoControlOptions = {
-            //time-info-control on main map gets extra class = 'hide-for-single-map-and-bottom-menu-open'
-            className : L.Control.BsTimeInfoControl.prototype.options.className + ' hide-for-single-map-and-bottom-menu-open',
+            //time-info-control on main map gets extra class = 'hide-for-single-map-and-bottom-panel-open'
+            className : L.Control.BsTimeInfoControl.prototype.options.className + ' hide-for-single-map-and-bottom-panel-open',
             position  : bsTimeInfoControlPosition,
             isMainMap : true,
             isExtended: true,

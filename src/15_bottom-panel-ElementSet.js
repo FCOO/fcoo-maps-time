@@ -1,5 +1,5 @@
 /***********************************************************************************
-bottom-menu-ElementSet.js
+bottom-panel-ElementSet.js
 
 *************************************************************************************/
 (function ($, L, window/*, document, undefined*/) {
@@ -24,7 +24,7 @@ bottom-menu-ElementSet.js
     The elements in $container are all part of groups.
     Depending of the current width of $container not all elements are visible
     prioList contains a list of strings with group-ids.
-    The function bottomMenu_onResize will find the set of groups in prioList tha fits the current
+    The function bottomPanel_onResize will find the set of groups in prioList tha fits the current
     width of $container and shown/hide the elements
 
     **************************************************************************/
@@ -39,23 +39,23 @@ bottom-menu-ElementSet.js
     }
 
     ElementSet.prototype = {
-        //get: Return the bms, mode, ori version from data
-        get: function(data, bms, mode, ori, defaultValue){
+        //get: Return the bps, mode, ori version from data
+        get: function(data, bps, mode, ori, defaultValue){
             if (data === undefined)
                 return defaultValue;
 
             if (Array.isArray(data) || (typeof data == 'string'))
                 return data;
 
-            return this.get( data[bms] || data['ALL'], mode, ori, null, defaultValue);
+            return this.get( data[bps] || data['ALL'], mode, ori, null, defaultValue);
         },
 
-        getString: function(data, bms, mode, ori){
-            return this.get(data, bms, mode, ori, '');
+        getString: function(data, bps, mode, ori){
+            return this.get(data, bps, mode, ori, '');
         },
 
-        getArray: function(data, bms, mode, ori){
-            return this.get(data, bms, mode, ori, []);
+        getArray: function(data, bps, mode, ori){
+            return this.get(data, bps, mode, ori, []);
         },
 
         addElementList: function(list){
@@ -169,16 +169,16 @@ bottom-menu-ElementSet.js
                     });
                 });
 
-                //Find the total width of all groups in each set of bms, mode, orientation
+                //Find the total width of all groups in each set of bps, mode, orientation
                 var newPrio = {};
-                nsTime.bottomMenuSizeList.forEach( function( bms ){
-                    newPrio[bms] = {};
+                nsTime.bottomPanelSizeList.forEach( function( bps ){
+                    newPrio[bps] = {};
                     nsTime.timeOptions.timeModeList.forEach( function( mode ){
-                        newPrio[bms][mode] = {};
+                        newPrio[bps][mode] = {};
                         ['portrait', 'landscape'].forEach( function( ori ){
-                            var prioAndWidthList = newPrio[bms][mode][ori] = [],
-                                defaultGroups    = _this.getString( _this.options.defaultGroups || '', bms, mode, ori ),
-                                prioList         = _this.getArray( _this.options.prioList, bms, mode, ori );
+                            var prioAndWidthList = newPrio[bps][mode][ori] = [],
+                                defaultGroups    = _this.getString( _this.options.defaultGroups || '', bps, mode, ori ),
+                                prioList         = _this.getArray( _this.options.prioList, bps, mode, ori );
 
                             prioList.forEach( function( prioStr ){
                                 var groupList = splitStr(defaultGroups).concat( splitStr(prioStr) ),
@@ -192,18 +192,18 @@ bottom-menu-ElementSet.js
                                 });
                             });
                         });
-                        newPrio[bms][mode] = compress( newPrio[bms][mode] );
+                        newPrio[bps][mode] = compress( newPrio[bps][mode] );
                     });
-                    newPrio[bms] = compress( newPrio[bms] );
+                    newPrio[bps] = compress( newPrio[bps] );
                 });
                 this.options.prioList = compress( newPrio );
             }
 
             //Find the set of groups with largest width less that container width
-            let bms              = nsTime.bottomMenuSizeList[ ns.appSetting.get('bottom-menu-size') ],
+            let bps              = nsTime.bottomPanelSizeList[ ns.appSetting.get('bottom-panel-size') ],
                 mode             = nsTime.timeMode,
                 orientation      = $('html').hasClass('landscape') ? 'landscape' : 'portrait',
-                prioList         = this.getArray( this.options.prioList, bms, mode, orientation ),
+                prioList         = this.getArray( this.options.prioList, bps, mode, orientation ),
                 currentGroupList = prioList.length ? prioList[0].list : [],
                 containerWidth   = this.$container.width();
 
@@ -241,7 +241,7 @@ bottom-menu-ElementSet.js
 
 
     //**************************************************************************
-    nsTime.bottomMenu_onResize = function(){
+    nsTime.bottomPanel_onResize = function(){
         elementSetList.forEach( elementSet => {
             elementSet.update();
         });
@@ -249,12 +249,12 @@ bottom-menu-ElementSet.js
 
 
     /**************************************************************************
-    nsTime.bottomMenu_onCurrentRelativeChanged( currentRelative )
+    nsTime.bottomPanel_onCurrentRelativeChanged( currentRelative )
     Calls onCurrentRelativeChanged for all elementSets in elementSetList
     onCurrentRelativeChanged change different class-names etc for the elements
     depending on the value of relative
     **************************************************************************/
-    nsTime.bottomMenu_onCurrentRelativeChanged = function( currentRelative ){
+    nsTime.bottomPanel_onCurrentRelativeChanged = function( currentRelative ){
         elementSetList.forEach( elementSet => {
             elementSet.onCurrentRelativeChanged( currentRelative );
         });

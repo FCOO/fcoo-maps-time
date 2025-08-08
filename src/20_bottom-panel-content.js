@@ -1,7 +1,7 @@
 /***********************************************************************************
-bottom-menu.js
+bottom-panel.js
 
-Create the content for bottom-menu with buttons, slider, info etc. for selected time
+Create the content for bottom-panel with buttons, slider, info etc. for selected time
 *************************************************************************************/
 (function ($, L, window/*, document, undefined*/) {
     "use strict";
@@ -14,10 +14,10 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
 
 
     /**************************************************************************
-    The content of the bottom-menu contains of buttons, boxes with info on current time an sliders
+    The content of the bottom-panel contains of buttons, boxes with info on current time an sliders
     This are all referred to as an element and a prototype is created in elements = [ID]$-element
 
-    See 10_bottom-menu-elements.js for details on different elements
+    See 10_bottom-panel-elements.js for details on different elements
 
     **************************************************************************/
     var elements      = nsTime.elements,
@@ -26,10 +26,10 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
 
     /**************************************************************************
     ***************************************************************************
-    createBottomMenu( $container )
+    createBottomPanel( $container )
     ***************************************************************************
     **************************************************************************/
-    function createBottomMenu( $container ){
+    function createBottomPanel( $container ){
 /* TEST
         var isDesktop = false,
             isNotDesktop = !isDesktop,
@@ -44,7 +44,7 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
             elements['time-mode'] = elements['empty'];
 
         //Set events for resize and change relative time
-        ns.events.on('TIMEMODECHANGED', nsTime.bottomMenu_onResize);
+        ns.events.on('TIMEMODECHANGED', nsTime.bottomPanel_onResize);
 
 
         /**************************************************************************
@@ -120,15 +120,15 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
                     if (isNotDesktop)
                         list.push(['time-step-next', 'time-step-next-ext', 'time-step-last']);
 
-                    list.push(['bms-extended', 'bms-extended2normal', 'bms-minimized2normal', 'bms-minimized']);
+                    list.push(['bps-extended', 'bps-extended2normal', 'bps-minimized2normal', 'bps-minimized']);
 
                     return list;
                 }(),
 
             defaultGroups: {
-                minimized: 'time-mode time-step-prev-next bms-minimized2normal',
-                normal   : 'time-mode time-step-prev-next bms-extended',
-                extended : 'time-mode time-step-prev-next bms-extended2normal',
+                minimized: 'time-mode time-step-prev-next bps-minimized2normal',
+                normal   : 'time-mode time-step-prev-next bps-extended',
+                extended : 'time-mode time-step-prev-next bps-extended2normal',
             },
 
             prioList: {
@@ -157,7 +157,7 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
             }
         });
 
-        //PHONE-PORTRAIT: BMS=Minimized, Normal, or Extended
+        //PHONE-PORTRAIT: BPS=Minimized, Normal, or Extended
         if (isPhone){
             //1. row: Current or relative
             addElementSet({
@@ -181,13 +181,13 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
 
                     //Right-side buttons
                     {ownContainer: true, class: 'd-flex flex-nowrap'},
-                        'time-step-last', 'bms-minimized2normal', 'bms-extended', 'bms-extended2normal'
+                        'time-step-last', 'bps-minimized2normal', 'bps-extended', 'bps-extended2normal'
                 ],
 
                 defaultGroups: {
-                    minimized: 'time-mode time-step-first-last bms-minimized2normal',
-                    normal   : 'time-mode time-step-first-last bms-extended',
-                    extended : 'time-mode time-step-first-last bms-extended2normal',
+                    minimized: 'time-mode time-step-first-last bps-minimized2normal',
+                    normal   : 'time-mode time-step-first-last bps-extended',
+                    extended : 'time-mode time-step-first-last bps-extended2normal',
                 },
 
                 prioList: {
@@ -247,37 +247,37 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
         }   //end of if (isPhone)
 
         /**************************************************************************
-        DESKTOP, TABLE, PHONE: BMS=Normal
+        DESKTOP, TABLE, PHONE: BPS=Normal
         Time-sliders
         **************************************************************************/
         addElementSet({
             $container: $('<div/>')
                 .appendTo($container)
                 .addClass('d-flex w-100 align-items-end')
-                .addClass('show-for-bottom-menu-normal'),
+                .addClass('show-for-bottom-panel-normal'),
 
             elementList: [
                {id: 'empty', class:'d-flex'},
 
-                {id: 'bms-normal-RELATIVE', ownContainer: true, class: 'd-flex flex-grow-1 overflow-hidden'},
-                'bms-normal-FIXED',
+                {id: 'bps-normal-RELATIVE', ownContainer: true, class: 'd-flex flex-grow-1 overflow-hidden'},
+                'bps-normal-FIXED',
 
-                {id: 'bms-minimized', ownContainer: true}
+                {id: 'bps-minimized', ownContainer: true}
             ]
         });
 
         /**************************************************************************
-        DESKTOP, TABLE, PHONE: BMS=Extended
+        DESKTOP, TABLE, PHONE: BPS=Extended
         Time-sliders
         **************************************************************************/
         addElementSet({
             $container: $('<div/>')
                 .appendTo($container)
                     .addClass('d-flex w-100')
-                    .addClass('show-for-bottom-menu-extended'),
+                    .addClass('show-for-bottom-panel-extended'),
             elementList: [
-                {id: 'bms-extended-RELATIVE', class: 'd-flex flex-grow-1 overflow-hidden'},
-                'bms-extended-FIXED',
+                {id: 'bps-extended-RELATIVE', class: 'd-flex flex-grow-1 overflow-hidden'},
+                'bps-extended-FIXED',
             ]
         });
 
@@ -293,27 +293,27 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
             $('<div/>')
                 .appendTo($container)
                 ._bsAddBaseClassAndSize({baseClass: 'jb-footer-content', useTouchSize: true})
-                .addClass('show-for-bottom-menu-extended')
+                .addClass('show-for-bottom-panel-extended')
                 ._bsAddHtml( ns.globalSettingFooter(ns.events.TIMEZONECHANGED, true) );
 
 
         //Clean up
         nsTime.elements = null;
 
-        window.setTimeout( nsTime.bottomMenu_onResize, 200);
+        window.setTimeout( nsTime.bottomPanel_onResize, 200);
     }
 
     //********************************************************************************************
     var sizeList = [];
-    nsTime.bottomMenuSizeList.forEach( (size) => { sizeList.push('bottom-menu-'+size); });
+    nsTime.bottomPanelSizeList.forEach( (size) => { sizeList.push('bottom-panel-'+size); });
 
     nsMap.BOTTOM_MENU = {
         height          : 'auto',
         sizeList        : sizeList,
-        onSetSize       : nsTime.bottomMenu_onResize,
+        onSetSize       : nsTime.bottomPanel_onResize,
         standardHandler : true,
         isOpen          : true,
-        createContent   : createBottomMenu
+        createContent   : createBottomPanel
     };
 
 }(jQuery, L, this, document));

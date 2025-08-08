@@ -21,7 +21,7 @@ Leaflet control to display current time and relative time in the maps
             //small          : window.bsIsTouch,
             //icon           : 'ER-DET-HER far fa-lg fa-home',
             icon			: nsTime.getIcon(),
-			iconClass		: 'fa-lg', 				
+			iconClass		: 'fa-lg',
             tooltipOnButton	: true,
             square			: true,
             className		: 'time-info-control',   //Class-names for the container
@@ -72,8 +72,8 @@ Leaflet control to display current time and relative time in the maps
                     type        : 'button',
                     icon        : 'far fa-ruler-horizontal fa-flip-vertical',
                     text        : {da: 'Vis tidsvælger', en: 'Show time-selector'},
-                    class       : 'hide-for-bottom-menu-open',
-                    onClick     : function(){ nsMap.main.bottomMenu.open(); },
+                    class       : 'hide-for-bottom-panel-open',
+                    onClick     : function(){ nsMap.main.bottomPanel.open(); },
                     closeOnClick: true,
                     lineAfter   : true
                 });
@@ -81,8 +81,8 @@ Leaflet control to display current time and relative time in the maps
                     type        : 'button',
                     icon        : [['far fa-ruler-horizontal fa-flip-vertical', 'far fa-slash']],
                     text        : {da: 'Skjul tidsvælger', en: 'Hide time selector'},
-                    class       : 'show-for-bottom-menu-open',
-                    onClick     : function(){ nsMap.main.bottomMenu.close(); },
+                    class       : 'show-for-bottom-panel-open',
+                    onClick     : function(){ nsMap.main.bottomPanel.close(); },
                     closeOnClick: true,
                     lineAfter   : true
                 });
@@ -145,7 +145,7 @@ Leaflet control to display current time and relative time in the maps
             });
 
             map.on("momentchanged", this.onMomentChanged, this);
-			
+
             if (this.options.isMainMap){
 				ns.events.on('TIMEMODECHANGED', function(id, mode){
 					this._changeIcon( nsTime.timeModeInfo[mode].icon );
@@ -237,10 +237,10 @@ Leaflet control to display current time and relative time in the maps
             forcedShown ? this.disable() : this.enable();
 
 
-            
+
             //Update sync time (Now or relative time)
             const showRelativeText = !asMain || offset;
-            
+
             this.$relative.empty().hide();
             if (showRelativeText){
                 var text = $.extend({}, timeSyncInfo.relativePrefix_Ctrl);
@@ -256,8 +256,8 @@ Leaflet control to display current time and relative time in the maps
 
             //Adjust the button:
             //Set icon color for mode and offset
-			this._changeIcon( nsTime.getIcon(timeSyncMode, offset) ); 
-				
+			this._changeIcon( nsTime.getIcon(timeSyncMode, offset) );
+
             //If same as main map  => normal button: shape = square and big icon and no margin
             var isSquare = asMain && !offset;
             this.bsButton.toggleClass('square', isSquare);
@@ -266,22 +266,22 @@ Leaflet control to display current time and relative time in the maps
             //Update current time of the map
             this._map._updateTime();
         },
-			
+
         /***********************************************************
         _changeIcon
         ***********************************************************/
-		_changeIcon: function( newIconOptions ){ 
-			if (newIconOptions){ 
+		_changeIcon: function( newIconOptions ){
+			if (newIconOptions){
 				this.$container.find('i').parent().each( (index, elem) => {
                     let $oldIcon = $(elem);
                     $._bsCreateIcon(newIconOptions)
-                        .addClass( elem.className ) 
+                        .addClass( elem.className )
                         .insertAfter( $oldIcon );
                     $oldIcon.remove();
                 });
 			}
 			return this;
-		},		
+		},
     });
 
 

@@ -1,7 +1,7 @@
 /***********************************************************************************
-bottom-menu-elements-timeSlider.js
+bottom-panel-elements-timeSlider.js
 
-Create the content for bottom-menu with different versions of time-slider
+Create the content for bottom-panel with different versions of time-slider
 
 Both are TimeSlider (see jquery-time-slider)
 There are created as-is - not as prototype
@@ -41,7 +41,7 @@ There are created as-is - not as prototype
     /************************************************
     TimeSlider options
     Options for the differnet types of time-slider, and
-    options for time-slider in different bms
+    options for time-slider in different bps
 
     Some of the options are given by the min and max range given in
     nsTime.timeOptions.timeModeOptions[timeMode]
@@ -50,7 +50,7 @@ There are created as-is - not as prototype
 
     In mode=FIXED The time-sliders in normal and extended mode can also
     show the time i UTC and relative.
-    This is controlled by allowUTC_bmsNormal, allowUTC_bmsExtended, allowRel_bmsNormal, allowRel_bmsExtended and
+    This is controlled by allowUTC_bpsNormal, allowUTC_bpsExtended, allowRel_bpsNormal, allowRel_bpsExtended and
     is only allowed for different type of devices:
         ns.modernizrDevice.isDesktop
         ns.modernizrDevice.isTablet
@@ -59,29 +59,29 @@ There are created as-is - not as prototype
     var isDesktop   = ns.modernizrDevice.isDesktop, //Only Desktop
         isNotPhone  = !ns.modernizrDevice.isPhone,  //Tablet or Desktop
 
-        allowRel_bmsNormal      = isNotPhone,
-        allowUTC_bmsNormal      = isDesktop,
+        allowRel_bpsNormal      = isNotPhone,
+        allowUTC_bpsNormal      = isDesktop,
 
-        allowRel_bmsExtended    = true,
-        allowUTC_bmsExtended    = true,
-        bigger_bmsExtendedFIXED = allowUTC_bmsExtended && isDesktop;
+        allowRel_bpsExtended    = true,
+        allowUTC_bpsExtended    = true,
+        bigger_bpsExtendedFIXED = allowUTC_bpsExtended && isDesktop;
 
 
     var timeSliderOptions = {},
         timeSliderHeight = {
             'DEFAULT' : {
-                'bms-normal'    : '2em',
-                'bms-extended'  : '3em'
+                'bps-normal'    : '2em',
+                'bps-extended'  : '3em'
             },
             'RELATIVE': {
-                'bms-normal'    : '1.85em',
-                'bms-extended'  : '3.30em'
+                'bps-normal'    : '1.85em',
+                'bps-extended'  : '3.30em'
             },
             'FIXED': {
-                'bms-normal'    : allowUTC_bmsNormal  ? '4.30em' : //Current, Rel and UTC
-                                  (allowRel_bmsNormal ? '3.10em' : //Current and Rel
+                'bps-normal'    : allowUTC_bpsNormal  ? '4.30em' : //Current, Rel and UTC
+                                  (allowRel_bpsNormal ? '3.10em' : //Current and Rel
                                                         '1.80em'), //Current
-                'bms-extended'  : allowUTC_bmsExtended ? (bigger_bmsExtendedFIXED ? '5.75em' : '4.30em') : '3em'
+                'bps-extended'  : allowUTC_bpsExtended ? (bigger_bpsExtendedFIXED ? '5.75em' : '4.30em') : '3em'
             }
         };
 
@@ -130,13 +130,13 @@ There are created as-is - not as prototype
         }],
     },
 
-    //bms = Normal
-    timeSliderOptions['bms-normal'] = {
+    //bps = Normal
+    timeSliderOptions['bps-normal'] = {
         ticksOnLine: true,
     };
 
-    //bms = Extended
-    timeSliderOptions['bms-extended'] = {
+    //bps = Extended
+    timeSliderOptions['bps-extended'] = {
     };
 
     /*************************************
@@ -163,13 +163,13 @@ There are created as-is - not as prototype
     };
 
 
-    //Mode=RELATIVE, bms=Normal
-    timeSliderOptions['bms-normal-RELATIVE'] = {
+    //Mode=RELATIVE, bps=Normal
+    timeSliderOptions['bps-normal-RELATIVE'] = {
         valueDistances: 20, //MANGLER
     };
 
-    //Mode=RELATIVE, bms=Extended
-    timeSliderOptions['bms-extended-RELATIVE'] = {
+    //Mode=RELATIVE, bps=Extended
+    timeSliderOptions['bps-extended-RELATIVE'] = {
         handle        : 'down',
         valueDistances: 24,
         showLineColor: false,
@@ -216,21 +216,21 @@ There are created as-is - not as prototype
       //valueDistances: 16, MANGLER
     };
 
-    //Mode=FIXED, bms=Normal
-    timeSliderOptions['bms-normal-FIXED'] = {
-        showExtraRelative   : allowRel_bmsNormal,
-        showUTC             : allowUTC_bmsNormal
+    //Mode=FIXED, bps=Normal
+    timeSliderOptions['bps-normal-FIXED'] = {
+        showExtraRelative   : allowRel_bpsNormal,
+        showUTC             : allowUTC_bpsNormal
 
       //valueDistances: 16, MANGLER
     };
 
-    //Mode=FIXED, bms=Extended
-    timeSliderOptions['bms-extended-FIXED'] = {
-        noDateLabels  : !bigger_bmsExtendedFIXED,
-        dateAtMidnight: !bigger_bmsExtendedFIXED,
+    //Mode=FIXED, bps=Extended
+    timeSliderOptions['bps-extended-FIXED'] = {
+        noDateLabels  : !bigger_bpsExtendedFIXED,
+        dateAtMidnight: !bigger_bpsExtendedFIXED,
 
-        showExtraRelative   : allowRel_bmsExtended,
-        showUTC             : allowUTC_bmsExtended,
+        showExtraRelative   : allowRel_bpsExtended,
+        showUTC             : allowUTC_bpsExtended,
 
       //valueDistances: 16, MANGLER
 
@@ -279,7 +279,7 @@ There are created as-is - not as prototype
     Create the different time-sliders
     **********************************************************************/
     nsTime.onSetupLoaded.push(function(){
-        ['bms-normal', 'bms-extended'].forEach( function(type){
+        ['bps-normal', 'bps-extended'].forEach( function(type){
             nsTime.timeOptions.timeModeList.forEach( function(timeMode){
                 let tsOptions = $.extend({
                             timeMode: timeMode,

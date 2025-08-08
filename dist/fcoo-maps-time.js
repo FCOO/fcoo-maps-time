@@ -684,7 +684,7 @@ The four main modes have icons and A: uses the same icon as b: and C: uses the s
             this.save();
 
             if (this.mode == nsTime.timeMode){
-                this.updateBottomMenuElements(redrawTimeSlider);
+                this.updateBottomPanelElements(redrawTimeSlider);
 
                 //Update current time on all maps
                 nsMap.callAllMaps('_updateTime');
@@ -707,13 +707,13 @@ The four main modes have icons and A: uses the same icon as b: and C: uses the s
         },
 
         /********************************************************
-        updateBottomMenuElements
+        updateBottomPanelElements
         ********************************************************/
-        updateBottomMenuElements: function(redrawTimeSlider){
+        updateBottomPanelElements: function(redrawTimeSlider){
             var currentRelative = this.data.currentRelative,
-                $container = nsMap.main.bottomMenu.$container;
+                $container = nsMap.main.bottomPanel.$container;
 
-            //Update elements in bottom-menu with current time and current relative
+            //Update elements in bottom-panel with current time and current relative
             $container.find('.is-current-moment').vfValue(this.data.currentMoment);
 
             //Releative time needs to be relative to 'true now' = moment()
@@ -727,7 +727,7 @@ The four main modes have icons and A: uses the same icon as b: and C: uses the s
             $container.find('.btn-time-step-forward').toggleClass('disabled', isLast);
 
             //Update style etc. for all elementSets
-            nsTime.bottomMenu_onCurrentRelativeChanged(currentRelative);
+            nsTime.bottomPanel_onCurrentRelativeChanged(currentRelative);
 
             //Update value for buttons with time-slider
             nsTime.updateSliderButtons(currentRelative);
@@ -981,11 +981,11 @@ L.Map
         nsMap.secondaryMapOptions = $.extend(nsMap.secondaryMapOptions, map_timeDimension_options);
 
 /*
-        //Add button to open button menu - only visible when single map and bottom menu is closed
+        //Add button to open button panel - only visible when single map and bottom-panel is closed
         if (false){
             nsMap.mainMapOptions = $.extend(nsMap.mainMapOptions, {
-                bsToggleBottomMenuControl: true,
-                bsToggleBottomMenuOptions: {class:'MANGLER'}
+                bsToggleBottomPanelControl: true,
+                bsToggleBottomPanelOptions: {class:'MANGLER'}
             });
         }
 */
@@ -1026,8 +1026,8 @@ L.Map
         nsMap.mainMapOptions.bsTimeInfoControl = true;
 
         nsMap.mainMapOptions.bsTimeInfoControlOptions = {
-            //time-info-control on main map gets extra class = 'hide-for-single-map-and-bottom-menu-open'
-            className : L.Control.BsTimeInfoControl.prototype.options.className + ' hide-for-single-map-and-bottom-menu-open',
+            //time-info-control on main map gets extra class = 'hide-for-single-map-and-bottom-panel-open'
+            className : L.Control.BsTimeInfoControl.prototype.options.className + ' hide-for-single-map-and-bottom-panel-open',
             position  : bsTimeInfoControlPosition,
             isMainMap : true,
             isExtended: true,
@@ -1159,10 +1159,10 @@ L.Map
 
 ;
 /***********************************************************************************
-bottom-menu-elements.js
+bottom-panel-elements.js
 
-Create the content for bottom-menu with buttons, slider, info etc. for selected time
-bms = bottom-menu-size
+Create the content for bottom-panel with buttons, slider, info etc. for selected time
+bps = bottom-panel-size
 *************************************************************************************/
 (function ($, L, window/*, document, undefined*/) {
     "use strict";
@@ -1173,11 +1173,11 @@ bms = bottom-menu-size
         nsTime    = nsMap.time = nsMap.time || {};
 
 
-    //bottomMenuSizeList = list of avaiable size of bottom-menu content
-    nsTime.bottomMenuSizeList = ['minimized', 'normal', 'extended'];
+    //bottomPanelSizeList = list of avaiable size of bottom-panel content
+    nsTime.bottomPanelSizeList = ['minimized', 'normal', 'extended'];
 
     /**************************************************************************
-    The content of the bottom-menu contains of buttons, boxes with info on current time an sliders
+    The content of the bottom-panel contains of buttons, boxes with info on current time an sliders
     This are all referred to as an element and a prototype is created in elements = [ID]$-element
     All elements are divided into groups to control witch element to show when
     **************************************************************************/
@@ -1199,22 +1199,22 @@ bms = bottom-menu-size
     }
 
 
-    //Create all buttons to change size of the bottom menu bms = bottom-menu-size
-    var bmsButtons = {
-            'bms-extended'          : {icon: 'fal fa-chevron-circle-up'  , size: 'extended'},
-            'bms-minimized'         : {icon: 'fal fa-chevron-circle-down', size: 'minimized'},
-            'bms-minimized2normal'  : {icon: 'fal fa-chevron-circle-up'  , size: 'normal'},
-            'bms-extended2normal'   : {icon: 'fal fa-chevron-circle-down', size: 'normal'},
+    //Create all buttons to change size of the bottom menu bps = bottom-panel-size
+    var bpsButtons = {
+            'bps-extended'          : {icon: 'fal fa-chevron-circle-up'  , size: 'extended'},
+            'bps-minimized'         : {icon: 'fal fa-chevron-circle-down', size: 'minimized'},
+            'bps-minimized2normal'  : {icon: 'fal fa-chevron-circle-up'  , size: 'normal'},
+            'bps-extended2normal'   : {icon: 'fal fa-chevron-circle-down', size: 'normal'},
         };
-    $.each( bmsButtons, function(id, options ){
-        const bottomMenuSizeIndex = nsTime.bottomMenuSizeList.indexOf( options.size );
+    $.each( bpsButtons, function(id, options ){
+        const bottomPanelSizeIndex = nsTime.bottomPanelSizeList.indexOf( options.size );
         elements[id] =
             $.bsButton({
                 square  : true,
                 icon    : options.icon,
                 bigIcon : true,
                 onClick: function(){
-                    ns.appSetting.set('bottom-menu-size', bottomMenuSizeIndex);
+                    ns.appSetting.set('bottom-panel-size', bottomPanelSizeIndex);
                 }
             });
         setGroup(id);
@@ -1512,9 +1512,9 @@ bms = bottom-menu-size
 
 ;
 /***********************************************************************************
-bottom-menu-elements-timeSlider.js
+bottom-panel-elements-timeSlider.js
 
-Create the content for bottom-menu with different versions of time-slider
+Create the content for bottom-panel with different versions of time-slider
 
 Both are TimeSlider (see jquery-time-slider)
 There are created as-is - not as prototype
@@ -1554,7 +1554,7 @@ There are created as-is - not as prototype
     /************************************************
     TimeSlider options
     Options for the differnet types of time-slider, and
-    options for time-slider in different bms
+    options for time-slider in different bps
 
     Some of the options are given by the min and max range given in
     nsTime.timeOptions.timeModeOptions[timeMode]
@@ -1563,7 +1563,7 @@ There are created as-is - not as prototype
 
     In mode=FIXED The time-sliders in normal and extended mode can also
     show the time i UTC and relative.
-    This is controlled by allowUTC_bmsNormal, allowUTC_bmsExtended, allowRel_bmsNormal, allowRel_bmsExtended and
+    This is controlled by allowUTC_bpsNormal, allowUTC_bpsExtended, allowRel_bpsNormal, allowRel_bpsExtended and
     is only allowed for different type of devices:
         ns.modernizrDevice.isDesktop
         ns.modernizrDevice.isTablet
@@ -1572,29 +1572,29 @@ There are created as-is - not as prototype
     var isDesktop   = ns.modernizrDevice.isDesktop, //Only Desktop
         isNotPhone  = !ns.modernizrDevice.isPhone,  //Tablet or Desktop
 
-        allowRel_bmsNormal      = isNotPhone,
-        allowUTC_bmsNormal      = isDesktop,
+        allowRel_bpsNormal      = isNotPhone,
+        allowUTC_bpsNormal      = isDesktop,
 
-        allowRel_bmsExtended    = true,
-        allowUTC_bmsExtended    = true,
-        bigger_bmsExtendedFIXED = allowUTC_bmsExtended && isDesktop;
+        allowRel_bpsExtended    = true,
+        allowUTC_bpsExtended    = true,
+        bigger_bpsExtendedFIXED = allowUTC_bpsExtended && isDesktop;
 
 
     var timeSliderOptions = {},
         timeSliderHeight = {
             'DEFAULT' : {
-                'bms-normal'    : '2em',
-                'bms-extended'  : '3em'
+                'bps-normal'    : '2em',
+                'bps-extended'  : '3em'
             },
             'RELATIVE': {
-                'bms-normal'    : '1.85em',
-                'bms-extended'  : '3.30em'
+                'bps-normal'    : '1.85em',
+                'bps-extended'  : '3.30em'
             },
             'FIXED': {
-                'bms-normal'    : allowUTC_bmsNormal  ? '4.30em' : //Current, Rel and UTC
-                                  (allowRel_bmsNormal ? '3.10em' : //Current and Rel
+                'bps-normal'    : allowUTC_bpsNormal  ? '4.30em' : //Current, Rel and UTC
+                                  (allowRel_bpsNormal ? '3.10em' : //Current and Rel
                                                         '1.80em'), //Current
-                'bms-extended'  : allowUTC_bmsExtended ? (bigger_bmsExtendedFIXED ? '5.75em' : '4.30em') : '3em'
+                'bps-extended'  : allowUTC_bpsExtended ? (bigger_bpsExtendedFIXED ? '5.75em' : '4.30em') : '3em'
             }
         };
 
@@ -1643,13 +1643,13 @@ There are created as-is - not as prototype
         }],
     },
 
-    //bms = Normal
-    timeSliderOptions['bms-normal'] = {
+    //bps = Normal
+    timeSliderOptions['bps-normal'] = {
         ticksOnLine: true,
     };
 
-    //bms = Extended
-    timeSliderOptions['bms-extended'] = {
+    //bps = Extended
+    timeSliderOptions['bps-extended'] = {
     };
 
     /*************************************
@@ -1676,13 +1676,13 @@ There are created as-is - not as prototype
     };
 
 
-    //Mode=RELATIVE, bms=Normal
-    timeSliderOptions['bms-normal-RELATIVE'] = {
+    //Mode=RELATIVE, bps=Normal
+    timeSliderOptions['bps-normal-RELATIVE'] = {
         valueDistances: 20, //MANGLER
     };
 
-    //Mode=RELATIVE, bms=Extended
-    timeSliderOptions['bms-extended-RELATIVE'] = {
+    //Mode=RELATIVE, bps=Extended
+    timeSliderOptions['bps-extended-RELATIVE'] = {
         handle        : 'down',
         valueDistances: 24,
         showLineColor: false,
@@ -1729,21 +1729,21 @@ There are created as-is - not as prototype
       //valueDistances: 16, MANGLER
     };
 
-    //Mode=FIXED, bms=Normal
-    timeSliderOptions['bms-normal-FIXED'] = {
-        showExtraRelative   : allowRel_bmsNormal,
-        showUTC             : allowUTC_bmsNormal
+    //Mode=FIXED, bps=Normal
+    timeSliderOptions['bps-normal-FIXED'] = {
+        showExtraRelative   : allowRel_bpsNormal,
+        showUTC             : allowUTC_bpsNormal
 
       //valueDistances: 16, MANGLER
     };
 
-    //Mode=FIXED, bms=Extended
-    timeSliderOptions['bms-extended-FIXED'] = {
-        noDateLabels  : !bigger_bmsExtendedFIXED,
-        dateAtMidnight: !bigger_bmsExtendedFIXED,
+    //Mode=FIXED, bps=Extended
+    timeSliderOptions['bps-extended-FIXED'] = {
+        noDateLabels  : !bigger_bpsExtendedFIXED,
+        dateAtMidnight: !bigger_bpsExtendedFIXED,
 
-        showExtraRelative   : allowRel_bmsExtended,
-        showUTC             : allowUTC_bmsExtended,
+        showExtraRelative   : allowRel_bpsExtended,
+        showUTC             : allowUTC_bpsExtended,
 
       //valueDistances: 16, MANGLER
 
@@ -1792,7 +1792,7 @@ There are created as-is - not as prototype
     Create the different time-sliders
     **********************************************************************/
     nsTime.onSetupLoaded.push(function(){
-        ['bms-normal', 'bms-extended'].forEach( function(type){
+        ['bps-normal', 'bps-extended'].forEach( function(type){
             nsTime.timeOptions.timeModeList.forEach( function(timeMode){
                 let tsOptions = $.extend({
                             timeMode: timeMode,
@@ -1820,7 +1820,7 @@ There are created as-is - not as prototype
 
 ;
 /***********************************************************************************
-bottom-menu-ElementSet.js
+bottom-panel-ElementSet.js
 
 *************************************************************************************/
 (function ($, L, window/*, document, undefined*/) {
@@ -1845,7 +1845,7 @@ bottom-menu-ElementSet.js
     The elements in $container are all part of groups.
     Depending of the current width of $container not all elements are visible
     prioList contains a list of strings with group-ids.
-    The function bottomMenu_onResize will find the set of groups in prioList tha fits the current
+    The function bottomPanel_onResize will find the set of groups in prioList tha fits the current
     width of $container and shown/hide the elements
 
     **************************************************************************/
@@ -1860,23 +1860,23 @@ bottom-menu-ElementSet.js
     }
 
     ElementSet.prototype = {
-        //get: Return the bms, mode, ori version from data
-        get: function(data, bms, mode, ori, defaultValue){
+        //get: Return the bps, mode, ori version from data
+        get: function(data, bps, mode, ori, defaultValue){
             if (data === undefined)
                 return defaultValue;
 
             if (Array.isArray(data) || (typeof data == 'string'))
                 return data;
 
-            return this.get( data[bms] || data['ALL'], mode, ori, null, defaultValue);
+            return this.get( data[bps] || data['ALL'], mode, ori, null, defaultValue);
         },
 
-        getString: function(data, bms, mode, ori){
-            return this.get(data, bms, mode, ori, '');
+        getString: function(data, bps, mode, ori){
+            return this.get(data, bps, mode, ori, '');
         },
 
-        getArray: function(data, bms, mode, ori){
-            return this.get(data, bms, mode, ori, []);
+        getArray: function(data, bps, mode, ori){
+            return this.get(data, bps, mode, ori, []);
         },
 
         addElementList: function(list){
@@ -1990,16 +1990,16 @@ bottom-menu-ElementSet.js
                     });
                 });
 
-                //Find the total width of all groups in each set of bms, mode, orientation
+                //Find the total width of all groups in each set of bps, mode, orientation
                 var newPrio = {};
-                nsTime.bottomMenuSizeList.forEach( function( bms ){
-                    newPrio[bms] = {};
+                nsTime.bottomPanelSizeList.forEach( function( bps ){
+                    newPrio[bps] = {};
                     nsTime.timeOptions.timeModeList.forEach( function( mode ){
-                        newPrio[bms][mode] = {};
+                        newPrio[bps][mode] = {};
                         ['portrait', 'landscape'].forEach( function( ori ){
-                            var prioAndWidthList = newPrio[bms][mode][ori] = [],
-                                defaultGroups    = _this.getString( _this.options.defaultGroups || '', bms, mode, ori ),
-                                prioList         = _this.getArray( _this.options.prioList, bms, mode, ori );
+                            var prioAndWidthList = newPrio[bps][mode][ori] = [],
+                                defaultGroups    = _this.getString( _this.options.defaultGroups || '', bps, mode, ori ),
+                                prioList         = _this.getArray( _this.options.prioList, bps, mode, ori );
 
                             prioList.forEach( function( prioStr ){
                                 var groupList = splitStr(defaultGroups).concat( splitStr(prioStr) ),
@@ -2013,18 +2013,18 @@ bottom-menu-ElementSet.js
                                 });
                             });
                         });
-                        newPrio[bms][mode] = compress( newPrio[bms][mode] );
+                        newPrio[bps][mode] = compress( newPrio[bps][mode] );
                     });
-                    newPrio[bms] = compress( newPrio[bms] );
+                    newPrio[bps] = compress( newPrio[bps] );
                 });
                 this.options.prioList = compress( newPrio );
             }
 
             //Find the set of groups with largest width less that container width
-            let bms              = nsTime.bottomMenuSizeList[ ns.appSetting.get('bottom-menu-size') ],
+            let bps              = nsTime.bottomPanelSizeList[ ns.appSetting.get('bottom-panel-size') ],
                 mode             = nsTime.timeMode,
                 orientation      = $('html').hasClass('landscape') ? 'landscape' : 'portrait',
-                prioList         = this.getArray( this.options.prioList, bms, mode, orientation ),
+                prioList         = this.getArray( this.options.prioList, bps, mode, orientation ),
                 currentGroupList = prioList.length ? prioList[0].list : [],
                 containerWidth   = this.$container.width();
 
@@ -2062,7 +2062,7 @@ bottom-menu-ElementSet.js
 
 
     //**************************************************************************
-    nsTime.bottomMenu_onResize = function(){
+    nsTime.bottomPanel_onResize = function(){
         elementSetList.forEach( elementSet => {
             elementSet.update();
         });
@@ -2070,12 +2070,12 @@ bottom-menu-ElementSet.js
 
 
     /**************************************************************************
-    nsTime.bottomMenu_onCurrentRelativeChanged( currentRelative )
+    nsTime.bottomPanel_onCurrentRelativeChanged( currentRelative )
     Calls onCurrentRelativeChanged for all elementSets in elementSetList
     onCurrentRelativeChanged change different class-names etc for the elements
     depending on the value of relative
     **************************************************************************/
-    nsTime.bottomMenu_onCurrentRelativeChanged = function( currentRelative ){
+    nsTime.bottomPanel_onCurrentRelativeChanged = function( currentRelative ){
         elementSetList.forEach( elementSet => {
             elementSet.onCurrentRelativeChanged( currentRelative );
         });
@@ -2086,9 +2086,9 @@ bottom-menu-ElementSet.js
 
 ;
 /***********************************************************************************
-bottom-menu.js
+bottom-panel.js
 
-Create the content for bottom-menu with buttons, slider, info etc. for selected time
+Create the content for bottom-panel with buttons, slider, info etc. for selected time
 *************************************************************************************/
 (function ($, L, window/*, document, undefined*/) {
     "use strict";
@@ -2101,10 +2101,10 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
 
 
     /**************************************************************************
-    The content of the bottom-menu contains of buttons, boxes with info on current time an sliders
+    The content of the bottom-panel contains of buttons, boxes with info on current time an sliders
     This are all referred to as an element and a prototype is created in elements = [ID]$-element
 
-    See 10_bottom-menu-elements.js for details on different elements
+    See 10_bottom-panel-elements.js for details on different elements
 
     **************************************************************************/
     var elements      = nsTime.elements,
@@ -2113,10 +2113,10 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
 
     /**************************************************************************
     ***************************************************************************
-    createBottomMenu( $container )
+    createBottomPanel( $container )
     ***************************************************************************
     **************************************************************************/
-    function createBottomMenu( $container ){
+    function createBottomPanel( $container ){
 /* TEST
         var isDesktop = false,
             isNotDesktop = !isDesktop,
@@ -2131,7 +2131,7 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
             elements['time-mode'] = elements['empty'];
 
         //Set events for resize and change relative time
-        ns.events.on('TIMEMODECHANGED', nsTime.bottomMenu_onResize);
+        ns.events.on('TIMEMODECHANGED', nsTime.bottomPanel_onResize);
 
 
         /**************************************************************************
@@ -2207,15 +2207,15 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
                     if (isNotDesktop)
                         list.push(['time-step-next', 'time-step-next-ext', 'time-step-last']);
 
-                    list.push(['bms-extended', 'bms-extended2normal', 'bms-minimized2normal', 'bms-minimized']);
+                    list.push(['bps-extended', 'bps-extended2normal', 'bps-minimized2normal', 'bps-minimized']);
 
                     return list;
                 }(),
 
             defaultGroups: {
-                minimized: 'time-mode time-step-prev-next bms-minimized2normal',
-                normal   : 'time-mode time-step-prev-next bms-extended',
-                extended : 'time-mode time-step-prev-next bms-extended2normal',
+                minimized: 'time-mode time-step-prev-next bps-minimized2normal',
+                normal   : 'time-mode time-step-prev-next bps-extended',
+                extended : 'time-mode time-step-prev-next bps-extended2normal',
             },
 
             prioList: {
@@ -2244,7 +2244,7 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
             }
         });
 
-        //PHONE-PORTRAIT: BMS=Minimized, Normal, or Extended
+        //PHONE-PORTRAIT: BPS=Minimized, Normal, or Extended
         if (isPhone){
             //1. row: Current or relative
             addElementSet({
@@ -2268,13 +2268,13 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
 
                     //Right-side buttons
                     {ownContainer: true, class: 'd-flex flex-nowrap'},
-                        'time-step-last', 'bms-minimized2normal', 'bms-extended', 'bms-extended2normal'
+                        'time-step-last', 'bps-minimized2normal', 'bps-extended', 'bps-extended2normal'
                 ],
 
                 defaultGroups: {
-                    minimized: 'time-mode time-step-first-last bms-minimized2normal',
-                    normal   : 'time-mode time-step-first-last bms-extended',
-                    extended : 'time-mode time-step-first-last bms-extended2normal',
+                    minimized: 'time-mode time-step-first-last bps-minimized2normal',
+                    normal   : 'time-mode time-step-first-last bps-extended',
+                    extended : 'time-mode time-step-first-last bps-extended2normal',
                 },
 
                 prioList: {
@@ -2334,37 +2334,37 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
         }   //end of if (isPhone)
 
         /**************************************************************************
-        DESKTOP, TABLE, PHONE: BMS=Normal
+        DESKTOP, TABLE, PHONE: BPS=Normal
         Time-sliders
         **************************************************************************/
         addElementSet({
             $container: $('<div/>')
                 .appendTo($container)
                 .addClass('d-flex w-100 align-items-end')
-                .addClass('show-for-bottom-menu-normal'),
+                .addClass('show-for-bottom-panel-normal'),
 
             elementList: [
                {id: 'empty', class:'d-flex'},
 
-                {id: 'bms-normal-RELATIVE', ownContainer: true, class: 'd-flex flex-grow-1 overflow-hidden'},
-                'bms-normal-FIXED',
+                {id: 'bps-normal-RELATIVE', ownContainer: true, class: 'd-flex flex-grow-1 overflow-hidden'},
+                'bps-normal-FIXED',
 
-                {id: 'bms-minimized', ownContainer: true}
+                {id: 'bps-minimized', ownContainer: true}
             ]
         });
 
         /**************************************************************************
-        DESKTOP, TABLE, PHONE: BMS=Extended
+        DESKTOP, TABLE, PHONE: BPS=Extended
         Time-sliders
         **************************************************************************/
         addElementSet({
             $container: $('<div/>')
                 .appendTo($container)
                     .addClass('d-flex w-100')
-                    .addClass('show-for-bottom-menu-extended'),
+                    .addClass('show-for-bottom-panel-extended'),
             elementList: [
-                {id: 'bms-extended-RELATIVE', class: 'd-flex flex-grow-1 overflow-hidden'},
-                'bms-extended-FIXED',
+                {id: 'bps-extended-RELATIVE', class: 'd-flex flex-grow-1 overflow-hidden'},
+                'bps-extended-FIXED',
             ]
         });
 
@@ -2380,27 +2380,27 @@ Create the content for bottom-menu with buttons, slider, info etc. for selected 
             $('<div/>')
                 .appendTo($container)
                 ._bsAddBaseClassAndSize({baseClass: 'jb-footer-content', useTouchSize: true})
-                .addClass('show-for-bottom-menu-extended')
+                .addClass('show-for-bottom-panel-extended')
                 ._bsAddHtml( ns.globalSettingFooter(ns.events.TIMEZONECHANGED, true) );
 
 
         //Clean up
         nsTime.elements = null;
 
-        window.setTimeout( nsTime.bottomMenu_onResize, 200);
+        window.setTimeout( nsTime.bottomPanel_onResize, 200);
     }
 
     //********************************************************************************************
     var sizeList = [];
-    nsTime.bottomMenuSizeList.forEach( (size) => { sizeList.push('bottom-menu-'+size); });
+    nsTime.bottomPanelSizeList.forEach( (size) => { sizeList.push('bottom-panel-'+size); });
 
     nsMap.BOTTOM_MENU = {
         height          : 'auto',
         sizeList        : sizeList,
-        onSetSize       : nsTime.bottomMenu_onResize,
+        onSetSize       : nsTime.bottomPanel_onResize,
         standardHandler : true,
         isOpen          : true,
-        createContent   : createBottomMenu
+        createContent   : createBottomPanel
     };
 
 }(jQuery, L, this, document));
@@ -2429,7 +2429,7 @@ Leaflet control to display current time and relative time in the maps
             //small          : window.bsIsTouch,
             //icon           : 'ER-DET-HER far fa-lg fa-home',
             icon			: nsTime.getIcon(),
-			iconClass		: 'fa-lg', 				
+			iconClass		: 'fa-lg',
             tooltipOnButton	: true,
             square			: true,
             className		: 'time-info-control',   //Class-names for the container
@@ -2480,8 +2480,8 @@ Leaflet control to display current time and relative time in the maps
                     type        : 'button',
                     icon        : 'far fa-ruler-horizontal fa-flip-vertical',
                     text        : {da: 'Vis tidsvælger', en: 'Show time-selector'},
-                    class       : 'hide-for-bottom-menu-open',
-                    onClick     : function(){ nsMap.main.bottomMenu.open(); },
+                    class       : 'hide-for-bottom-panel-open',
+                    onClick     : function(){ nsMap.main.bottomPanel.open(); },
                     closeOnClick: true,
                     lineAfter   : true
                 });
@@ -2489,8 +2489,8 @@ Leaflet control to display current time and relative time in the maps
                     type        : 'button',
                     icon        : [['far fa-ruler-horizontal fa-flip-vertical', 'far fa-slash']],
                     text        : {da: 'Skjul tidsvælger', en: 'Hide time selector'},
-                    class       : 'show-for-bottom-menu-open',
-                    onClick     : function(){ nsMap.main.bottomMenu.close(); },
+                    class       : 'show-for-bottom-panel-open',
+                    onClick     : function(){ nsMap.main.bottomPanel.close(); },
                     closeOnClick: true,
                     lineAfter   : true
                 });
@@ -2553,7 +2553,7 @@ Leaflet control to display current time and relative time in the maps
             });
 
             map.on("momentchanged", this.onMomentChanged, this);
-			
+
             if (this.options.isMainMap){
 				ns.events.on('TIMEMODECHANGED', function(id, mode){
 					this._changeIcon( nsTime.timeModeInfo[mode].icon );
@@ -2645,10 +2645,10 @@ Leaflet control to display current time and relative time in the maps
             forcedShown ? this.disable() : this.enable();
 
 
-            
+
             //Update sync time (Now or relative time)
             const showRelativeText = !asMain || offset;
-            
+
             this.$relative.empty().hide();
             if (showRelativeText){
                 var text = $.extend({}, timeSyncInfo.relativePrefix_Ctrl);
@@ -2664,8 +2664,8 @@ Leaflet control to display current time and relative time in the maps
 
             //Adjust the button:
             //Set icon color for mode and offset
-			this._changeIcon( nsTime.getIcon(timeSyncMode, offset) ); 
-				
+			this._changeIcon( nsTime.getIcon(timeSyncMode, offset) );
+
             //If same as main map  => normal button: shape = square and big icon and no margin
             var isSquare = asMain && !offset;
             this.bsButton.toggleClass('square', isSquare);
@@ -2674,22 +2674,22 @@ Leaflet control to display current time and relative time in the maps
             //Update current time of the map
             this._map._updateTime();
         },
-			
+
         /***********************************************************
         _changeIcon
         ***********************************************************/
-		_changeIcon: function( newIconOptions ){ 
-			if (newIconOptions){ 
+		_changeIcon: function( newIconOptions ){
+			if (newIconOptions){
 				this.$container.find('i').parent().each( (index, elem) => {
                     let $oldIcon = $(elem);
                     $._bsCreateIcon(newIconOptions)
-                        .addClass( elem.className ) 
+                        .addClass( elem.className )
                         .insertAfter( $oldIcon );
                     $oldIcon.remove();
                 });
 			}
 			return this;
-		},		
+		},
     });
 
 

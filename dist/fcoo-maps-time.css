@@ -466,45 +466,45 @@ html.time-mode-ANIMATION .bold-for-time-mode-ANIMATION {
   box-shadow: inset 0 0 0px 2px var(--fc-time-future-color) !important;
 }
 
-.bottom-menu-minimized .hide-for-bottom-menu-minimized {
+.bottom-panel-minimized .hide-for-bottom-panel-minimized {
   display: none !important;
 }
-.bottom-menu-minimized .show-for-no-bottom-menu-minimized {
-  display: none !important;
-}
-
-.no-bottom-menu-minimized .show-for-bottom-menu-minimized {
-  display: none !important;
-}
-.no-bottom-menu-minimized .hide-for-no-bottom-menu-minimized {
+.bottom-panel-minimized .show-for-no-bottom-panel-minimized {
   display: none !important;
 }
 
-.bottom-menu-normal .hide-for-bottom-menu-normal {
+.no-bottom-panel-minimized .show-for-bottom-panel-minimized {
   display: none !important;
 }
-.bottom-menu-normal .show-for-no-bottom-menu-normal {
-  display: none !important;
-}
-
-.no-bottom-menu-normal .show-for-bottom-menu-normal {
-  display: none !important;
-}
-.no-bottom-menu-normal .hide-for-no-bottom-menu-normal {
+.no-bottom-panel-minimized .hide-for-no-bottom-panel-minimized {
   display: none !important;
 }
 
-.bottom-menu-extended .hide-for-bottom-menu-extended {
+.bottom-panel-normal .hide-for-bottom-panel-normal {
   display: none !important;
 }
-.bottom-menu-extended .show-for-no-bottom-menu-extended {
+.bottom-panel-normal .show-for-no-bottom-panel-normal {
   display: none !important;
 }
 
-.no-bottom-menu-extended .show-for-bottom-menu-extended {
+.no-bottom-panel-normal .show-for-bottom-panel-normal {
   display: none !important;
 }
-.no-bottom-menu-extended .hide-for-no-bottom-menu-extended {
+.no-bottom-panel-normal .hide-for-no-bottom-panel-normal {
+  display: none !important;
+}
+
+.bottom-panel-extended .hide-for-bottom-panel-extended {
+  display: none !important;
+}
+.bottom-panel-extended .show-for-no-bottom-panel-extended {
+  display: none !important;
+}
+
+.no-bottom-panel-extended .show-for-bottom-panel-extended {
+  display: none !important;
+}
+.no-bottom-panel-extended .hide-for-no-bottom-panel-extended {
   display: none !important;
 }
 
@@ -512,10 +512,10 @@ html.time-mode-ANIMATION .bold-for-time-mode-ANIMATION {
   display: none !important;
 }
 
-html.phone.portrait.bottom-menu-extended .show-for-phone-and-portrait-and-extended {
+html.phone.portrait.bottom-panel-extended .show-for-phone-and-portrait-and-extended {
   display: flex !important;
 }
-html.phone.portrait.bottom-menu-extended .hide-for-phone-and-portrait-and-extended {
+html.phone.portrait.bottom-panel-extended .hide-for-phone-and-portrait-and-extended {
   display: none !important;
 }
 
@@ -561,45 +561,45 @@ html.phone.portrait.bottom-menu-extended .hide-for-phone-and-portrait-and-extend
   box-shadow: inset 0 0 0px 2px var(--fc-time-future-color) !important;
 }
 
-.bottom-menu-minimized .hide-for-bottom-menu-minimized {
+.bottom-panel-minimized .hide-for-bottom-panel-minimized {
   display: none !important;
 }
-.bottom-menu-minimized .show-for-no-bottom-menu-minimized {
-  display: none !important;
-}
-
-.no-bottom-menu-minimized .show-for-bottom-menu-minimized {
-  display: none !important;
-}
-.no-bottom-menu-minimized .hide-for-no-bottom-menu-minimized {
+.bottom-panel-minimized .show-for-no-bottom-panel-minimized {
   display: none !important;
 }
 
-.bottom-menu-normal .hide-for-bottom-menu-normal {
+.no-bottom-panel-minimized .show-for-bottom-panel-minimized {
   display: none !important;
 }
-.bottom-menu-normal .show-for-no-bottom-menu-normal {
-  display: none !important;
-}
-
-.no-bottom-menu-normal .show-for-bottom-menu-normal {
-  display: none !important;
-}
-.no-bottom-menu-normal .hide-for-no-bottom-menu-normal {
+.no-bottom-panel-minimized .hide-for-no-bottom-panel-minimized {
   display: none !important;
 }
 
-.bottom-menu-extended .hide-for-bottom-menu-extended {
+.bottom-panel-normal .hide-for-bottom-panel-normal {
   display: none !important;
 }
-.bottom-menu-extended .show-for-no-bottom-menu-extended {
+.bottom-panel-normal .show-for-no-bottom-panel-normal {
   display: none !important;
 }
 
-.no-bottom-menu-extended .show-for-bottom-menu-extended {
+.no-bottom-panel-normal .show-for-bottom-panel-normal {
   display: none !important;
 }
-.no-bottom-menu-extended .hide-for-no-bottom-menu-extended {
+.no-bottom-panel-normal .hide-for-no-bottom-panel-normal {
+  display: none !important;
+}
+
+.bottom-panel-extended .hide-for-bottom-panel-extended {
+  display: none !important;
+}
+.bottom-panel-extended .show-for-no-bottom-panel-extended {
+  display: none !important;
+}
+
+.no-bottom-panel-extended .show-for-bottom-panel-extended {
+  display: none !important;
+}
+.no-bottom-panel-extended .hide-for-no-bottom-panel-extended {
   display: none !important;
 }
 
@@ -607,19 +607,19 @@ html.phone.portrait.bottom-menu-extended .hide-for-phone-and-portrait-and-extend
   display: none !important;
 }
 
-html.phone.portrait.bottom-menu-extended .show-for-phone-and-portrait-and-extended {
+html.phone.portrait.bottom-panel-extended .show-for-phone-and-portrait-and-extended {
   display: flex !important;
 }
-html.phone.portrait.bottom-menu-extended .hide-for-phone-and-portrait-and-extended {
+html.phone.portrait.bottom-panel-extended .hide-for-phone-and-portrait-and-extended {
   display: none !important;
 }
 
 /*
 Special show/hide classes when only one map and button-menu is open or closed
-html.no-bottom-menu-open html.bottom-menu-open
+html.no-bottom-panel-open html.bottom-panel-open
 html.no-single-maps-selected html.single-maps-selected  / multi-maps-selected
 */
-html.single-maps-selected.bottom-menu-open .hide-for-single-map-and-bottom-menu-open {
+html.single-maps-selected.bottom-panel-open .hide-for-single-map-and-bottom-panel-open {
   display: none !important;
 }
 
@@ -642,22 +642,22 @@ html.desktop.time-mode-FIXED.no-global-setting-showrelative.global-setting-timez
   --slider-button-left: 40%;
 }
 
-html.no-bottom-menu-minimized .btn.slider-button {
+html.no-bottom-panel-minimized .btn.slider-button {
   background: none !important;
 }
-html.no-bottom-menu-minimized .btn.slider-button::before {
+html.no-bottom-panel-minimized .btn.slider-button::before {
   content: "";
 }
 
-html.bottom-menu-minimized .btn.slider-button {
+html.bottom-panel-minimized .btn.slider-button {
   background-size: 100% 0.5em !important;
   position: relative;
   overflow: hidden;
 }
-html.bottom-menu-minimized .btn.slider-button.slide-button-panning {
+html.bottom-panel-minimized .btn.slider-button.slide-button-panning {
   background-size: 100% 0.75em !important;
 }
-html.bottom-menu-minimized .btn.slider-button::before {
+html.bottom-panel-minimized .btn.slider-button::before {
   font-family: "Font Awesome 6 Pro";
   color: white;
   position: absolute;
@@ -668,6 +668,8 @@ html.bottom-menu-minimized .btn.slider-button::before {
   display: inline-block;
 }
 
-html.bottom-menu-minimized .time-is-now .btn.slider-button::before {
+html.bottom-panel-minimized .time-is-now .btn.slider-button::before {
   color: var(--fc-time-now-color);
 }
+
+/*# sourceMappingURL=fcoo-maps-time.css.map */

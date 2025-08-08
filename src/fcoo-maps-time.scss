@@ -93,16 +93,16 @@ $time-mode-MAIN-future: $blue-500;  //$blue-600;
 }
 
 //show/hide for tree modes of buttom-menu: minimized, normal, and extended
-@include show-and-hide-for-modernizr-test( $modernizr-test: 'bottom-menu-minimized', $incl-no-selector: true, $incl-table-display: false);
-@include show-and-hide-for-modernizr-test( $modernizr-test: 'bottom-menu-normal',    $incl-no-selector: true, $incl-table-display: false);
-@include show-and-hide-for-modernizr-test( $modernizr-test: 'bottom-menu-extended',  $incl-no-selector: true, $incl-table-display: false);
+@include show-and-hide-for-modernizr-test( $modernizr-test: 'bottom-panel-minimized', $incl-no-selector: true, $incl-table-display: false);
+@include show-and-hide-for-modernizr-test( $modernizr-test: 'bottom-panel-normal',    $incl-no-selector: true, $incl-table-display: false);
+@include show-and-hide-for-modernizr-test( $modernizr-test: 'bottom-panel-extended',  $incl-no-selector: true, $incl-table-display: false);
 
 //show-for-phone-and-portrait-extended = Special versions = Visible for phone, portrait, and extended
 //hide-for-phone-and-portrait-extended = Standard versions = Hidden for phone, portrait, and extended
 .show-for-phone-and-portrait-and-extended {
     display: none !important;
 }
-html.phone.portrait.bottom-menu-extended {
+html.phone.portrait.bottom-panel-extended {
     .show-for-phone-and-portrait-and-extended {
         display: flex !important;
     }
@@ -158,16 +158,16 @@ $black-shadow-width: $color-shadow-width + 1px;
 }
 
 //show/hide for tree modes of buttom-menu: minimized, normal, and extended
-@include show-and-hide-for-modernizr-test( $modernizr-test: 'bottom-menu-minimized', $incl-no-selector: true, $incl-table-display: false);
-@include show-and-hide-for-modernizr-test( $modernizr-test: 'bottom-menu-normal',    $incl-no-selector: true, $incl-table-display: false);
-@include show-and-hide-for-modernizr-test( $modernizr-test: 'bottom-menu-extended',  $incl-no-selector: true, $incl-table-display: false);
+@include show-and-hide-for-modernizr-test( $modernizr-test: 'bottom-panel-minimized', $incl-no-selector: true, $incl-table-display: false);
+@include show-and-hide-for-modernizr-test( $modernizr-test: 'bottom-panel-normal',    $incl-no-selector: true, $incl-table-display: false);
+@include show-and-hide-for-modernizr-test( $modernizr-test: 'bottom-panel-extended',  $incl-no-selector: true, $incl-table-display: false);
 
 //show-for-phone-and-portrait-extended = Special versions = Visible for phone, portrait, and extended
 //hide-for-phone-and-portrait-extended = Standard versions = Hidden for phone, portrait, and extended
 .show-for-phone-and-portrait-and-extended {
     display: none !important;
 }
-html.phone.portrait.bottom-menu-extended {
+html.phone.portrait.bottom-panel-extended {
     .show-for-phone-and-portrait-and-extended {
         display: flex !important;
     }
@@ -179,11 +179,11 @@ html.phone.portrait.bottom-menu-extended {
 
 /*
 Special show/hide classes when only one map and button-menu is open or closed
-html.no-bottom-menu-open html.bottom-menu-open
+html.no-bottom-panel-open html.bottom-panel-open
 html.no-single-maps-selected html.single-maps-selected  / multi-maps-selected
 */
-html.single-maps-selected.bottom-menu-open {
-    .hide-for-single-map-and-bottom-menu-open {
+html.single-maps-selected.bottom-panel-open {
+    .hide-for-single-map-and-bottom-panel-open {
         display: none !important;
     }
 }
@@ -218,7 +218,7 @@ html.desktop.time-mode-FIXED.no-global-setting-showrelative {
 :root {
     --slider-button-left: 40%;
 }
-html.no-bottom-menu-minimized {
+html.no-bottom-panel-minimized {
     .btn.slider-button {
         background: none !important;
         &::before {
@@ -227,7 +227,7 @@ html.no-bottom-menu-minimized {
      }
 }
 
-html.bottom-menu-minimized {
+html.bottom-panel-minimized {
     .btn.slider-button {
         background-size : 100% .5em !important;
         position        : relative;
@@ -251,6 +251,6 @@ html.bottom-menu-minimized {
     }
 }
 
-html.bottom-menu-minimized .time-is-now .btn.slider-button::before {
+html.bottom-panel-minimized .time-is-now .btn.slider-button::before {
     color: $time-now-color;
 }

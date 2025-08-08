@@ -1,8 +1,8 @@
 /***********************************************************************************
-bottom-menu-elements.js
+bottom-panel-elements.js
 
-Create the content for bottom-menu with buttons, slider, info etc. for selected time
-bms = bottom-menu-size
+Create the content for bottom-panel with buttons, slider, info etc. for selected time
+bps = bottom-panel-size
 *************************************************************************************/
 (function ($, L, window/*, document, undefined*/) {
     "use strict";
@@ -13,11 +13,11 @@ bms = bottom-menu-size
         nsTime    = nsMap.time = nsMap.time || {};
 
 
-    //bottomMenuSizeList = list of avaiable size of bottom-menu content
-    nsTime.bottomMenuSizeList = ['minimized', 'normal', 'extended'];
+    //bottomPanelSizeList = list of avaiable size of bottom-panel content
+    nsTime.bottomPanelSizeList = ['minimized', 'normal', 'extended'];
 
     /**************************************************************************
-    The content of the bottom-menu contains of buttons, boxes with info on current time an sliders
+    The content of the bottom-panel contains of buttons, boxes with info on current time an sliders
     This are all referred to as an element and a prototype is created in elements = [ID]$-element
     All elements are divided into groups to control witch element to show when
     **************************************************************************/
@@ -39,22 +39,22 @@ bms = bottom-menu-size
     }
 
 
-    //Create all buttons to change size of the bottom menu bms = bottom-menu-size
-    var bmsButtons = {
-            'bms-extended'          : {icon: 'fal fa-chevron-circle-up'  , size: 'extended'},
-            'bms-minimized'         : {icon: 'fal fa-chevron-circle-down', size: 'minimized'},
-            'bms-minimized2normal'  : {icon: 'fal fa-chevron-circle-up'  , size: 'normal'},
-            'bms-extended2normal'   : {icon: 'fal fa-chevron-circle-down', size: 'normal'},
+    //Create all buttons to change size of the bottom menu bps = bottom-panel-size
+    var bpsButtons = {
+            'bps-extended'          : {icon: 'fal fa-chevron-circle-up'  , size: 'extended'},
+            'bps-minimized'         : {icon: 'fal fa-chevron-circle-down', size: 'minimized'},
+            'bps-minimized2normal'  : {icon: 'fal fa-chevron-circle-up'  , size: 'normal'},
+            'bps-extended2normal'   : {icon: 'fal fa-chevron-circle-down', size: 'normal'},
         };
-    $.each( bmsButtons, function(id, options ){
-        const bottomMenuSizeIndex = nsTime.bottomMenuSizeList.indexOf( options.size );
+    $.each( bpsButtons, function(id, options ){
+        const bottomPanelSizeIndex = nsTime.bottomPanelSizeList.indexOf( options.size );
         elements[id] =
             $.bsButton({
                 square  : true,
                 icon    : options.icon,
                 bigIcon : true,
                 onClick: function(){
-                    ns.appSetting.set('bottom-menu-size', bottomMenuSizeIndex);
+                    ns.appSetting.set('bottom-panel-size', bottomPanelSizeIndex);
                 }
             });
         setGroup(id);
