@@ -52,7 +52,7 @@ setup.js
 
     //Load time-options
     ns.defaultApplicationOptions.standard = ns.defaultApplicationOptions.standard || {};
-    ns.defaultApplicationOptions.standard.time = {subDir:"setup", fileName:"fcoo-time-setup.json"};
+    ns.defaultApplicationOptions.standard.time = {subDir:"setup", fileName:"fcoo-maps-time-setup.json"};
 
     nsMap.standard.time = function(options){
         nsTime.timeOptions = $.extend(true, {}, defaultTimeOptions, options);
