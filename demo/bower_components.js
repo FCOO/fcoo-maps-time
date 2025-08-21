@@ -58195,6 +58195,7 @@ window.xmlToJSON = function(xml) {
         this.firstList = [];
         this.list = [];
         this.lastList = [];
+        this.finallyList = [];
 
     }
     window.PromiseList = PromiseList;
@@ -58209,8 +58210,7 @@ window.xmlToJSON = function(xml) {
     window.PromiseList.prototype = {
 
         //append( options )
-        append: function( options, listId ){
-            listId = listId || 'list';
+        append: function( options, listId = 'list'){
             this[listId] = this[listId].concat( asArray(options) );
             return this;
         },
@@ -58219,6 +58219,9 @@ window.xmlToJSON = function(xml) {
         },
         appendLast: function( options ){
             return this.append( options, 'lastList');
+        },
+        appendFinally: function( options ){
+            return this.append( options, 'finallyList');
         },
 
         //prepend( options )
@@ -58233,11 +58236,14 @@ window.xmlToJSON = function(xml) {
         prependLast: function( options ){
             return this.prepend( options, 'lastList');
         },
+        prependFinally: function( options ){
+            return this.prepend( options, 'finallyList');
+        },
 
         _createAllList: function(){
             var _this = this;
             this.allList = [];
-            $.each([this.firstList, this.list, this.lastList], function(index, list){
+            $.each([this.firstList, this.list, this.lastList, this.finallyList], function(index, list){
                 $.each(list, function(index, item){
                     _this.allList.push(item);
                 });
@@ -116839,8 +116845,8 @@ Methods to create standard FCC-web-applications
         }
 
         //5: Create the main structure and the left and/or right panel. Is excecuded after the layer-menus and before lft/right menu creation
-        ns.promiseList.prependLast({
-            data   : 'none',
+        ns.promiseList.prependFinally({
+            data   : 'createMainStructure',
             resolve: createMainStructure
         });
 
@@ -116851,8 +116857,8 @@ Methods to create standard FCC-web-applications
 
 
         //7: Create savedSettingList and load saved settings
-        ns.promiseList.appendLast({
-            data: 'none',
+        ns.promiseList.appendFinally({
+            data: 'loadApplicationSetting',
             resolve: () => {
                 ns.savedSettingList = new ns.SavedSettingList({}, 'loadApplicationSetting');
             }
@@ -119792,7 +119798,7 @@ Method window.fcoo.createFCOOMenu(options: MENU_OPTIONS)
         createMenu(options.menuList, {}, options);
 
         //Add promise to check and finish the creation of the menu
-        ns.promiseList.append({
+        ns.promiseList.prependFinally({
             data   : options,
             resolve: finishMenu,
             wait   : true
@@ -119828,7 +119834,8 @@ Method window.fcoo.createFCOOMenu(options: MENU_OPTIONS)
     *********************************************/
     function addMenu(menuItemOrList, parentList, id, options){
         //Append menuItemOrList to replaceMenuItems to be replaced in updateMenuList
-        options.replaceMenuItems[id] = Array.isArray(menuItemOrList) ? menuItemOrList : [menuItemOrList];
+        options.replaceMenuItems[id] = options.replaceMenuItems[id] || [];
+        options.replaceMenuItems[id] = options.replaceMenuItems[id].concat( Array.isArray(menuItemOrList) ? menuItemOrList : [menuItemOrList] );
     }
 
     /*********************************************
@@ -119873,8 +119880,10 @@ Method window.fcoo.createFCOOMenu(options: MENU_OPTIONS)
         //Replace menu-item from replaceMenuItems
         for (index=menuList.length-1; index>=0; index--){
             menuItem = menuList[index];
-            if (menuItem && menuItem.id && options.replaceMenuItems[menuItem.id])
+            if (menuItem && menuItem.id && options.replaceMenuItems[menuItem.id]){
                 menuList.splice(index, 1, ...options.replaceMenuItems[menuItem.id]);
+                options.replaceMenuItems[menuItem.id] = null; //Clean up to prevent repeating
+            }
         }
 
         for (index=menuList.length-1; index>=0; index--){
@@ -123018,6 +123027,269 @@ Methods for loading and saving settings for the application
   window.Sharer = Sharer;
 })(window, document);
 
+;
+/****************************************************************************
+	fcoo-country-list.js,
+
+	(c) 2024, FCOO
+
+	https://github.com/FCOO/fcoo-country-list
+	https://github.com/FCOO
+
+****************************************************************************/
+
+(function ($, window, document, undefined) {
+	"use strict";
+
+    //Create namespaces
+    var ns = window.fcoo = window.fcoo || {},
+        nsCountry = ns.country = ns.country || {};
+
+    let countryList = nsCountry.list = [
+        { id: 'dk', name: {da: 'Danmark',   en: 'Denmark'       } },
+        { id: 'fo', name: {da: "Færøerne",  en: "Faroe Islands" }, abbr: "FI" },
+        { id: "gl", name: {da: "Grønland",  en: "Greenland"     } },
+
+        { id: 'se', name: {da: 'Sverige',     en: 'Sweden'      } },
+        { id: 'no', name: {da: 'Norge',       en: 'Norway'      } },
+        { id: 'fi', name: {da: 'Finland',     en: 'Finland'     } },
+        { id: 'is', name: {da: 'Island',      en: 'Iceland'     } },
+
+        { id: 'de', name: {da: 'Tyskland',    en: 'Germany'     } },
+        { id: 'pl', name: {da: 'Polen',       en: 'Poland'      } },
+        { id: 'lv', name: {da: 'Letland',     en: 'Latvia'      } },
+        { id: 'lt', name: {da: 'Litauen',     en: 'Lithuania'   } },
+        { id: 'ee', name: {da: 'Estland',     en: 'Estonia'     } },
+        { id: 'ru', name: {da: 'Rusland',     en: 'Russia'      } },
+
+        { id: 'gb', name: {da: 'England',     en: 'England'     } },
+        { id: 'ie', name: {da: 'Irland',      en: 'Ireland'     } },
+
+        { id: 'nl', name: {da: 'Holland',     en: 'Holland'     } },
+        { id: 'be', name: {da: 'Belgien',     en: 'Belgium'     } },
+
+        { id: 'fr', name: {da: 'Frankrig',    en: 'France'      } },
+        { id: 'es', name: {da: 'Spanien',     en: 'Spain'       } },
+        { id: 'pt', name: {da: 'Portugal',    en: 'Portugal'    } },
+
+        { id: 'it', name: {da: 'Italien',     en: 'Italy'       } },
+
+        { id: 'si', name: {da: 'Slovenien',   en: 'Slovenia'    } },
+        { id: 'hr', name: {da: 'Kroatien',    en: 'Croatia'     } },
+        { id: 'me', name: {da: 'Montenegro',  en: 'Montenegro'  } },
+        { id: 'al', name: {da: 'Albanien',    en: 'Albania'     } },
+
+        { id: 'gr', name: {da: 'Grækenland',  en: 'Greece'      } },
+        { id: 'tr', name: {da: 'Tyrkiet',     en: 'Turkey'      } },
+
+        { id: 'mt', name: {da: 'Malta',       en: 'Malta'       } },
+        { id: 'cy', name: {da: 'Cypern',      en: 'Cyprus'      } },
+
+        { id: 'us', name: {da: 'USA',         en: 'USA'         } },
+        { id: 'ca', name: {da: 'Canada',      en: 'Canada'      } },
+
+        { id: 'au', name: {da: 'Australien',  en: 'Australia'   } },
+        { id: 'nz', name: {da: 'New Zealand', en: 'New Zealand' } }
+
+
+    ];
+
+    function Country( options) {
+		this.options = options;
+        this.options.abbr = (this.options.abbr || this.options.id).toUpperCase();
+	}
+
+	//Extend the prototype
+	Country.prototype = {
+
+        flagIcon: function(square){
+            return 'fa fa-flag-'+this.options.id + (square ? ' fa-flag-squared' : '');
+        },
+
+        iconAndText: function(square){
+            return {icon: this.flagIcon(square), text: this.options.name };
+        }
+
+    };
+
+
+    //Global access to individual countries
+    const noCountry = new Country({id: 'UNKNOWN', name: {da:'', en:''}});
+    let countries = nsCountry.countries = {};
+    countryList.forEach( (countryOptions, index) => {
+        let country = new Country(countryOptions);
+        countries[countryOptions.id] = country;
+        countryList[index] = country;
+    });
+
+    const getCountry = nsCountry.getCountry = function(code){ return countries[code.toLowerCase()] || noCountry; };
+    nsCountry.countriesForEach = function( func, exclude = '' ){
+        exclude = Array.isArray(exclude) ? exclude : exclude.split(' ');
+        countryList.forEach( country => {
+            if (!exclude.includes(country.options.id))
+                func(country);
+        });
+    };
+
+
+    nsCountry.getName = nsCountry.getText   = function(code)        { return getCountry(code).options.name;         };
+    nsCountry.getFlagIcon                   = function(code, square){ return getCountry(code).flagIcon(square);     };
+    nsCountry.getIconAndText                = function(code, square){ return getCountry(code).iconAndText(square);  };
+    nsCountry.getAbbr                       = function(code)        { return getCountry(code).options.abbr;         };
+
+
+    /********************************************************************
+    nsCountry.mmenuLinkList(options)
+    Create a list of mmenu-items with links to national/country sites
+    options = {
+        links:  {country-id: STRING} or
+                {country-id: {lang1:STRING, lang2: STRING...} or
+                {country-id: []{prefix: STRING, postfix:STRING, link: STRING or {lang1:link, lang2: link...} }
+
+        exclude: list of countries to exclude even if there are links i links
+
+        parentMenuItem: menu-item or true or false. The parent menu-item. true => default menu-item
+
+        favoritePrefix: prefix to name in favorite
+
+        favoritePostfix: postfix to name in favorite
+}
+    ********************************************************************/
+    let countryListParentMenuItem = {icon: 'fa-globe', text: {da: 'Andre lande', en:'Other countries'}, list: []};
+
+    nsCountry.mmenuLinkList = function( options ){
+        let result, list = [];
+        if (options.parentMenuItem){
+            if (options.parentMenuItem === true)
+                result = $.extend({}, countryListParentMenuItem);
+            else
+                result = options.parentMenuItem;
+
+            result.list = result.list || [];
+            list = result.list;
+        }
+        else
+            result = list;
+
+        nsCountry.countriesForEach(country => {
+            let countryLinks = options.links[country.options.id];
+            if (countryLinks){
+                countryLinks = Array.isArray(countryLinks) ? countryLinks : [countryLinks];
+                countryLinks.forEach(link => {
+                    //Convert link:STRING and link:{da:STRING,...} into {link: STRING or {da:STRING..}}
+                    let linkObj = {};
+                    if (typeof link == 'string')
+                        linkObj.link = link;
+                    else
+                        if (!link.link)
+                            linkObj.link = link;
+                        else
+                            linkObj = link;
+
+                    //Check if link exists
+                    let trueLink = linkObj.link;
+                    let include = false;
+
+                    if ((typeof trueLink == 'string') && !!trueLink)
+                        include = true;
+
+                    if (!include && $.isPlainObject(trueLink))
+                        $.each(trueLink, (id, link) => {
+                            if (link)
+                                include = true;
+                        });
+
+                    if (!include)
+                        return;
+
+                    let name = [];
+                    let favoriteText = [];
+
+                    if (options.favoritePrefix)
+                        favoriteText.push(options.favoritePrefix);
+
+                    if (linkObj.prefix){
+                        name.push(linkObj.prefix);
+                        favoriteText.push(linkObj.prefix);
+                    }
+
+                    name.push(country.options.name);
+                    favoriteText.push(country.options.name);
+
+                    if (linkObj.postfix){
+                        name.push(linkObj.postfix);
+                        favoriteText.push(linkObj.postfix);
+                    }
+
+                    if (options.favoritePostfix)
+                        favoriteText.push(options.favoritePostfix);
+
+
+                    let icon = country.flagIcon(options.square);
+                    list.push({
+                        type        : 'link',
+                        icon        : options.inclLinkIcon ? [$.bsExternalLinkIcon, icon] : icon,
+                        text        : name,
+                        link        : link,
+                        favoriteIcon: options.inclFavoriteLinkIcon ? [$.bsExternalLinkIcon, icon] : icon,
+                        favoriteText: favoriteText
+                    });
+                });
+            }
+        }, options.exclude );
+
+        return result;
+    };
+
+
+    /********************************************************************
+    nsCountry.addMenuLinkList(fileNameOrData, options )
+    A method to load a list of links to different countries and add the menu-items
+
+    The format for data must be
+     {
+        description: STRING, //optional
+        links: {
+            COUNTRY_CODE: {LANG: STRING} or
+            COUNTRY_CODE: STRING //Only one page
+        }
+    }
+
+    options are as options in mmenuLinkList (without links)
+
+    Return a menu-item that can be added to the menu
+
+    ********************************************************************/
+    nsCountry.addMenuLinkList = function( fileNameOrData, options ){
+
+        let menuItem = $.extend({}, countryListParentMenuItem);
+
+        //Is fileNameOrData data or fileName
+        let data, fileName;
+        if ($.isPlainObject(fileNameOrData) && (fileNameOrData.links !== undefined))
+            data = fileNameOrData;
+        else
+           fileName = fileNameOrData;
+
+        ns.promiseList.append({
+            data    : data,
+            fileName: fileName,
+            resolve : function(options = {}, menuItem, data){
+                menuItem.list = nsCountry.mmenuLinkList( $.extend({}, options, {links: data.links}) );
+            }.bind(null, options, menuItem),
+            wait    : true,
+        });
+
+        return menuItem;
+    };
+
+
+
+
+
+
+
+}(jQuery, this, document));
 ;
 /**
  *
