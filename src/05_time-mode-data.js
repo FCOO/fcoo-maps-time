@@ -269,6 +269,8 @@
             this.data.currentRelative = newCurrentRelative;
 
             this.onTimeModeChanged();
+
+            nsTime.HER
         },
 
         /********************************************************
