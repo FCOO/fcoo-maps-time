@@ -262,7 +262,7 @@
                 newCurrentRelative = Math.max( this.data.currentMoment.diff(nsTime.nowMoment, unit), this.data.min );
 
             /* eslint-disable no-console */
-            if (window.FCOOMAPSTIME_TEST_NOW)
+            if (window.FCOOMAPSTIME_TEST_NOW && !window.FCOOMAPSTIME_TEST_NOCONSOLE)
                 console.log('Relative for '+this.mode+' change from '+ this.data.currentRelative+' to '+newCurrentRelative);
             /* eslint-enable no-console */
 
@@ -324,10 +324,10 @@
             var testNow = moment().startOf(unit);
             var intervals = new window.Intervals({durationUnit: 'seconds'});
             intervals.addInterval({
-                duration: 10,
+                duration: window.FCOOMAPSTIME_TEST_DURATION || 10,
                 data    : {},
                 resolve : function(){
-                    testNow.add(1, unit);
+                    testNow.add(window.FCOOMAPSTIME_TEST_DELTA_HOURS || 1, unit);
                     /* eslint-disable no-console */
                     console.log('Now = ', testNow.toString());
                     /* eslint-enable no-console */
