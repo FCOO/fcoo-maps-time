@@ -132,11 +132,27 @@ html.phone.portrait.bottom-panel-extended {
 }
 
 
+//Rotation of icons with fa-clock-hour-X
+@for $hour from 0 through 11 {
+    i.fa-clock-hour-#{$hour}{
+        rotate: #{$hour * 360deg / 12};
+    }
+}
+
+
 //Set shadow around time-info-control indicading if the time is the past, now or the future
 $color-shadow-width: 2px;
 $black-shadow-width: $color-shadow-width + 1px;
 
 .leaflet-container {
+    //Color of clock
+    &.time-is-past   { .time-info-control i.fa-time-color { color: $time-past-color     } }
+    &.time-is-now    { .time-info-control i.fa-time-color { color: $time-now-color      } }
+    &.time-is-future { .time-info-control i.fa-time-color { color: $time-future-color   } }
+
+
+
+
     &.time-is-past   { .time-info-control a { box-shadow: 0 0 0px $color-shadow-width $time-past-color,   0 0 0 $black-shadow-width black } }
     &.time-is-now    { .time-info-control a { box-shadow: 0 0 0px $color-shadow-width $time-now-color,    0 0 0 $black-shadow-width black } }
     &.time-is-future { .time-info-control a { box-shadow: 0 0 0px $color-shadow-width $time-future-color, 0 0 0 $black-shadow-width black } }

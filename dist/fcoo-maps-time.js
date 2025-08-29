@@ -180,34 +180,28 @@ The four main modes have icons and A: uses the same icon as b: and C: uses the s
     $.each(nsTime.timeSyncInfo, (id, opt) => timeSyncIconColorList.push(...opt.iconColor) );
     nsTime.timeSyncIconColors = timeSyncIconColorList.join(' ');
 
-    nsTime.getIconClass = function(mode, offset=0){
-        return nsTime.timeSyncInfo[mode].iconColor[
-                   offset < 0 ? 0 :
-                   offset == 0 ? 1 :
-                   2
-               ];
-    };
 
-    const hourIcons = ['clock-twelve', 'clock-one', 'clock-two', 'clock-three', 'clock', 'clock-five', 'clock-six', 'clock-seven', 'clock-eight', 'clock-nine', 'clock-ten', 'clock-eleven'];
 
     let modeStart = {};
     modeStart[nsTime.tsMain] = 4;
     modeStart[nsTime.tsNow]  = (new Date()).getHours() % 12;
 
-    nsTime.getIcon = function(mode=nsTime.tsMain, offset=0, className=''){
+
+    //getModeIcon - return the icon used for selecting time-mode
+    const hourIcons = ['fa-clock-twelve', 'fa-clock-one', 'fa-clock-two', 'fa-clock-three', 'fa-clock', 'fa-clock-five', 'fa-clock-six', 'fa-clock-seven', 'fa-clock-eight', 'fa-clock-nine', 'fa-clock-ten', 'fa-clock-eleven'];
+    function getModeHourIcon(mode=nsTime.tsMain, offset=0){
         let hour = (modeStart[mode] || 4) + offset;
         while (hour < 0)
             hour = hour + 24;
         hour = hour % 12;
 
-        const icon = 'fa-'+hourIcons[hour] + ' ';
-		className = className ? ' '+className : '';
+        let modeClass = nsTime.timeSyncInfo[mode].iconColor[offset < 0 ? 0 : offset == 0 ? 1 : 2];
         return [[
-            'fas ' + icon + nsTime.getIconClass(mode, offset) + className,
-            'far ' + icon + 'text-black' + className
+            'fas fa-circle ' + modeClass,
+            'far text-black ' + hourIcons[hour]
         ]];
 
-    };
+    }
 
 
 	/******************************************************************
@@ -230,7 +224,7 @@ The four main modes have icons and A: uses the same icon as b: and C: uses the s
             da: 'Fast tidspunkt',
             en: 'Fixed time'
         },
-		icon: nsTime.getIcon(nsTime.tsMain),
+		icon: getModeHourIcon(nsTime.tsMain),
         description: {
             da: 'Vælg et fast dato og klokkeslet.<br>F.eks. <em>12. juni kl. 13:00</em>.',
             en: 'Select a fixed date and time.<br>Eq. <em>July 12th at 13:00"</em>.'
@@ -243,7 +237,7 @@ The four main modes have icons and A: uses the same icon as b: and C: uses the s
             da: 'Relativt til aktuelle klokkeslet',
             en: 'Relative to current time'
         },
-		icon: nsTime.getIcon(nsTime.tsNow),
+		icon: getModeHourIcon(nsTime.tsNow),
         description: {
             da: 'Vælg relativt til aktuelle tidspunkt.<br>F.eks. <em>"Nu plus 2 timer".</em><br>Dato og klokkeslet opdateres automatisk, når aktuelle tidspunkt ændre sig.',
             en: 'Select relative to current time.<br>Eq. <em>"Now plus 2 hours".</em><br>The time is automatic updated when the current time change.',
@@ -378,7 +372,7 @@ The four main modes have icons and A: uses the same icon as b: and C: uses the s
         $.each(nsTime.timeSyncInfo, (id, options) => {
             list.push({
                 id  : id,
-                icon: nsTime.getIcon(id),
+                icon: getModeHourIcon(id),
                 text: options.name
             });
 
@@ -397,7 +391,7 @@ The four main modes have icons and A: uses the same icon as b: and C: uses the s
 
                 timeItems.push({
                     id  : 'offset_'+offset,
-                    icon: nsTime.getIcon(id, offset),
+                    icon: getModeHourIcon(id, offset),
                     text: text
                 });
             });
@@ -599,6 +593,7 @@ The four main modes have icons and A: uses the same icon as b: and C: uses the s
         //Update time-sliders at global events
         var eventFunc = this.redrawTimeSlider.bind(this);
         ns.events.on(ns.events.LANGUAGECHANGED, eventFunc);
+
         if (this.isFixed)
             ns.events.on(ns.events.DATETIMEFORMATCHANGED, eventFunc);
 
@@ -780,7 +775,7 @@ The four main modes have icons and A: uses the same icon as b: and C: uses the s
                 newCurrentRelative = Math.max( this.data.currentMoment.diff(nsTime.nowMoment, unit), this.data.min );
 
             /* eslint-disable no-console */
-            if (window.FCOOMAPSTIME_TEST_NOW)
+            if (window.FCOOMAPSTIME_TEST_NOW && !window.FCOOMAPSTIME_TEST_NOCONSOLE)
                 console.log('Relative for '+this.mode+' change from '+ this.data.currentRelative+' to '+newCurrentRelative);
             /* eslint-enable no-console */
 
@@ -788,7 +783,6 @@ The four main modes have icons and A: uses the same icon as b: and C: uses the s
 
             this.onTimeModeChanged();
 
-            nsTime.HER
         },
 
         /********************************************************
@@ -842,10 +836,10 @@ The four main modes have icons and A: uses the same icon as b: and C: uses the s
             var testNow = moment().startOf(unit);
             var intervals = new window.Intervals({durationUnit: 'seconds'});
             intervals.addInterval({
-                duration: 10,
+                duration: window.FCOOMAPSTIME_TEST_DURATION || 10,
                 data    : {},
                 resolve : function(){
-                    testNow.add(1, unit);
+                    testNow.add(window.FCOOMAPSTIME_TEST_DELTA_HOURS || 1, unit);
                     /* eslint-disable no-console */
                     console.log('Now = ', testNow.toString());
                     /* eslint-enable no-console */
@@ -1144,8 +1138,7 @@ L.Map
         this.timeAsString = newTimeAsString;
 
         //Update bsTimeInfoControl
-        if (this.bsTimeInfoControl)
-            this.bsTimeInfoControl.$currentTime.vfValue(this.time.current);
+        this.bsTimeInfoControl_updateTime();
 
         //Update timeDimension
         this.timeDimension.setCurrentTime(this.time.current.toDate().getTime());
@@ -1157,7 +1150,10 @@ L.Map
         return this;
     };
 
-
+    L.Map.prototype.bsTimeInfoControl_updateTime = function(){
+        if (this.bsTimeInfoControl && this.time)
+            this.bsTimeInfoControl._updateTime( this.time );
+    };
 
 
 
@@ -2430,6 +2426,12 @@ Leaflet control to display current time and relative time in the maps
         nsTime    = nsMap.time = nsMap.time || {};
 
 
+    //getHourIcon - Return a clock icon for displaying current time
+    function getHourIcon( hour=0 ){
+        return [['fas fa-circle fa-time-color', 'far fa-clock-twelve _fa-time-clock fa-clock-hour-'+hour]];
+    }
+
+
     /******************************************************************
     L.Control.BsTimeInfoControl
     Control to show current time and info on time sync with main map
@@ -2437,8 +2439,7 @@ Leaflet control to display current time and relative time in the maps
     L.Control.BsTimeInfoControl = L.Control.BsButtonBox.extend({
         options: {
             //small          : window.bsIsTouch,
-            //icon           : 'ER-DET-HER far fa-lg fa-home',
-            icon			: nsTime.getIcon(),
+            icon			: getHourIcon(),
 			iconClass		: 'fa-lg',
             tooltipOnButton	: true,
             square			: true,
@@ -2448,8 +2449,7 @@ Leaflet control to display current time and relative time in the maps
 
             extendedButton: {
                 //small          : window.bsIsTouch,
-                //icon           : 'ER-DET-HER far fa-home',
-				icon           : nsTime.getIcon(),
+				icon           : getHourIcon(),
                 text           : ['12:00 am(+1)'],
                 textClass      : ['current-time'],
                 square         : false,
@@ -2471,7 +2471,7 @@ Leaflet control to display current time and relative time in the maps
                 //Secondary in normal-mode = icon and relative text
                 $.extend(/*this.*/options, {
                     square   : false,
-                    icon     : nsTime.getIcon(),
+                    icon     : getHourIcon(),
                     text     : '+12t',
                     textClass: 'time-sync-info-text'
                 });
@@ -2562,13 +2562,7 @@ Leaflet control to display current time and relative time in the maps
                 'padding-left': '.35em'
             });
 
-            map.on("momentchanged", this.onMomentChanged, this);
-
-            if (this.options.isMainMap){
-				ns.events.on('TIMEMODECHANGED', function(id, mode){
-					this._changeIcon( nsTime.timeModeInfo[mode].icon );
-				}.bind(this));
-            }
+            ns.events.on('TIMEZONECHANGED', map.bsTimeInfoControl_updateTime.bind(map) );
 
             return result;
         },
@@ -2614,19 +2608,22 @@ Leaflet control to display current time and relative time in the maps
 
 
         /***********************************************************
-        onMomentChanged
+        _updateTime
         ***********************************************************/
-        onMomentChanged: function(time){
+        _updateTime: function( time ){
+            this.$currentTime.vfValue(time.current);
+            this._changeHourIcon(time.current);
+
             var relative = time.relative || 0;
             this._map.$container
                 .toggleClass('time-is-past',   relative < 0)
                 .toggleClass('time-is-now',    relative == 0)
                 .toggleClass('time-is-future', relative > 0);
-
         },
 
+
         /***********************************************************
-        onChange
+        onChange - Called when the mode is changed
         ***********************************************************/
         onChange: function(/*options*/){
             if (this.options.isMainMap)
@@ -2672,34 +2669,28 @@ Leaflet control to display current time and relative time in the maps
 
             this.bsButton.find('.container-stacked-icons').toggleClass('fa-no-margin', !showRelativeText);
 
-            //Adjust the button:
-            //Set icon color for mode and offset
-			this._changeIcon( nsTime.getIcon(timeSyncMode, offset) );
-
             //If same as main map  => normal button: shape = square and big icon and no margin
             var isSquare = asMain && !offset;
             this.bsButton.toggleClass('square', isSquare);
-            this.bsButton.find('i').toggleClass('fa- lg fa-no-margin', isSquare);
+            this.bsButton.find('i').toggleClass('fa-no-margin', isSquare);
 
             //Update current time of the map
             this._map._updateTime();
         },
 
         /***********************************************************
-        _changeIcon
+        _changeHourIcon
+
         ***********************************************************/
-		_changeIcon: function( newIconOptions ){
-			if (newIconOptions){
-				this.$container.find('i').parent().each( (index, elem) => {
-                    let $oldIcon = $(elem);
-                    $._bsCreateIcon(newIconOptions)
-                        .addClass( elem.className )
-                        .insertAfter( $oldIcon );
-                    $oldIcon.remove();
-                });
-			}
-			return this;
-		},
+		_changeHourIcon: function( current ){
+            let hour    = current.tzMoment().hour() % 12;
+            const regex = /fa-clock-hour-(\S+)/g;
+
+            this.$container.find('i[class*="fa-clock-hour-"]').each( (index, elem ) => {
+                elem.className = elem.className.replace(regex, 'fa-clock-hour-'+hour);
+            });
+        },
+
     });
 
 

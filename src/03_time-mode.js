@@ -78,34 +78,28 @@ The four main modes have icons and A: uses the same icon as b: and C: uses the s
     $.each(nsTime.timeSyncInfo, (id, opt) => timeSyncIconColorList.push(...opt.iconColor) );
     nsTime.timeSyncIconColors = timeSyncIconColorList.join(' ');
 
-    nsTime.getIconClass = function(mode, offset=0){
-        return nsTime.timeSyncInfo[mode].iconColor[
-                   offset < 0 ? 0 :
-                   offset == 0 ? 1 :
-                   2
-               ];
-    };
 
-    const hourIcons = ['clock-twelve', 'clock-one', 'clock-two', 'clock-three', 'clock', 'clock-five', 'clock-six', 'clock-seven', 'clock-eight', 'clock-nine', 'clock-ten', 'clock-eleven'];
 
     let modeStart = {};
     modeStart[nsTime.tsMain] = 4;
     modeStart[nsTime.tsNow]  = (new Date()).getHours() % 12;
 
-    nsTime.getIcon = function(mode=nsTime.tsMain, offset=0, className=''){
+
+    //getModeIcon - return the icon used for selecting time-mode
+    const hourIcons = ['fa-clock-twelve', 'fa-clock-one', 'fa-clock-two', 'fa-clock-three', 'fa-clock', 'fa-clock-five', 'fa-clock-six', 'fa-clock-seven', 'fa-clock-eight', 'fa-clock-nine', 'fa-clock-ten', 'fa-clock-eleven'];
+    function getModeHourIcon(mode=nsTime.tsMain, offset=0){
         let hour = (modeStart[mode] || 4) + offset;
         while (hour < 0)
             hour = hour + 24;
         hour = hour % 12;
 
-        const icon = 'fa-'+hourIcons[hour] + ' ';
-		className = className ? ' '+className : '';
+        let modeClass = nsTime.timeSyncInfo[mode].iconColor[offset < 0 ? 0 : offset == 0 ? 1 : 2];
         return [[
-            'fas ' + icon + nsTime.getIconClass(mode, offset) + className,
-            'far ' + icon + 'text-black' + className
+            'fas fa-circle ' + modeClass,
+            'far text-black ' + hourIcons[hour]
         ]];
 
-    };
+    }
 
 
 	/******************************************************************
@@ -128,7 +122,7 @@ The four main modes have icons and A: uses the same icon as b: and C: uses the s
             da: 'Fast tidspunkt',
             en: 'Fixed time'
         },
-		icon: nsTime.getIcon(nsTime.tsMain),
+		icon: getModeHourIcon(nsTime.tsMain),
         description: {
             da: 'Vælg et fast dato og klokkeslet.<br>F.eks. <em>12. juni kl. 13:00</em>.',
             en: 'Select a fixed date and time.<br>Eq. <em>July 12th at 13:00"</em>.'
@@ -141,7 +135,7 @@ The four main modes have icons and A: uses the same icon as b: and C: uses the s
             da: 'Relativt til aktuelle klokkeslet',
             en: 'Relative to current time'
         },
-		icon: nsTime.getIcon(nsTime.tsNow),
+		icon: getModeHourIcon(nsTime.tsNow),
         description: {
             da: 'Vælg relativt til aktuelle tidspunkt.<br>F.eks. <em>"Nu plus 2 timer".</em><br>Dato og klokkeslet opdateres automatisk, når aktuelle tidspunkt ændre sig.',
             en: 'Select relative to current time.<br>Eq. <em>"Now plus 2 hours".</em><br>The time is automatic updated when the current time change.',
@@ -276,7 +270,7 @@ The four main modes have icons and A: uses the same icon as b: and C: uses the s
         $.each(nsTime.timeSyncInfo, (id, options) => {
             list.push({
                 id  : id,
-                icon: nsTime.getIcon(id),
+                icon: getModeHourIcon(id),
                 text: options.name
             });
 
@@ -295,7 +289,7 @@ The four main modes have icons and A: uses the same icon as b: and C: uses the s
 
                 timeItems.push({
                     id  : 'offset_'+offset,
-                    icon: nsTime.getIcon(id, offset),
+                    icon: getModeHourIcon(id, offset),
                     text: text
                 });
             });

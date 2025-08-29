@@ -534,6 +534,63 @@ html.phone.portrait.bottom-panel-extended .hide-for-phone-and-portrait-and-exten
   display: none !important;
 }
 
+i.fa-clock-hour-0 {
+  rotate: 0deg;
+}
+
+i.fa-clock-hour-1 {
+  rotate: 30deg;
+}
+
+i.fa-clock-hour-2 {
+  rotate: 60deg;
+}
+
+i.fa-clock-hour-3 {
+  rotate: 90deg;
+}
+
+i.fa-clock-hour-4 {
+  rotate: 120deg;
+}
+
+i.fa-clock-hour-5 {
+  rotate: 150deg;
+}
+
+i.fa-clock-hour-6 {
+  rotate: 180deg;
+}
+
+i.fa-clock-hour-7 {
+  rotate: 210deg;
+}
+
+i.fa-clock-hour-8 {
+  rotate: 240deg;
+}
+
+i.fa-clock-hour-9 {
+  rotate: 270deg;
+}
+
+i.fa-clock-hour-10 {
+  rotate: 300deg;
+}
+
+i.fa-clock-hour-11 {
+  rotate: 330deg;
+}
+
+.leaflet-container.time-is-past .time-info-control i.fa-time-color {
+  color: var(--fc-time-past-color);
+}
+.leaflet-container.time-is-now .time-info-control i.fa-time-color {
+  color: var(--fc-time-now-color);
+}
+.leaflet-container.time-is-future .time-info-control i.fa-time-color {
+  color: var(--fc-time-future-color);
+}
 .leaflet-container.time-is-past .time-info-control a {
   box-shadow: 0 0 0px 2px var(--fc-time-past-color), 0 0 0 3px black;
 }

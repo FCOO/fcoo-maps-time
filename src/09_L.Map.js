@@ -182,8 +182,7 @@ L.Map
         this.timeAsString = newTimeAsString;
 
         //Update bsTimeInfoControl
-        if (this.bsTimeInfoControl)
-            this.bsTimeInfoControl.$currentTime.vfValue(this.time.current);
+        this.bsTimeInfoControl_updateTime();
 
         //Update timeDimension
         this.timeDimension.setCurrentTime(this.time.current.toDate().getTime());
@@ -195,7 +194,10 @@ L.Map
         return this;
     };
 
-
+    L.Map.prototype.bsTimeInfoControl_updateTime = function(){
+        if (this.bsTimeInfoControl && this.time)
+            this.bsTimeInfoControl._updateTime( this.time );
+    };
 
 
 

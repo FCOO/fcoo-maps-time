@@ -12,6 +12,12 @@ Leaflet control to display current time and relative time in the maps
         nsTime    = nsMap.time = nsMap.time || {};
 
 
+    //getHourIcon - Return a clock icon for displaying current time
+    function getHourIcon( hour=0 ){
+        return [['fas fa-circle fa-time-color', 'far fa-clock-twelve _fa-time-clock fa-clock-hour-'+hour]];
+    }
+
+
     /******************************************************************
     L.Control.BsTimeInfoControl
     Control to show current time and info on time sync with main map
@@ -19,8 +25,7 @@ Leaflet control to display current time and relative time in the maps
     L.Control.BsTimeInfoControl = L.Control.BsButtonBox.extend({
         options: {
             //small          : window.bsIsTouch,
-            //icon           : 'ER-DET-HER far fa-lg fa-home',
-            icon			: nsTime.getIcon(),
+            icon			: getHourIcon(),
 			iconClass		: 'fa-lg',
             tooltipOnButton	: true,
             square			: true,
@@ -30,8 +35,7 @@ Leaflet control to display current time and relative time in the maps
 
             extendedButton: {
                 //small          : window.bsIsTouch,
-                //icon           : 'ER-DET-HER far fa-home',
-				icon           : nsTime.getIcon(),
+				icon           : getHourIcon(),
                 text           : ['12:00 am(+1)'],
                 textClass      : ['current-time'],
                 square         : false,
@@ -53,7 +57,7 @@ Leaflet control to display current time and relative time in the maps
                 //Secondary in normal-mode = icon and relative text
                 $.extend(/*this.*/options, {
                     square   : false,
-                    icon     : nsTime.getIcon(),
+                    icon     : getHourIcon(),
                     text     : '+12t',
                     textClass: 'time-sync-info-text'
                 });
@@ -144,13 +148,7 @@ Leaflet control to display current time and relative time in the maps
                 'padding-left': '.35em'
             });
 
-            map.on("momentchanged", this.onMomentChanged, this);
-
-            if (this.options.isMainMap){
-				ns.events.on('TIMEMODECHANGED', function(id, mode){
-					this._changeIcon( nsTime.timeModeInfo[mode].icon );
-				}.bind(this));
-            }
+            ns.events.on('TIMEZONECHANGED', map.bsTimeInfoControl_updateTime.bind(map) );
 
             return result;
         },
@@ -196,19 +194,22 @@ Leaflet control to display current time and relative time in the maps
 
 
         /***********************************************************
-        onMomentChanged
+        _updateTime
         ***********************************************************/
-        onMomentChanged: function(time){
+        _updateTime: function( time ){
+            this.$currentTime.vfValue(time.current);
+            this._changeHourIcon(time.current);
+
             var relative = time.relative || 0;
             this._map.$container
                 .toggleClass('time-is-past',   relative < 0)
                 .toggleClass('time-is-now',    relative == 0)
                 .toggleClass('time-is-future', relative > 0);
-
         },
 
+
         /***********************************************************
-        onChange
+        onChange - Called when the mode is changed
         ***********************************************************/
         onChange: function(/*options*/){
             if (this.options.isMainMap)
@@ -254,34 +255,28 @@ Leaflet control to display current time and relative time in the maps
 
             this.bsButton.find('.container-stacked-icons').toggleClass('fa-no-margin', !showRelativeText);
 
-            //Adjust the button:
-            //Set icon color for mode and offset
-			this._changeIcon( nsTime.getIcon(timeSyncMode, offset) );
-
             //If same as main map  => normal button: shape = square and big icon and no margin
             var isSquare = asMain && !offset;
             this.bsButton.toggleClass('square', isSquare);
-            this.bsButton.find('i').toggleClass('fa- lg fa-no-margin', isSquare);
+            this.bsButton.find('i').toggleClass('fa-no-margin', isSquare);
 
             //Update current time of the map
             this._map._updateTime();
         },
 
         /***********************************************************
-        _changeIcon
+        _changeHourIcon
+
         ***********************************************************/
-		_changeIcon: function( newIconOptions ){
-			if (newIconOptions){
-				this.$container.find('i').parent().each( (index, elem) => {
-                    let $oldIcon = $(elem);
-                    $._bsCreateIcon(newIconOptions)
-                        .addClass( elem.className )
-                        .insertAfter( $oldIcon );
-                    $oldIcon.remove();
-                });
-			}
-			return this;
-		},
+		_changeHourIcon: function( current ){
+            let hour    = current.tzMoment().hour() % 12;
+            const regex = /fa-clock-hour-(\S+)/g;
+
+            this.$container.find('i[class*="fa-clock-hour-"]').each( (index, elem ) => {
+                elem.className = elem.className.replace(regex, 'fa-clock-hour-'+hour);
+            });
+        },
+
     });
 
 

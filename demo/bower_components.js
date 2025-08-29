@@ -13097,7 +13097,7 @@ else {
 }(jQuery, this, document));
 ;
 /*!
-  * Bootstrap v5.3.7 (https://getbootstrap.com/)
+  * Bootstrap v5.3.8 (https://getbootstrap.com/)
   * Copyright 2011-2025 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
   */
@@ -13745,7 +13745,7 @@ else {
    * Constants
    */
 
-  const VERSION = '5.3.7';
+  const VERSION = '5.3.8';
 
   /**
    * Class definition
@@ -16788,9 +16788,6 @@ else {
       this._element.setAttribute('aria-expanded', 'false');
       Manipulator.removeDataAttribute(this._menu, 'popper');
       EventHandler.trigger(this._element, EVENT_HIDDEN$5, relatedTarget);
-
-      // Explicitly return focus to the trigger element
-      this._element.focus();
     }
     _getConfig(config) {
       config = super._getConfig(config);
@@ -74367,7 +74364,7 @@ if (typeof define === 'function' && define.amd) {
             *******************************************************************/
             this.cache.$container =
                 $('<div/>')
-                    .addClass('base-slider-container ' + this.options.handle + ' js-base-slider-' + this.pluginCount );
+                    .addClass(['base-slider-container', this.options.handle, 'js-base-slider-' + this.pluginCount ]);
 
 
             this.cache.$input.before(this.cache.$container);
@@ -74378,11 +74375,7 @@ if (typeof define === 'function' && define.amd) {
             //if options.handleFixed: Remove margin for the handle and put inside outer-container
             if (this.options.handleFixed){
                 this.cache.$container
-                    .css({
-                        'width'       : '100%',
-                        'margin-left' : 0,
-                        'margin-right': 0
-                    })
+                    .addClass('handle-is-fixed')
                     .wrap('<div/>');
                 this.cache.$fullWidthContainer = this.cache.$container.parent();
                 this.cache.$fullWidthContainer.addClass('base-slider-container-full-width');
@@ -88978,6 +88971,7 @@ uri         : {default: "Please enter a valid URI"}
     pin
     unpin
     new
+    error
     warning
     info
     help
@@ -89037,6 +89031,11 @@ uri         : {default: "Please enter a valid URI"}
 
 
             new     : square ? 'fa-window-maximize' : [ $.FONTAWESOME_PREFIX_STANDARD + ' fa-window-maximize fa-inside-circle2', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle'],
+
+            error : {
+                icon : square ? 'fa-exclamation' : [ 'fas fa-circle back text-error', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle', 'fas fa-exclamation fa-inside-circle-xmark'],
+                class: square ? 'header-icon-error' : null
+            },
 
             warning : {
                 icon : square ? 'fa-exclamation' : [ 'fas fa-circle back text-warning', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle', 'fas fa-exclamation fa-inside-circle-xmark'],
@@ -89107,7 +89106,7 @@ uri         : {default: "Please enter a valid URI"}
 
             //Add icons
             let headerIcons = useSquareIcons ? bsHeaderIconsSquare : bsHeaderIcons;
-            ['back', 'forward', 'pin', 'unpin', 'diminish', 'extend', 'fullScreenOn', 'fullScreenOff', 'new', 'warning', 'info', 'help', 'close'].forEach( (id) => {
+            ['back', 'forward', 'pin', 'unpin', 'diminish', 'extend', 'fullScreenOn', 'fullScreenOff', 'new', 'error', 'warning', 'info', 'help', 'close'].forEach( (id) => {
                 let iconOptions = options.icons[id];
                 if (iconOptions && (iconOptions.onClick || (typeof iconOptions == 'function'))){
                     if (typeof iconOptions == 'function')
@@ -90984,10 +90983,10 @@ jquery-bootstrap-modal-promise.js
                 new             : {                                     onClick: options.onNew     ? options.onNew.bind(this)     : null                        },
                 info            : {                                     onClick: options.onInfo    ? options.onInfo.bind(this)    : null                        },
                 warning         : {                                     onClick: options.onWarning ? options.onWarning.bind(this) : null                        },
+                error           : {                                     onClick: options.onError   ? options.onError.bind(this)   : null                        },
                 help            : {                                     onClick: options.onHelp    ? options.onHelp.bind(this)    : null                        },
             }
         }, options );
-
 
         //Save parentOptions for dynamic update
         var parentOptions = this.bsModal.parentOptions = {};
@@ -140673,6 +140672,7 @@ leaflet-bootstrap-control-legend.js
                         },
                         onInfo     : options.onInfo,
                         onWarning  : options.onWarning,
+                        onError    : options.onError,
                         icons      : {},
                         content    : '',
 semiTransparent: true,
@@ -140761,7 +140761,7 @@ semiTransparent: true,
                     $normalIcon.children('.container-stacked-icons').addClass('hide-for-bsl-working');
 
                 this.actionIcons = {};
-                ['warning', 'info', 'help', 'close'].forEach( id => {
+                ['error', 'warning', 'info', 'help', 'close'].forEach( id => {
                     _this.actionIcons[id] = _this.$container.find('[data-header-icon-id="'+id+'"]');
                     _this.actionIcons[id].toggle(_this.options.showIcons || (id == 'close'));
                 });

@@ -68,9 +68,12 @@
 //HER               window.FCOOMAPSTIME_TEST = true;
 //HER               document.body.classList.add('FCOOMAPSTIME_TEST');
         }
-        if (window.location.href.includes('?testmodenow'))
-            window.FCOOMAPSTIME_TEST_NOW = true;
-
+        if (window.location.href.includes('?testmodenow')){
+            window.FCOOMAPSTIME_TEST_NOW         = true;
+            window.FCOOMAPSTIME_TEST_NOCONSOLE   = false;
+            window.FCOOMAPSTIME_TEST_DURATION    = 10;
+            window.FCOOMAPSTIME_TEST_DELTA_HOURS = 1;
+        }
     </script>
 
     <script src="bower_components.js"></script>

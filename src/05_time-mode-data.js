@@ -81,6 +81,7 @@
         //Update time-sliders at global events
         var eventFunc = this.redrawTimeSlider.bind(this);
         ns.events.on(ns.events.LANGUAGECHANGED, eventFunc);
+
         if (this.isFixed)
             ns.events.on(ns.events.DATETIMEFORMATCHANGED, eventFunc);
 
@@ -270,7 +271,6 @@
 
             this.onTimeModeChanged();
 
-            nsTime.HER
         },
 
         /********************************************************
