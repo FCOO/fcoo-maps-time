@@ -136,10 +136,9 @@ L.Map
     Called when 'now' changes
     ******************************************************************/
     L.Map.prototype._updateNow = function(){
-        if (this.timeDimension){
+        if (this.timeDimension)
             this.timeDimension._updateNow();
-            this._updateTime();
-        }
+        this._updateTime();
     };
 
     /******************************************************************

@@ -12,13 +12,15 @@ setup.js
     nsTime.unit = 'hour';
 
     /***************************************
-    TIMEMODECHANGED EVENTS
-    Global event fired when the time mode is changed
+    Global events
+    TIMENOWCHANGED   - fired when 'now' is changed
+    TIMERANGECHANGED - fired when the time range of the applications is changed
+    TIMEMODECHANGED  - Fired when the time mode is changed
     ***************************************/
-    var TIMEMODECHANGED = 'TIMEMODECHANGED';
-    ns.events[ TIMEMODECHANGED ] = TIMEMODECHANGED;
-    ns.events.eventNames.push( TIMEMODECHANGED );
-
+    ['TIMENOWCHANGED', 'TIMERANGECHANGED', 'TIMEMODECHANGED'].forEach( eventId => {
+        ns.events[ eventId ] = eventId;
+        ns.events.eventNames.push( eventId );
+    });
 
     //onSetupLoaded = []FUNCTION called when the setup-options are loaded
     nsTime.onSetupLoaded = [];
@@ -38,7 +40,7 @@ setup.js
             start               :   0,  //Releative start for animation or period
             end                 : +12,  //Releative end for animation or period
             modeMinMax          : {     //Min and max for different modes. Using default min and max if none given
-                'FIXED': { min: -2*24, max: +5*24 }
+                //Ex: 'FIXED': { min: -2*24, max: +5*24 }
             },
             cache               : 0,
             cacheBackward       : 1,    //Number of layers that can be kept hidden on the map for previous times

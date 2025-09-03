@@ -303,14 +303,15 @@
     - Set up intervals to update nsTime.nowMoment
     - Update current time-mode-data and all elements
     ******************************************************************/
+    ns.events.on('TIMENOWCHANGED', () => $.each( timeModeDataList, (id, timeModeData) => timeModeData.onNowChanged()  ) );
+
+    //Update range etc. on all maps
+    ns.events.on('TIMENOWCHANGED', () => nsMap.callAllMaps('_updateNow') );
+
     function setNowMoment( dummy, now ){
         nsTime.nowMoment = (now ? now : moment()).startOf(unit);
-        $.each( timeModeDataList, function(id, timeModeData){
-            timeModeData.onNowChanged();
-        });
 
-        //Update range etc. on all maps
-        nsMap.callAllMaps('_updateNow');
+        ns.events.fire('TIMENOWCHANGED', nsTime.nowMoment);
 
     }
 
