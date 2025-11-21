@@ -10742,7 +10742,7 @@ return jQuery;
 
 ;(function(window, document, undefined){
   var tests = [];
-
+  
 
   /**
    *
@@ -10791,7 +10791,7 @@ return jQuery;
     }
   };
 
-
+  
 
   // Fake some of Object.create so we can force non test results to be non "own" properties.
   var Modernizr = function() {};
@@ -10801,10 +10801,10 @@ return jQuery;
   // Overwrite name so constructor name is nicer :D
   Modernizr = new Modernizr();
 
-
+  
 
   var classes = [];
-
+  
 
   /**
    * is returns a boolean if the typeof an obj is exactly type.
@@ -10900,7 +10900,7 @@ return jQuery;
    */
 
   var docElement = document.documentElement;
-
+  
 
   /**
    * A convenience helper to check if the document we are running in is an SVG document
@@ -10910,7 +10910,7 @@ return jQuery;
    */
 
   var isSVG = docElement.nodeName.toLowerCase() === 'svg';
-
+  
 
   /**
    * setClasses takes an array of class names and adds them to the root element
@@ -10978,7 +10978,7 @@ return jQuery;
     }
   })();
 
-
+  
 
 
    // _l tracks listeners for async tests, as well as tests that execute after the initial run
@@ -11188,7 +11188,7 @@ return jQuery;
     ModernizrProto.addTest = addTest;
   });
 
-
+  
 
 
   /**
@@ -11208,11 +11208,11 @@ return jQuery;
    */
 
   var omPrefixes = 'Moz O ms Webkit';
-
+  
 
   var cssomPrefixes = (ModernizrProto._config.usePrefixes ? omPrefixes.split(' ') : []);
   ModernizrProto._cssomPrefixes = cssomPrefixes;
-
+  
 
   /**
    * atRule returns a given CSS property at-rule (eg @keyframes), possibly in
@@ -11279,7 +11279,7 @@ return jQuery;
 
   ModernizrProto.atRule = atRule;
 
-
+  
 
   /**
    * createElement is a convenience wrapper around document.createElement. Since we
@@ -11380,7 +11380,7 @@ return jQuery;
 
 
   ModernizrProto.hasEvent = hasEvent;
-
+  
 
   /**
    * getBody returns the body of a document, or an element that can stand in for
@@ -11553,7 +11553,7 @@ return jQuery;
 
   ModernizrProto.mq = mq;
 
-
+  
 
 
   /**
@@ -11587,7 +11587,7 @@ return jQuery;
     delete modElem.elem;
   });
 
-
+  
 
   var mStyle = {
     style: modElem.elem.style
@@ -11599,7 +11599,7 @@ return jQuery;
     delete mStyle.style;
   });
 
-
+  
 
   /**
    * domToCSS takes a camelCase string and converts it to kebab-case
@@ -11789,7 +11789,7 @@ return jQuery;
 
   var domPrefixes = (ModernizrProto._config.usePrefixes ? omPrefixes.toLowerCase().split(' ') : []);
   ModernizrProto._domPrefixes = domPrefixes;
-
+  
 
   /**
    * fnBind is a super small [bind](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind) polyfill.
@@ -11884,7 +11884,7 @@ return jQuery;
   // Modernizr.testAllProps('boxSizing')
   ModernizrProto.testAllProps = testPropsAll;
 
-
+  
 
   /**
    * prefixed returns the prefixed or nonprefixed property name variant of your input
@@ -11968,7 +11968,7 @@ return jQuery;
     }
   };
 
-
+  
 /*!
 {
   "name": "Fullscreen API",
@@ -12027,7 +12027,7 @@ Detects support for the ability to make the current website take over the user's
   // expose these for the plugin API. Look in the source for how to join() them against your input
   ModernizrProto._prefixes = prefixes;
 
-
+  
 
   /**
    * testStyles injects an element with style element and some CSS rules
@@ -12087,7 +12087,7 @@ Detects support for the ability to make the current website take over the user's
    */
 
   var testStyles = ModernizrProto.testStyles = injectElementWithStyles;
-
+  
 /*!
 {
   "name": "Touch Events",
@@ -12207,7 +12207,7 @@ This test will also return `true` for Firefox 4 Multitouch support.
     return testPropsAll(prop, undefined, undefined, value, skipValueTest);
   }
   ModernizrProto.testAllProps = testAllProps;
-
+  
 /*!
 {
   "name": "Flexbox",
@@ -12559,7 +12559,7 @@ else {
 
 ;
 /****************************************************************************
-	modernizr-javascript.js,
+	modernizr-javascript.js, 
 
 	(c) 2016, FCOO
 
@@ -12570,20 +12570,20 @@ else {
 
 (function ($, window, document, undefined) {
 	"use strict";
-
+	
 	var ns = window;
 
     //Extend the jQuery prototype
     $.fn.extend({
-        modernizrOn : function( test ){
-            return this.modernizrToggle( test, true );
+        modernizrOn : function( test ){ 
+            return this.modernizrToggle( test, true ); 
         },
 
-        modernizrOff: function( test ){
-            return this.modernizrToggle( test, false );
+        modernizrOff: function( test ){ 
+            return this.modernizrToggle( test, false ); 
         },
-
-        modernizrToggle: function( test, on ){
+        
+        modernizrToggle: function( test, on ){ 
 		if ( on === undefined )
             return this.modernizrToggle( test, !this.hasClass( test ) );
 
@@ -12624,13 +12624,13 @@ else {
             for (j=0; j<eventNames.length; j++ ){
                 eventName = eventNames[j];
                 if (eventName){
-                    this.events[eventName] = this.events[eventName] || [];
+                    this.events[eventName] = this.events[eventName] || [];         
                     var i, lgd = this.events[eventName].length;
                     if (reverse){
                         for (i=lgd-1; i>=0; i-- )
                             if (func( this.events[eventName][i], i, this.events[eventName] ))
                                 break;
-                    }
+                    } 
                     else {
                         for (i=0; i<lgd; i++ )
                             if (func( this.events[eventName][i], i, this.events[eventName] ))
@@ -12646,11 +12646,11 @@ else {
             for (i=0; i<eventNames.length; i++ ){
                 eventName = eventNames[i];
                 if (eventName){
-                    this.events[eventName] = this.events[eventName] || [];
+                    this.events[eventName] = this.events[eventName] || [];         
                     this.events[eventName].push( {
                         callback: callback,
                         context : context || null,
-                        options : $.extend( {once:false, first:false, last:false}, options )
+                        options : $.extend( {once:false, first:false, last:false}, options ) 
                     });
                 }
             }
@@ -12667,7 +12667,7 @@ else {
             eventNames = ( eventNames || "" ).match( (/\S+/g) ) || [ "" ];
             _loop_func = function( eventObj, index, list ){
                 if ( (callback == eventObj.callback) &&
-                    (!context || (context == eventObj.context)) ){
+                    (!context || (context == eventObj.context)) ){ 
                     list.splice(index, 1);
                     return true;
                 }
@@ -12682,32 +12682,32 @@ else {
         };
 
 
-        this.fire = function( eventName /*, arg1, arg2, .., argN */ ){
+        this.fire = function( eventName /*, arg1, arg2, .., argN */ ){ 
             var newArguments = [];
             for (var i=1; i < arguments.length; i++) {
                 newArguments.push(arguments[i]);
             }
 
             //Fire the functions marked 'first'
-            this._loop( eventName, function( eventObj ){
+            this._loop( eventName, function( eventObj ){ 
                 if (eventObj.options.first)
-                    eventObj.callback.apply( eventObj.context, newArguments );
+                    eventObj.callback.apply( eventObj.context, newArguments );      
             });
 
             //Fire the functions not marked 'first' or 'last'
-            this._loop( eventName, function( eventObj ){
+            this._loop( eventName, function( eventObj ){ 
                 if (!eventObj.options.first && !eventObj.options.last)
-                    eventObj.callback.apply( eventObj.context, newArguments );
+                    eventObj.callback.apply( eventObj.context, newArguments );      
             });
 
             //Fire the functions marked 'last'
-            this._loop( eventName, function( eventObj ){
+            this._loop( eventName, function( eventObj ){ 
                 if (eventObj.options.last)
-                    eventObj.callback.apply( eventObj.context, newArguments );
+                    eventObj.callback.apply( eventObj.context, newArguments );      
             });
-
+            
             //Remove all functions marked 'once'
-            this._loop( eventName, function( eventObj, index, list ){
+            this._loop( eventName, function( eventObj, index, list ){ 
                 if (eventObj.options.once)
                     list.splice(index, 1);
             }, true);
@@ -12718,7 +12718,7 @@ else {
         this.oneFirst = function(){ this.onceFirst( arguments ); };
         this.oneLast  = function(){ this.onceLast( arguments  ); };
     }
-
+  
     // expose access to the constructor
     window.GlobalEvents = GlobalEvents;
 
@@ -34153,7 +34153,7 @@ L.GeometryUtil = L.extend(L.GeometryUtil || {}, {
 
         return new L.LatLng(ty, tx);
     },
-
+    
 
     /**
         Returns the closest latlng on layer.
@@ -34507,7 +34507,7 @@ L.GeometryUtil = L.extend(L.GeometryUtil || {}, {
 			cumulativeDistanceToA = cumulativeDistanceToB;
 			cumulativeDistanceToB += pointA.distanceTo(pointB);
 		}
-
+		
 		if (pointA == undefined && pointB == undefined) { // Happens when line has no length
 			var pointA = pts[0], pointB = pts[1], i = 1;
 		}
@@ -35531,21 +35531,21 @@ L.geodesic = function(latlngs, options) {
 
 
 ;
-/*
- * Leaflet TimeDimension v1.1.1 - 2019-11-05
- *
- * Copyright 2019 Biel Frontera (ICTS SOCIB)
- * datacenter@socib.es
- * http://www.socib.es/
- *
- * Licensed under the MIT license.
- *
- * Demos:
- * http://apps.socib.es/Leaflet.TimeDimension/
- *
- * Source:
- * git://github.com/socib/Leaflet.TimeDimension.git
- *
+/* 
+ * Leaflet TimeDimension v1.1.1 - 2019-11-05 
+ * 
+ * Copyright 2019 Biel Frontera (ICTS SOCIB) 
+ * datacenter@socib.es 
+ * http://www.socib.es/ 
+ * 
+ * Licensed under the MIT license. 
+ * 
+ * Demos: 
+ * http://apps.socib.es/Leaflet.TimeDimension/ 
+ * 
+ * Source: 
+ * git://github.com/socib/Leaflet.TimeDimension.git 
+ * 
  */
 
 (function (factory, window) {
@@ -35637,7 +35637,7 @@ L.TimeDimension = (L.Layer || L.Class).extend({
         }
         this._loadingTimeIndex = newIndex;
         var newTime = this._availableTimes[newIndex];
-
+        
         if (this._checkSyncedLayersReady(this._availableTimes[this._loadingTimeIndex])) {
             this._newTimeIndexLoaded();
         } else {
@@ -35647,7 +35647,7 @@ L.TimeDimension = (L.Layer || L.Class).extend({
             // add timeout of 3 seconds if layers doesn't response
             setTimeout((function (index) {
                 if (index == this._loadingTimeIndex) {
-
+                    
                     this._newTimeIndexLoaded();
                 }
             }).bind(this, newIndex), this._loadingTimeout);
@@ -35660,25 +35660,25 @@ L.TimeDimension = (L.Layer || L.Class).extend({
             return;
         }
         var time = this._availableTimes[this._loadingTimeIndex];
-
+        
         this._currentTimeIndex = this._loadingTimeIndex;
         this.fire('timeload', {
             time: time
         });
         this._loadingTimeIndex = -1;
     },
-
+    
     _checkSyncedLayersReady: function (time) {
         for (var i = 0, len = this._syncedLayers.length; i < len; i++) {
             if (this._syncedLayers[i].isReady) {
                 if (!this._syncedLayers[i].isReady(time)) {
-					return false;
+					return false;                    
                 }
             }
         }
         return true;
     },
-
+    
     setCurrentTime: function (time) {
         var newIndex = this._seekNearestTimeIndex(time);
         this.setCurrentTimeIndex(newIndex);
@@ -35897,7 +35897,7 @@ L.TimeDimension = (L.Layer || L.Class).extend({
             availableTimes: this._availableTimes,
             currentTime: currentTime
         });
-
+        
     },
     getLowerLimit: function () {
         return this._availableTimes[this.getLowerLimitIndex()];
@@ -36337,11 +36337,11 @@ L.TimeDimension.Layer.WMS = L.TimeDimension.Layer.extend({
     },
 
     _onNewTimeLoading: function(ev) {
-        //
+        // 
         var layer = this._getLayerForTime(ev.time);
         if (!this._map.hasLayer(layer)) {
             this._map.addLayer(layer);
-            //
+            // 
         }
     },
 
@@ -36457,7 +36457,7 @@ L.TimeDimension.Layer.WMS = L.TimeDimension.Layer.extend({
         }
         this._currentLayer = layer;
         this._currentTime = time;
-
+        
 
         this._evictCachedTimes(this._timeCacheForward, this._timeCacheBackward);
     },
@@ -36488,7 +36488,7 @@ L.TimeDimension.Layer.WMS = L.TimeDimension.Layer.extend({
             if (this._timeDimension && time == this._timeDimension.getCurrentTime() && !this._timeDimension.isLoading()) {
                 this._showLayer(layer, time);
             }
-            //
+            // 
             this.fire('timeload', {
                 time: time
             });
@@ -36677,8 +36677,8 @@ L.TimeDimension.Layer.WMS = L.TimeDimension.Layer.extend({
             index--;
         }
         if (time != this._availableTimes[index]) {
-
-
+            
+            
         }
         return this._availableTimes[index];
     },
@@ -37008,7 +37008,7 @@ L.TimeDimension.Player = (L.Layer || L.Class).extend({
             this._waitingForBuffer = false; // reset buffer
         }).bind(this));
         this.setTransitionTime(this.options.transitionTime || 1000);
-
+        
         this._timeDimension.on('limitschanged availabletimeschanged timeload', (function(data) {
             this._timeDimension.prepareNextTimes(this._steps, this._minBufferReady, this._loop);
         }).bind(this));
@@ -37040,7 +37040,7 @@ L.TimeDimension.Player = (L.Layer || L.Class).extend({
             // If the player was waiting, check if all times are loaded
             if (this._waitingForBuffer) {
                 if (numberNextTimesReady < buffer) {
-
+                    
                     this.fire('waiting', {
                         buffer: buffer,
                         available: numberNextTimesReady
@@ -37048,14 +37048,14 @@ L.TimeDimension.Player = (L.Layer || L.Class).extend({
                     return;
                 } else {
                     // all times loaded
-
+                    
                     this.fire('running');
                     this._waitingForBuffer = false;
                 }
             } else {
                 // check if player has to stop to wait and force to full all the buffer
                 if (numberNextTimesReady < this._minBufferReady) {
-
+                    
                     this._waitingForBuffer = true;
                     this._timeDimension.prepareNextTimes(this._steps, buffer, this._loop);
                     this.fire('waiting', {
@@ -37072,9 +37072,9 @@ L.TimeDimension.Player = (L.Layer || L.Class).extend({
             this._timeDimension.prepareNextTimes(this._steps, buffer, this._loop);
         }
     },
-
+    
     _getMaxIndex: function(){
-       return Math.min(this._timeDimension.getAvailableTimes().length - 1,
+       return Math.min(this._timeDimension.getAvailableTimes().length - 1, 
                        this._timeDimension.getUpperLimitIndex() || Infinity);
     },
 
@@ -37138,7 +37138,7 @@ L.TimeDimension.Player = (L.Layer || L.Class).extend({
         this._transitionTime = transitionTime;
         if (typeof this._buffer === 'function') {
             this._bufferSize = this._buffer.call(this, this._transitionTime, this._minBufferReady, this._loop);
-
+            
         } else {
             this._bufferSize = this._buffer;
         }
@@ -37780,7 +37780,7 @@ L.Map.addInitHook(function() {
 L.control.timeDimension = function(options) {
     return new L.Control.TimeDimension(options);
 };
-
+    
     return L.TimeDimension;
   }, window)
 );
@@ -38670,7 +38670,7 @@ module.exports.TinyEmitter = E;
 /************************************************************************/
 /******/ 	// The module cache
 /******/ 	var __webpack_module_cache__ = {};
-/******/
+/******/ 	
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
@@ -38683,14 +38683,14 @@ module.exports.TinyEmitter = E;
 /******/ 			// no module.loaded needed
 /******/ 			exports: {}
 /******/ 		};
-/******/
+/******/ 	
 /******/ 		// Execute the module function
 /******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
-/******/
+/******/ 	
 /******/ 		// Return the exports of the module
 /******/ 		return module.exports;
 /******/ 	}
-/******/
+/******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	!function() {
@@ -38703,7 +38703,7 @@ module.exports.TinyEmitter = E;
 /******/ 			return getter;
 /******/ 		};
 /******/ 	}();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/define property getters */
 /******/ 	!function() {
 /******/ 		// define getter functions for harmony exports
@@ -38715,12 +38715,12 @@ module.exports.TinyEmitter = E;
 /******/ 			}
 /******/ 		};
 /******/ 	}();
-/******/
+/******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	!function() {
 /******/ 		__webpack_require__.o = function(obj, prop) { return Object.prototype.hasOwnProperty.call(obj, prop); }
 /******/ 	}();
-/******/
+/******/ 	
 /************************************************************************/
 /******/ 	// module exports must be returned from runtime so entry inlining is disabled
 /******/ 	// startup
@@ -42101,7 +42101,7 @@ module.exports.TinyEmitter = E;
         deltaHp = abs(deltaHp) <= 180 ? deltaHp : h2p <= h1p ? deltaHp + 360 : deltaHp - 360;
         deltaHp = 2*sqrt(C1p*C2p)*sin(deg2rad(deltaHp)/2);
         var deltaL = L2 - L1;
-        var deltaCp = C2p - C1p;
+        var deltaCp = C2p - C1p;    
         var sl = 1 + (0.015*pow(avgL - 50, 2))/sqrt(20 + pow(avgL - 50, 2));
         var sc = 1 + 0.045*avgCp;
         var sh = 1 + 0.015*avgCp*T;
@@ -49381,7 +49381,7 @@ Methods for creating <meta> in <head> and adding favicons
 
     var keys = ['Hours', 'Minutes', 'Seconds', 'Milliseconds'];
     var maxValues = [24, 60, 60, 1000];
-
+    
     // Capitalize first letter
     key = key.charAt(0).toUpperCase() + key.slice(1).toLowerCase();
 
@@ -49428,19 +49428,19 @@ Methods for creating <meta> in <head> and adding favicons
 ;
 /* @preserve
  * The MIT License (MIT)
- *
+ * 
  * Copyright (c) 2013-2018 Petka Antonov
- *
+ * 
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- *
+ * 
  * The above copyright notice and this permission notice shall be included in
  * all copies or substantial portions of the Software.
- *
+ * 
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.  IN NO EVENT SHALL THE
@@ -49448,7 +49448,7 @@ Methods for creating <meta> in <head> and adding favicons
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
- *
+ * 
  */
 /**
  * bluebird build version 3.7.2
@@ -53040,28 +53040,28 @@ _dereq_('./using.js')(Promise, apiRejection, tryConvertToPromise, createContext,
 _dereq_('./any.js')(Promise);
 _dereq_('./each.js')(Promise, INTERNAL);
 _dereq_('./filter.js')(Promise, INTERNAL);
-
-    util.toFastProperties(Promise);
-    util.toFastProperties(Promise.prototype);
-    function fillTypes(value) {
-        var p = new Promise(INTERNAL);
-        p._fulfillmentHandler0 = value;
-        p._rejectionHandler0 = value;
-        p._promise0 = value;
-        p._receiver0 = value;
-    }
-    // Complete slack tracking, opt out of field-type tracking and
-    // stabilize map
-    fillTypes({a: 1});
-    fillTypes({b: 2});
-    fillTypes({c: 3});
-    fillTypes(1);
-    fillTypes(function(){});
-    fillTypes(undefined);
-    fillTypes(false);
-    fillTypes(new Promise(INTERNAL));
-    debug.setBounds(Async.firstLineError, util.lastLineError);
-    return Promise;
+                                                         
+    util.toFastProperties(Promise);                                          
+    util.toFastProperties(Promise.prototype);                                
+    function fillTypes(value) {                                              
+        var p = new Promise(INTERNAL);                                       
+        p._fulfillmentHandler0 = value;                                      
+        p._rejectionHandler0 = value;                                        
+        p._promise0 = value;                                                 
+        p._receiver0 = value;                                                
+    }                                                                        
+    // Complete slack tracking, opt out of field-type tracking and           
+    // stabilize map                                                         
+    fillTypes({a: 1});                                                       
+    fillTypes({b: 2});                                                       
+    fillTypes({c: 3});                                                       
+    fillTypes(1);                                                            
+    fillTypes(function(){});                                                 
+    fillTypes(undefined);                                                    
+    fillTypes(false);                                                        
+    fillTypes(new Promise(INTERNAL));                                        
+    debug.setBounds(Async.firstLineError, util.lastLineError);               
+    return Promise;                                                          
 
 };
 
@@ -58441,11 +58441,11 @@ window.xmlToJSON = function(xml) {
 	var minor = parseInt(splitVersion[1]);
 
 	var JQ_LT_17 = (major < 1) || (major == 1 && minor < 7);
-
+	
 	function eventsData($el) {
 		return JQ_LT_17 ? $el.data('events') : $._data($el[0]).events;
 	}
-
+	
 	function moveHandlerToTop($el, eventName, isDelegated) {
 		var data = eventsData($el);
 		var events = data[eventName];
@@ -58463,7 +58463,7 @@ window.xmlToJSON = function(xml) {
 			events.unshift(events.pop());
 		}
 	}
-
+	
 	function moveEventHandlers($elems, eventsString, isDelegate) {
 		var events = eventsString.split(/\s+/);
 		$elems.each(function() {
@@ -58473,7 +58473,7 @@ window.xmlToJSON = function(xml) {
 			}
 		});
 	}
-
+	
 	function makeMethod(methodName) {
 		$.fn[methodName + 'First'] = function() {
 			var args = $.makeArray(arguments);
@@ -58498,7 +58498,7 @@ window.xmlToJSON = function(xml) {
 	$.fn.delegateFirst = function() {
 		var args = $.makeArray(arguments);
 		var eventsString = args[1];
-
+		
 		if (eventsString) {
 			args.splice(0, 2);
 			$.fn.delegate.apply(this, arguments);
@@ -58518,7 +58518,7 @@ window.xmlToJSON = function(xml) {
 
 		return this;
 	};
-
+	
 	// on (jquery >= 1.7)
 	if (!JQ_LT_17) {
 		$.fn.onFirst = function(types, selector) {
@@ -66801,8 +66801,8 @@ window.xmlToJSON = function(xml) {
     };
     (function(factory) {
         if (true) {
-            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(2) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory,
-            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__,
+            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(2) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory, 
+            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__, 
             __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
         } else {}
     })(function(Inputmask) {
@@ -66896,8 +66896,8 @@ window.xmlToJSON = function(xml) {
     };
     (function(factory) {
         if (true) {
-            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(3), __webpack_require__(5) ],
-            __WEBPACK_AMD_DEFINE_FACTORY__ = factory, __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__,
+            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(3), __webpack_require__(5) ], 
+            __WEBPACK_AMD_DEFINE_FACTORY__ = factory, __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__, 
             __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
         } else {}
     })(function($, window, undefined) {
@@ -68410,7 +68410,7 @@ window.xmlToJSON = function(xml) {
             function seekPrevious(pos, newBlock) {
                 var position = pos, tests;
                 if (position <= 0) return 0;
-                while (--position > 0 && (newBlock === true && getTest(position).match.newBlockMarker !== true || newBlock !== true && !isMask(position) && (tests = getTests(position),
+                while (--position > 0 && (newBlock === true && getTest(position).match.newBlockMarker !== true || newBlock !== true && !isMask(position) && (tests = getTests(position), 
                 tests.length < 2 || tests.length === 2 && tests[1].match.def === ""))) {}
                 return position;
             }
@@ -69647,8 +69647,8 @@ window.xmlToJSON = function(xml) {
     };
     (function(factory) {
         if (true) {
-            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(4) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory,
-            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__,
+            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(4) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory, 
+            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__, 
             __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
         } else {}
     })(function($) {
@@ -69677,8 +69677,8 @@ window.xmlToJSON = function(xml) {
     };
     (function(factory) {
         if (true) {
-            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(2) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory,
-            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__,
+            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(2) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory, 
+            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__, 
             __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
         } else {}
     })(function(Inputmask) {
@@ -69929,8 +69929,8 @@ window.xmlToJSON = function(xml) {
     };
     (function(factory) {
         if (true) {
-            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(2) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory,
-            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__,
+            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(2) ], __WEBPACK_AMD_DEFINE_FACTORY__ = factory, 
+            __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__, 
             __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
         } else {}
     })(function(Inputmask) {
@@ -70480,8 +70480,8 @@ window.xmlToJSON = function(xml) {
     };
     (function(factory) {
         if (true) {
-            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(4), __webpack_require__(2) ],
-            __WEBPACK_AMD_DEFINE_FACTORY__ = factory, __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__,
+            !(__WEBPACK_AMD_DEFINE_ARRAY__ = [ __webpack_require__(4), __webpack_require__(2) ], 
+            __WEBPACK_AMD_DEFINE_FACTORY__ = factory, __WEBPACK_AMD_DEFINE_RESULT__ = typeof __WEBPACK_AMD_DEFINE_FACTORY__ === "function" ? __WEBPACK_AMD_DEFINE_FACTORY__.apply(exports, __WEBPACK_AMD_DEFINE_ARRAY__) : __WEBPACK_AMD_DEFINE_FACTORY__, 
             __WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__));
         } else {}
     })(function($, Inputmask) {
@@ -73942,6 +73942,7 @@ if (typeof define === 'function' && define.amd) {
 
         //Callback
         onCreate : null, // Called when the slider is created the first time.
+        onBuild  : null, // Called when the slider is build
         onUpdate : null, // Is called than slider is modified by external methods update or reset
 
         onChanging        : null, // Is called every time any values are changed. Also on dragging a handle
@@ -73974,8 +73975,6 @@ if (typeof define === 'function' && define.amd) {
     *******************************************************************/
     var pluginCount = 0;
     window.BaseSlider = function (input, options, pluginCount) {
-        var _this = this;
-
         this.input          = input;
         this.pluginCount   = pluginCount;
 
@@ -74003,11 +74002,11 @@ if (typeof define === 'function' && define.amd) {
 
         /*******************************************************************
         this.events contains event-functions and options
-        this.events.containerOnResize = called when the sizse of the container is changed
+        this.events.containerOnResize = called when the size of the container is changed
         *******************************************************************/
         this.events = {
-            containerOnResize: $.proxy( this.containerOnResize, this ),
-            parentOnResize   : $.proxy( this.parentOnResize, this )
+            containerOnResize: this.containerOnResize.bind( this ),
+            parentOnResize   : this.parentOnResize.bind( this )
         };
 
         //Create event-function to be called on resize of the window and the container (added in init)
@@ -74047,14 +74046,14 @@ if (typeof define === 'function' && define.amd) {
         this.callback = record with functions used on different callbacks
         *******************************************************************/
         this.callback = {};
-        $.each( ['Create', 'Update', 'Changing', 'Change'], function( index, id ){
-            var func = _this.options['on'+id ];
+        ['Create', 'Build', 'Update', 'Changing', 'Change'].forEach( id => {
+            var func = this.options['on'+id ];
             if ( func )
-                _this.callback[ id.toLowerCase() ] =
-                    _this.options.context ?
-                    $.proxy( func, _this.options.context ) :
+                this.callback[ id.toLowerCase() ] =
+                    this.options.context ?
+                    func.bind( this.options.context ) :
                     func;
-        });
+        }, this);
 
         /*******************************************************************
         this.cache = record with all DOM-elements or jQuery-objects
@@ -74106,9 +74105,9 @@ if (typeof define === 'function' && define.amd) {
             //Convert labelColors = [] of {value, color, backgroundColor, className} to labelColorRec = { value1: { color, backgroundColor, className }, value2: color, backgroundColor, className },...}
             this.options.labelColorRec = {};
             if (this.options.labelColors)
-                $.each( this.options.labelColors, function( index, rec ){
-                    _this.options.labelColorRec[ rec.value ] = rec;
-                });
+                this.options.labelColors.forEach( rec => {
+                    this.options.labelColorRec[ rec.value ] = rec;
+                }, this);
 
             //Add options.step to gridDistances
             if (this.options.gridDistances.indexOf(this.options.step) == -1)
@@ -74161,14 +74160,14 @@ if (typeof define === 'function' && define.amd) {
             Create this.handles[id] = SliderHandle representing the different
             handles and there relation (See jquery-base-slider-handle.js for more)
             *******************************************************************/
-            function addSliderHandle( options ){
-                options.slider = _this;
+            const addSliderHandle = function addSliderHandle( options ){
+                options.slider = this;
                 if (options.inclDataPercent)
                     options.markerData = {
-                        'data-base-slider-percent': _this.valueToPercent(options.value.value)
+                        'data-base-slider-percent': this.valueToPercent(options.value.value)
                     };
-                _this.handles[options.id] = ns.sliderHandle(options);
-            }
+                this.handles[options.id] = ns.sliderHandle(options);
+            }.bind(this);
 
             //min = Lowest value on the slider
             addSliderHandle({
@@ -74319,8 +74318,8 @@ if (typeof define === 'function' && define.amd) {
             //Sets overlapping-info for the handles
             function addMarkerOverlapping( id, idList ){
                 var handle = _this.handles[id];
-                if (handle)
-                    $.each( idList, function( index, id ){
+                if (handle && idList)
+                    idList.forEach( id => {
                         var overlappingHandle = _this.handles[id];
                         if (overlappingHandle)
                             overlappingHandle.addOverlap( handle );
@@ -74468,12 +74467,13 @@ if (typeof define === 'function' && define.amd) {
                             fromPercent,
                             toPercent,
                             sliderValue = ns.sliderValue({slider: this});
-                        $.each(this.options.lineColors, function( index, fromToColor ){
+                        this.options.lineColors.forEach( fromToColor => {
                             from = fromToColor.from === undefined ? to : fromToColor.from;
                             to = fromToColor.to === undefined ? _this.options.max : fromToColor.to;
                             fromPercent = sliderValue.setValue( from ).getPercent();
                             toPercent = sliderValue.setValue( to ).getPercent();
                             $span('line-color', _this.cache.$line)
+                                .addClass( fromToColor.className )
                                 .css({
                                     'left'              : fromPercent + '%',
                                     'width'             : (toPercent-fromPercent) + '%',
@@ -74536,12 +74536,26 @@ if (typeof define === 'function' && define.amd) {
                 }
 
             this.isBuild = true;
+
+            this.on('build');
+
         }, //end of build
 
         /*******************************************************************
         remove
         *******************************************************************/
         remove: function () {
+            //Remove pending updates
+            if (this.resizeTimeoutId){
+                window.clearTimeout(this.resizeTimeoutId);
+                this.resizeTimeoutId = null;
+            }
+
+            if (this.options.resizable)
+                //Remove resize-event from window
+                $(window).off('resize', this.events.containerOnResize );
+
+
             if (this.cache.$outerContainer){
                 this.cache.$outerContainer.remove();
                 this.cache.$outerContainer = null;
@@ -74552,6 +74566,7 @@ if (typeof define === 'function' && define.amd) {
             }
 
             this.eachHandle('remove');
+
         },
 
         /*******************************************************************
@@ -75018,13 +75033,10 @@ if (typeof define === 'function' && define.amd) {
         appendGridColors: function( gridColors ){
             var fromValue,
                 toValue  = this.options.min,
-                i,
-                gridColor,
                 percentFactor = 100 / (this.options.max - this.options.min);
 
 
-            for (i=0; i<gridColors.length; i++ ){
-                gridColor = gridColors[i];
+            gridColors.forEach( (gridColor, index) => {
                 if ( (gridColor.value === null) || (gridColor.value < this.options.min) || (gridColor.value > this.options.max) ){
                     //add triangle to the left or right
                     var $span = $('<span/>')
@@ -75044,7 +75056,8 @@ if (typeof define === 'function' && define.amd) {
                     toValue = gridColor.value;
 
                     $('<span/>')
-                        .addClass('grid-color' + (i%2?' to':' from'))
+                        .addClass('grid-color' + (index%2?' to':' from'))
+                        .addClass( gridColor.className )
                         .css({
                             'left'            : percentFactor*(fromValue - this.options.min) + '%',
                             'width'           : percentFactor*(toValue-fromValue) + '%',
@@ -75052,7 +75065,7 @@ if (typeof define === 'function' && define.amd) {
                            })
                         .appendTo( this.$currentGrid );
                 }
-            }
+            }, this);
         },
 
         appendPreAndPostGridColors: function(){
@@ -75110,7 +75123,8 @@ jquery-base-slider-events
         var result = false,
             props = Object.getOwnPropertyNames(obj1).concat( Object.getOwnPropertyNames(obj2) );
 
-        $.each( props, function( index, id ){
+        if (props)
+            props.forEach( id => {
             var type1 = $.type(obj1[id]),
                 type2 = $.type(obj2[id]);
 
@@ -75134,12 +75148,13 @@ jquery-base-slider-events
             //*******************************************************************
             function addEvents( $elem, eventNames, func, param ){
                 if (!$elem) return;
-                func = param ? $.proxy( func, _this, param) : $.proxy( func, _this );
+                func = param ? func.bind(_this, param) : func.bind( _this );
 
-                $.each( eventNames.split(' '), function( index, eventName ){
-                    $elem.off( eventName + ".irs_" + _this.pluginCount,  func );
-                    $elem.on ( eventName + ".irs_" + _this.pluginCount,  func );
-                });
+                if (eventNames)
+                    eventNames.split(' ').forEach( eventName => {
+                        $elem.off( eventName + ".irs_" + _this.pluginCount,  func );
+                        $elem.on ( eventName + ".irs_" + _this.pluginCount,  func );
+                    });
                 return $elem;
             }
             //*******************************************************************
@@ -75218,7 +75233,7 @@ jquery-base-slider-events
             //Clear any previous added timeout
             if (this.resizeTimeoutId)
                 window.clearTimeout(this.resizeTimeoutId);
-            this.resizeTimeoutId = window.setTimeout($.proxy(this.checkContainerDimentions, this), 200 );
+            this.resizeTimeoutId = window.setTimeout(this.checkContainerDimentions.bind(this), 200 );
         },
 
         /*******************************************************************
@@ -75288,7 +75303,7 @@ jquery-base-slider-events
                         this.cache.$parent.resize( this.events.parentOnResize );
                     }
                     else
-                        this.checkContainerDimentions_TimeoutId = window.setTimeout($.proxy(this.checkContainerDimentions, this), 200 );
+                        this.checkContainerDimentions_TimeoutId = window.setTimeout( this.checkContainerDimentions.bind(this), 200 );
                 }
 
             }
@@ -75370,7 +75385,8 @@ jquery-base-slider-events
             function minOrMaxInList( findInMaxList, sliderValue, excludeSliderValue ){
                 var result = findInMaxList ? _this.options.max : _this.options.min,
                     list   = findInMaxList ? sliderValue.maxList : sliderValue.minList;
-                $.each( list, function( index, listObj ){
+                if (list)
+                    list.forEach( listObj => {
                     if (listObj.sliderValue !== excludeSliderValue)
                         result = (findInMaxList ? Math.min : Math.max)( result, listObj.sliderValue.value );
                 });
@@ -75512,7 +75528,7 @@ jquery-base-slider-events
                         canvasX       = originalEvent.offsetX,
                         canvasY       = originalEvent.offsetY;
 
-                    $.each(_this.canvasLabels[canvasId] || [], function(index, rec){
+                    (_this.canvasLabels[canvasId] || []).forEach(rec => {
                         if ( (canvasX >= rec.left) && (canvasX <= rec.right) && (canvasY >= rec.top) && (canvasY <= rec.bottom) ){
                             percent = rec.percent;
                             return false;
@@ -75649,7 +75665,7 @@ jquery-base-slider-events
             var _this = this,
                 singleHandleId = this.options.singleHandleId;
 
-            $.each( ['min', 'from', singleHandleId, 'to', 'max'], function( index, id ){
+            ['min', 'from', singleHandleId, 'to', 'max'].forEach( id => {
                 var resultId = (id == singleHandleId) ? 'value' : id; //Using result.value for single-slider (incl fixed)
                 if (_this.handles[id]){
                     _this.result[resultId]           = _this.handles[id].value.value;
@@ -75882,9 +75898,7 @@ jquery-base-slider-events
 
                     //Force all handles overlapped by this to update
                     if (!force)
-                        $.each( this.overlapHandleList, function( index, handle ){
-                            handle.update( true );
-                        });
+                        ( this.overlapHandleList || []).forEach( handle => handle.update( true ) );
 
                     //Set marker visibility
                     this.marker.$outer.css('visibility', this.markerIsHidden() ? 'hidden' : 'visible');
@@ -75924,9 +75938,7 @@ jquery-base-slider-events
         markerIsHidden: function(){
             var thisMarker$text = this.marker.$text,
                 result = false;
-            $.each( this.overlappingHandleList, function( index, handle ){
-                result = result || elementsOverlapping( thisMarker$text, handle.marker.$text );
-            });
+            ( this.overlappingHandleList || []).forEach( handle => result = result || elementsOverlapping( thisMarker$text, handle.marker.$text ) );
             return result;
         }
 
@@ -76090,9 +76102,8 @@ jquery-base-slider-public.js
         this.minList = [];
         this.maxList = [];
 
-        var _this = this;
-        $.each( options.minList || [], function( index, sliderValueMin ){ _this.addMin( sliderValueMin ); });
-        $.each( options.maxList || [], function( index, sliderValueMax ){ _this.addMax( sliderValueMax ); });
+        ( options.minList || []).forEach( sliderValueMin => this.addMin( sliderValueMin ), this);
+        ( options.maxList || []).forEach( sliderValueMax => this.addMax( sliderValueMax ), this);
 
         this.setValue( options.value );
     };
@@ -76138,16 +76149,15 @@ jquery-base-slider-public.js
                 this.value = this.fixedValue;
             else {
                 //Adjust this.value with respect to {sliderValue,minDistance} in this.minList
-                var _this = this;
-                $.each( this.minList, function( index, rec ){
+                ( this.minList || []).forEach( rec => {
                     if (rec.sliderValue)
-                        _this.value = Math.max( _this.value, rec.sliderValue.value + rec.minDistance );
-                });
+                        this.value = Math.max( this.value, rec.sliderValue.value + rec.minDistance );
+                }, this);
                 //Adjust this.value with respect to {sliderValue,minDistance} in this.maxList
-                $.each( this.maxList, function( index, rec ){
+                ( this.maxList || []).forEach( rec => {
                     if (rec.sliderValue)
-                        _this.value = Math.min( _this.value, rec.sliderValue.value - rec.minDistance );
-                });
+                        this.value = Math.min( this.value, rec.sliderValue.value - rec.minDistance );
+                }, this);
 
                 //Adjust this.value with respect to step and stepOffset
                 if (this.adjustToStep){
@@ -82500,12 +82510,12 @@ options:
 /*! @websanova/url - v2.6.3 - 2020-01-25 */
 !function(){function t(t,r){var a,o={};if("tld?"!==t){if(r=r||window.location.toString(),!t)return r;if(t=t.toString(),a=r.match(/^mailto:([^\/].+)/))o.protocol="mailto",o.email=a[1];else{if((a=r.match(/(.*?)\/#\!(.*)/))&&(r=a[1]+a[2]),(a=r.match(/(.*?)#(.*)/))&&(o.hash=a[2],r=a[1]),o.hash&&t.match(/^#/))return h(t,o.hash);if((a=r.match(/(.*?)\?(.*)/))&&(o.query=a[2],r=a[1]),o.query&&t.match(/^\?/))return h(t,o.query);if((a=r.match(/(.*?)\:?\/\/(.*)/))&&(o.protocol=a[1].toLowerCase(),r=a[2]),(a=r.match(/(.*?)(\/.*)/))&&(o.path=a[2],r=a[1]),o.path=(o.path||"").replace(/^([^\/])/,"/$1"),t.match(/^[\-0-9]+$/)&&(t=t.replace(/^([^\/])/,"/$1")),t.match(/^\//))return e(t,o.path.substring(1));if((a=(a=e("/-1",o.path.substring(1)))&&a.match(/(.*?)\.([^.]+)$/))&&(o.file=a[0],o.filename=a[1],o.fileext=a[2]),(a=r.match(/(.*)\:([0-9]+)$/))&&(o.port=a[2],r=a[1]),(a=r.match(/(.*?)@(.*)/))&&(o.auth=a[1],r=a[2]),o.auth&&(a=o.auth.match(/(.*)\:(.*)/),o.user=a?a[1]:o.auth,o.pass=a?a[2]:void 0),o.hostname=r.toLowerCase(),"."===t.charAt(0))return e(t,o.hostname);o.port=o.port||("https"===o.protocol?"443":"80"),o.protocol=o.protocol||("443"===o.port?"https":"http")}return t in o?o[t]:"{}"===t?o:void 0}}function e(t,r){var a=t.charAt(0),o=r.split(a);return a===t?o:o[(t=parseInt(t.substring(1),10))<0?o.length+t:t-1]}function h(t,r){for(var a,o=t.charAt(0),e=r.split("&"),h=[],n={},c=[],i=t.substring(1),p=0,u=e.length;p<u;p++)if(""!==(h=(h=e[p].match(/(.*?)=(.*)/))||[e[p],e[p],""])[1].replace(/\s/g,"")){if(h[2]=(a=h[2]||"",decodeURIComponent(a.replace(/\+/g," "))),i===h[1])return h[2];(c=h[1].match(/(.*)\[([0-9]+)\]/))?(n[c[1]]=n[c[1]]||[],n[c[1]][c[2]]=h[2]):n[h[1]]=h[2]}return o===t?n:n[i]}window.url=t}();
 ;
-/*
-  @package NOTY - Dependency-free notification library
-  @version version: 3.2.0-beta
-  @contributors https://github.com/needim/noty/graphs/contributors
-  @documentation Examples and Documentation - https://ned.im/noty
-  @license Licensed under the MIT licenses: http://www.opensource.org/licenses/mit-license.php
+/* 
+  @package NOTY - Dependency-free notification library 
+  @version version: 3.2.0-beta 
+  @contributors https://github.com/needim/noty/graphs/contributors 
+  @documentation Examples and Documentation - https://ned.im/noty 
+  @license Licensed under the MIT licenses: http://www.opensource.org/licenses/mit-license.php 
 */
 
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -84538,7 +84548,7 @@ Promise$2.prototype = {
     The primary way of interacting with a promise is through its `then` method,
     which registers callbacks to receive either a promise's eventual value or the
     reason why the promise cannot be fulfilled.
-
+  
     ```js
     findUser().then(function(user){
       // user is available
@@ -84546,14 +84556,14 @@ Promise$2.prototype = {
       // user is unavailable, and you are given the reason why
     });
     ```
-
+  
     Chaining
     --------
-
+  
     The return value of `then` is itself a promise.  This second, 'downstream'
     promise is resolved with the return value of the first promise's fulfillment
     or rejection handler, or rejected if the handler throws an exception.
-
+  
     ```js
     findUser().then(function (user) {
       return user.name;
@@ -84563,7 +84573,7 @@ Promise$2.prototype = {
       // If `findUser` fulfilled, `userName` will be the user's name, otherwise it
       // will be `'default name'`
     });
-
+  
     findUser().then(function (user) {
       throw new Error('Found user, but still unhappy');
     }, function (reason) {
@@ -84576,7 +84586,7 @@ Promise$2.prototype = {
     });
     ```
     If the downstream promise does not specify a rejection handler, rejection reasons will be propagated further downstream.
-
+  
     ```js
     findUser().then(function (user) {
       throw new PedagogicalException('Upstream error');
@@ -84588,15 +84598,15 @@ Promise$2.prototype = {
       // The `PedgagocialException` is propagated all the way down to here
     });
     ```
-
+  
     Assimilation
     ------------
-
+  
     Sometimes the value you want to propagate to a downstream promise can only be
     retrieved asynchronously. This can be achieved by returning a promise in the
     fulfillment or rejection handler. The downstream promise will then be pending
     until the returned promise is settled. This is called *assimilation*.
-
+  
     ```js
     findUser().then(function (user) {
       return findCommentsByAuthor(user);
@@ -84604,9 +84614,9 @@ Promise$2.prototype = {
       // The user's comments are now available
     });
     ```
-
+  
     If the assimliated promise rejects, then the downstream promise will also reject.
-
+  
     ```js
     findUser().then(function (user) {
       return findCommentsByAuthor(user);
@@ -84616,15 +84626,15 @@ Promise$2.prototype = {
       // If `findCommentsByAuthor` rejects, we'll have the reason here
     });
     ```
-
+  
     Simple Example
     --------------
-
+  
     Synchronous Example
-
+  
     ```javascript
     let result;
-
+  
     try {
       result = findResult();
       // success
@@ -84632,9 +84642,9 @@ Promise$2.prototype = {
       // failure
     }
     ```
-
+  
     Errback Example
-
+  
     ```js
     findResult(function(result, err){
       if (err) {
@@ -84644,9 +84654,9 @@ Promise$2.prototype = {
       }
     });
     ```
-
+  
     Promise Example;
-
+  
     ```javascript
     findResult().then(function(result){
       // success
@@ -84654,15 +84664,15 @@ Promise$2.prototype = {
       // failure
     });
     ```
-
+  
     Advanced Example
     --------------
-
+  
     Synchronous Example
-
+  
     ```javascript
     let author, books;
-
+  
     try {
       author = findAuthor();
       books  = findBooksByAuthor(author);
@@ -84671,19 +84681,19 @@ Promise$2.prototype = {
       // failure
     }
     ```
-
+  
     Errback Example
-
+  
     ```js
-
+  
     function foundBooks(books) {
-
+  
     }
-
+  
     function failure(reason) {
-
+  
     }
-
+  
     findAuthor(function(author, err){
       if (err) {
         failure(err);
@@ -84708,9 +84718,9 @@ Promise$2.prototype = {
       }
     });
     ```
-
+  
     Promise Example;
-
+  
     ```javascript
     findAuthor().
       then(findBooksByAuthor).
@@ -84720,7 +84730,7 @@ Promise$2.prototype = {
       // something went wrong
     });
     ```
-
+  
     @method then
     @param {Function} onFulfilled
     @param {Function} onRejected
@@ -84732,25 +84742,25 @@ Promise$2.prototype = {
   /**
     `catch` is simply sugar for `then(undefined, onRejection)` which makes it the same
     as the catch block of a try/catch statement.
-
+  
     ```js
     function findAuthor(){
       throw new Error('couldn't find that author');
     }
-
+  
     // synchronous
     try {
       findAuthor();
     } catch(reason) {
       // something went wrong
     }
-
+  
     // async with promises
     findAuthor().catch(function(reason){
       // something went wrong
     });
     ```
-
+  
     @method catch
     @param {Function} onRejection
     Useful for tooling.
@@ -86870,8 +86880,12 @@ module.exports = g;
             if (insideFormGroup){
                 //Create outer input-group-container
                 insideInputGroup = true;
+                let alertName = options.colorName || options.alert || options.alertName;
                 $parent =
                     $divXXGroup('input-group-container', options)
+
+                        .addClass(alertName ? 'has-alert-background alert-'+alertName : '')
+
                         .toggleClass('small-bottom-padding', !!options.smallBottomPadding)
                         .toggleClass('py-0',                 !!options.noVerticalPadding)
                         .toggleClass('line-before',          !!options.lineBefore)
@@ -86880,6 +86894,9 @@ module.exports = g;
                         .toggleClass('no-validation',        !!(noValidation || options.noValidation))  //HER skal den bruges hvis der bruges tooltips til validation errors?
 
                         .appendTo( $parent );
+
+
+
             }
 
             if (insideInputGroup || hasPreOrPost){
@@ -88947,7 +88964,7 @@ stringLength: {default: "Please enter a value with valid length", less: "Please 
 uri         : {default: "Please enter a valid URI"}
 */
 ;
-/****************************************************************************
+-/****************************************************************************
 	jquery-bootstrap-header.js,
 
 	(c) 2017, FCOO
@@ -89033,8 +89050,13 @@ uri         : {default: "Please enter a valid URI"}
             new     : square ? 'fa-window-maximize' : [ $.FONTAWESOME_PREFIX_STANDARD + ' fa-window-maximize fa-inside-circle2', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle'],
 
             error : {
-                icon : square ? 'fa-exclamation' : [ 'fas fa-circle back text-error', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle', 'fas fa-exclamation fa-inside-circle-xmark'],
+                icon : square ? 'fa-exclamation' : [ 'fas fa-circle back text-danger', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle', 'fas fa-exclamation fa-inside-circle-xmark'],
                 class: square ? 'header-icon-error' : null
+            },
+
+            alert : {
+                icon : square ? 'fa-exclamation' : [ 'fas fa-circle back text-alert', $.FONTAWESOME_PREFIX_STANDARD + ' fa-circle', 'fas fa-exclamation fa-inside-circle-xmark'],
+                class: square ? 'header-icon-alert' : null
             },
 
             warning : {
@@ -89106,7 +89128,7 @@ uri         : {default: "Please enter a valid URI"}
 
             //Add icons
             let headerIcons = useSquareIcons ? bsHeaderIconsSquare : bsHeaderIcons;
-            ['back', 'forward', 'pin', 'unpin', 'diminish', 'extend', 'fullScreenOn', 'fullScreenOff', 'new', 'error', 'warning', 'info', 'help', 'close'].forEach( (id) => {
+            ['back', 'forward', 'pin', 'unpin', 'diminish', 'extend', 'fullScreenOn', 'fullScreenOff', 'new', 'error', 'alert', 'warning', 'info', 'help', 'close'].forEach( (id) => {
                 let iconOptions = options.icons[id];
                 if (iconOptions && (iconOptions.onClick || (typeof iconOptions == 'function'))){
                     if (typeof iconOptions == 'function')
@@ -89133,6 +89155,26 @@ uri         : {default: "Please enter a valid URI"}
         }
         return this;
     };
+
+}(jQuery, this, document));
+;
+/****************************************************************************
+jquery-bootstrap-icon.js
+****************************************************************************/
+
+(function ($ /*, window, document, undefined*/) {
+	"use strict";
+
+    $.extend({
+        /******************************************************
+        $.bsIcon( icon, colorName )
+        Return a [] with classes for a icon in color = Bootstrap alert colorName ('success', 'warning', 'alert', 'error', 'ingo', 'help'...)
+        ******************************************************/
+        bsIcon: function( icon, colorName ){
+            return [['fas '+icon+' bs-icon-back-color-'+colorName, $.FONTAWESOME_PREFIX +' '+icon+' bs-icon-front-color-'+colorName]];
+        },
+    });
+
 
 }(jQuery, this, document));
 ;
@@ -90983,6 +91025,7 @@ jquery-bootstrap-modal-promise.js
                 new             : {                                     onClick: options.onNew     ? options.onNew.bind(this)     : null                        },
                 info            : {                                     onClick: options.onInfo    ? options.onInfo.bind(this)    : null                        },
                 warning         : {                                     onClick: options.onWarning ? options.onWarning.bind(this) : null                        },
+                alert           : {                                     onClick: options.onAlert   ? options.onAlert.bind(this)   : null                        },
                 error           : {                                     onClick: options.onError   ? options.onError.bind(this)   : null                        },
                 help            : {                                     onClick: options.onHelp    ? options.onHelp.bind(this)    : null                        },
             }
@@ -91988,24 +92031,23 @@ jquery-bootstrap-modal-promise.js
     $.bsNotyIcon = {
         info        : 'fa-info-circle',
         information : 'fa-info-circle',
-        alert       : '',
         success     : 'fa-check',
-        error       : 'fa-ban',
-        warning     : 'fa-exclamation-triangle',
+        error       : 'fa-exclamation', //'fa-exclamation-triangle',
+        alert       : 'fa-exclamation', //'fa-exclamation-diamond',
+        warning     : 'fa-exclamation', //'fa-exclamation-circle',
         help        : 'fa-question-circle'
     };
 
     //$.bsNotyName = Name for different noty-type
     $.bsNotyName = {
-        info        : {da:'Information', en:'Information'},
-        information : {da:'Information', en:'Information'},
-        alert       : {da:'Bemærk', en:'Note'},
-        success     : {da:'Succes', en:'Success'},
-        error       : {da:'Fejl', en:'Error'},
-        warning     : {da:'Advarsel', en:'Warning'},
-        help        : {da:'Hjælp', en:'Help'}
+        info        : {da: 'Information', en: 'Information' },
+        information : {da: 'Information', en: 'Information' },
+        success     : {da: 'Succes',      en: 'Success'     },
+        error       : {da: 'Fejl',        en: 'Error'       },
+        alert       : {da: 'Advarsel',    en: 'Alert'       },
+        warning     : {da: 'Advarsel',    en: 'Warning'     },
+        help        : {da: 'Hjælp',       en: 'Help'        }
     };
-
 
 
     /***************************************************************
@@ -93528,7 +93570,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
         sortId     = 0;
 
     $.bsTable = function( options ){
-
+        
         options = $._bsAdjustOptions( options, defaultOptions );
 
         //Fixed first column only needed when horizontal scrolling ( = full width)
@@ -93678,7 +93720,7 @@ TODO:   truncate     : false. If true the column will be truncated. Normally onl
             if (columnOptions.sortable){
                 multiSortList.push( {columnId: columnOptions.id, columnIndex: ''+index, sortIndex: columnOptions.sortIndex });
                 anyColumnSortable = true;
-            }
+            }                
         });
         multiSortList.sort(function( c1, c2){ return c1.sortIndex - c2.sortIndex; });
 
@@ -100740,12 +100782,25 @@ return index;
         var result = typeof name == 'string' ? {en: name} : name,
             defaultName = result['en'] || result['da'];
 
-        $.each(languages, function(index, lang){
-            result[lang] = result[lang] || defaultName;
-        });
+        languages.forEach( lang => result[lang] = result[lang] || defaultName );
         return result;
     };
 
+
+    /***********************************************************
+    combineLang: function(nameList: []{LANG: STRING}, separator)
+    Create a combined {LANG: STRING} based on nameList
+    ***********************************************************/
+    ns.combineLang = ns.combineLangName = function(nameList, seperator = ' '){
+        let result = {},
+            sepLang = ns.ajdustLangName(seperator);
+        nameList.forEach( (name, index) => {
+            let nextName = ns.ajdustLangName(name);
+            languages.forEach( lang => result[lang] = (result[lang] || '') + (index ? sepLang[lang] : '') + nextName[lang] );
+        });
+
+        return result;
+    };
 
     /***********************************************************
     lang2flag: function(lang) return the flag/country id associated with language lang
@@ -100892,10 +100947,7 @@ return index;
     //Set modernizr-test and set all element when language changes
     ns.events.on( languagechanged, function() {
         var $html = $('html');
-        $.each( languages, function( index, lang ){
-            $html.modernizrToggle('lang-'+lang, lang == i18next.language);
-        });
-
+        languages.forEach( lang => $html.modernizrToggle('lang-'+lang, lang == i18next.language) );
         $("*").localize();
     });
 
@@ -101892,7 +101944,7 @@ ID:name, ID:abbr, ID:link, ID:email
         }
     });
 
-
+    
 
 (function() {
         numeral.register('format', 'bps', {
@@ -104400,7 +104452,7 @@ Greenland
 }(jQuery, window.moment, window.i18next, this, document));
 ;
 /****************************************************************************
-    kl.js,
+    kl.js, 
 
     Translation of Moment text to Kalaallisut/Greenlandic (language code = kl)
 
@@ -104408,7 +104460,7 @@ Greenland
 
 moment.defineLocale('kl', {
     parentLocale: 'da',
-
+  
     /* TODO */
 
 
@@ -113470,7 +113522,7 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
       _error;
     }
     return results;
-  }, Offline = {}, Offline.options = window.Offline ? window.Offline.options || {} :{},
+  }, Offline = {}, Offline.options = window.Offline ? window.Offline.options || {} :{}, 
   defaultOptions = {
     checks:{
       xhr:{
@@ -113493,22 +113545,22 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
     deDupBody:!1
   }, grab = function(obj, key) {
     var cur, i, j, len, part, parts;
-    for (cur = obj, parts = key.split("."), i = j = 0, len = parts.length; j < len && (part = parts[i],
+    for (cur = obj, parts = key.split("."), i = j = 0, len = parts.length; j < len && (part = parts[i], 
     "object" == typeof (cur = cur[part])); i = ++j) ;
     return i === parts.length - 1 ? cur :void 0;
   }, Offline.getOption = function(key) {
     var ref, val;
-    return val = null != (ref = grab(Offline.options, key)) ? ref :grab(defaultOptions, key),
+    return val = null != (ref = grab(Offline.options, key)) ? ref :grab(defaultOptions, key), 
     "function" == typeof val ? val() :val;
   }, "function" == typeof window.addEventListener && window.addEventListener("online", function() {
     return setTimeout(Offline.confirmUp, 100);
   }, !1), "function" == typeof window.addEventListener && window.addEventListener("offline", function() {
     return Offline.confirmDown();
   }, !1), Offline.state = "up", Offline.markUp = function() {
-    if (Offline.trigger("confirmed-up"), "up" !== Offline.state) return Offline.state = "up",
+    if (Offline.trigger("confirmed-up"), "up" !== Offline.state) return Offline.state = "up", 
     Offline.trigger("up");
   }, Offline.markDown = function() {
-    if (Offline.trigger("confirmed-down"), "down" !== Offline.state) return Offline.state = "down",
+    if (Offline.trigger("confirmed-down"), "down" !== Offline.state) return Offline.state = "down", 
     Offline.trigger("down");
   }, handlers = {}, Offline.on = function(event, handler, ctx) {
     var e, events, j, len, results;
@@ -113521,7 +113573,7 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
     var _handler, i, ref, results;
     if (null != handlers[event]) {
       if (handler) {
-        for (i = 0, results = []; i < handlers[event].length; ) ref = handlers[event][i],
+        for (i = 0, results = []; i < handlers[event].length; ) ref = handlers[event][i], 
         ref[0], _handler = ref[1], _handler === handler ? results.push(handlers[event].splice(i, 1)) :results.push(i++);
         return results;
       }
@@ -113530,7 +113582,7 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
   }, Offline.trigger = function(event) {
     var ctx, handler, j, len, ref, ref1, results;
     if (null != handlers[event]) {
-      for (ref = handlers[event].slice(0), results = [], j = 0, len = ref.length; j < len; j++) ref1 = ref[j],
+      for (ref = handlers[event].slice(0), results = [], j = 0, len = ref.length; j < len; j++) ref1 = ref[j], 
       ctx = ref1[0], handler = ref1[1], results.push(handler.call(ctx));
       return results;
     }
@@ -113549,8 +113601,8 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
     });
   }, Offline.checks = {}, Offline.checks.xhr = function() {
     var xhr;
-    xhr = new XMLHttpRequest(), xhr.offline = !1, xhr.open(Offline.getOption("checks.xhr.type"), Offline.getOption("checks.xhr.url"), !0),
-    null != xhr.timeout && (xhr.timeout = Offline.getOption("checks.xhr.timeout")),
+    xhr = new XMLHttpRequest(), xhr.offline = !1, xhr.open(Offline.getOption("checks.xhr.type"), Offline.getOption("checks.xhr.url"), !0), 
+    null != xhr.timeout && (xhr.timeout = Offline.getOption("checks.xhr.timeout")), 
     checkXHR(xhr, Offline.markUp, Offline.markDown);
     try {
       xhr.send();
@@ -113560,7 +113612,7 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
     return xhr;
   }, Offline.checks.image = function() {
     var img;
-    img = document.createElement("img"), img.onerror = Offline.markDown, img.onload = Offline.markUp,
+    img = document.createElement("img"), img.onerror = Offline.markDown, img.onload = Offline.markUp, 
     img.src = Offline.getOption("checks.image.url");
   }, Offline.checks.down = Offline.markDown, Offline.checks.up = Offline.markUp, Offline.check = function() {
     return Offline.trigger("checking"), Offline.checks[Offline.getOption("checks.active")]();
@@ -113581,13 +113633,13 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
       };
     }, _XMLHttpRequest = window.XMLHttpRequest, window.XMLHttpRequest = function(flags) {
       var _overrideMimeType, _setRequestHeader, req;
-      return req = new _XMLHttpRequest(flags), monitorXHR(req, flags), _setRequestHeader = req.setRequestHeader,
+      return req = new _XMLHttpRequest(flags), monitorXHR(req, flags), _setRequestHeader = req.setRequestHeader, 
       req.headers = {}, req.setRequestHeader = function(name, value) {
         return req.headers[name] = value, _setRequestHeader.call(req, name, value);
       }, _overrideMimeType = req.overrideMimeType, req.overrideMimeType = function(type) {
         return req.mimeType = type, _overrideMimeType.call(req, type);
       }, req;
-    }, extendNative(window.XMLHttpRequest, _XMLHttpRequest), null != window.XDomainRequest) return _XDomainRequest = window.XDomainRequest,
+    }, extendNative(window.XMLHttpRequest, _XMLHttpRequest), null != window.XDomainRequest) return _XDomainRequest = window.XDomainRequest, 
     window.XDomainRequest = function() {
       var req;
       return req = new _XDomainRequest(), monitorXHR(req), req;
@@ -113603,37 +113655,37 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
   if (!window.Offline) throw new Error("Offline Reconnect brought in without offline.js");
   rc = Offline.reconnect = {}, retryIntv = null, reset = function() {
     var ref;
-    return null != rc.state && "inactive" !== rc.state && Offline.trigger("reconnect:stopped"),
+    return null != rc.state && "inactive" !== rc.state && Offline.trigger("reconnect:stopped"), 
     rc.state = "inactive", rc.remaining = rc.delay = null != (ref = Offline.getOption("reconnect.initialDelay")) ? ref :3;
   }, next = function() {
     var delay, ref;
-    return delay = null != (ref = Offline.getOption("reconnect.delay")) ? ref :Math.min(Math.ceil(1.5 * rc.delay), 3600),
+    return delay = null != (ref = Offline.getOption("reconnect.delay")) ? ref :Math.min(Math.ceil(1.5 * rc.delay), 3600), 
     rc.remaining = rc.delay = delay;
   }, tick = function() {
-    if ("connecting" !== rc.state) return rc.remaining -= 1, Offline.trigger("reconnect:tick"),
+    if ("connecting" !== rc.state) return rc.remaining -= 1, Offline.trigger("reconnect:tick"), 
     0 === rc.remaining ? tryNow() :void 0;
   }, tryNow = function() {
-    if ("waiting" === rc.state) return Offline.trigger("reconnect:connecting"), rc.state = "connecting",
+    if ("waiting" === rc.state) return Offline.trigger("reconnect:connecting"), rc.state = "connecting", 
     Offline.check();
   }, down = function() {
-    if (Offline.getOption("reconnect")) return reset(), rc.state = "waiting", Offline.trigger("reconnect:started"),
+    if (Offline.getOption("reconnect")) return reset(), rc.state = "waiting", Offline.trigger("reconnect:started"), 
     retryIntv = setInterval(tick, 1e3);
   }, up = function() {
     return null != retryIntv && clearInterval(retryIntv), reset();
   }, nope = function() {
-    if (Offline.getOption("reconnect")) return "connecting" === rc.state ? (Offline.trigger("reconnect:failure"),
+    if (Offline.getOption("reconnect")) return "connecting" === rc.state ? (Offline.trigger("reconnect:failure"), 
     rc.state = "waiting", next()) :void 0;
-  }, rc.tryNow = tryNow, reset(), Offline.on("down", down), Offline.on("confirmed-down", nope),
+  }, rc.tryNow = tryNow, reset(), Offline.on("down", down), Offline.on("confirmed-down", nope), 
   Offline.on("up", up);
 }.call(this), function() {
   var clear, flush, held, holdRequest, makeRequest, waitingOnConfirm;
   if (!window.Offline) throw new Error("Requests module brought in without offline.js");
   held = [], waitingOnConfirm = !1, holdRequest = function(req) {
-    if (!1 !== Offline.getOption("requests")) return Offline.trigger("requests:capture"),
+    if (!1 !== Offline.getOption("requests")) return Offline.trigger("requests:capture"), 
     "down" !== Offline.state && (waitingOnConfirm = !0), held.push(req);
   }, makeRequest = function(arg) {
     var body, name, password, ref, type, url, user, val, xhr;
-    if (xhr = arg.xhr, url = arg.url, type = arg.type, user = arg.user, password = arg.password,
+    if (xhr = arg.xhr, url = arg.url, type = arg.type, user = arg.user, password = arg.password, 
     body = arg.body, !1 !== Offline.getOption("requests")) {
       xhr.abort(), xhr.open(type, url, !0, user, password), ref = xhr.headers;
       for (name in ref) val = ref[name], xhr.setRequestHeader(name, val);
@@ -113644,10 +113696,10 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
   }, flush = function() {
     var body, i, key, len, request, requests, url;
     if (!1 !== Offline.getOption("requests")) {
-      for (Offline.trigger("requests:flush"), requests = {}, i = 0, len = held.length; i < len; i++) request = held[i],
+      for (Offline.trigger("requests:flush"), requests = {}, i = 0, len = held.length; i < len; i++) request = held[i], 
       url = request.url.replace(/(\?|&)_=[0-9]+/, function(match, chr) {
         return "?" === chr ? chr :"";
-      }), Offline.getOption("deDupBody") ? (body = request.body, body = "[object Object]" === body.toString() ? JSON.stringify(body) :body.toString(),
+      }), Offline.getOption("deDupBody") ? (body = request.body, body = "[object Object]" === body.toString() ? JSON.stringify(body) :body.toString(), 
       requests[request.type.toUpperCase() + " - " + url + " - " + body] = request) :requests[request.type.toUpperCase() + " - " + url] = request;
       for (key in requests) request = requests[key], makeRequest(request);
       return clear();
@@ -113663,10 +113715,10 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
         return holdRequest(request);
       }, _send = xhr.send, xhr.send = function(body) {
         return request.body = body, _send.apply(xhr, arguments);
-      }, async)) return null === xhr.onprogress ? (xhr.addEventListener("error", hold, !1),
-      xhr.addEventListener("timeout", hold, !1)) :(_onreadystatechange = xhr.onreadystatechange,
+      }, async)) return null === xhr.onprogress ? (xhr.addEventListener("error", hold, !1), 
+      xhr.addEventListener("timeout", hold, !1)) :(_onreadystatechange = xhr.onreadystatechange, 
       xhr.onreadystatechange = function() {
-        return 0 === xhr.readyState ? hold() :4 === xhr.readyState && (0 === xhr.status || xhr.status >= 12e3) && hold(),
+        return 0 === xhr.readyState ? hold() :4 === xhr.readyState && (0 === xhr.status || xhr.status >= 12e3) && hold(), 
         "function" == typeof _onreadystatechange ? _onreadystatechange.apply(null, arguments) :void 0;
       });
     }), Offline.requests = {
@@ -113685,12 +113737,12 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
       _error, simulate = !1;
     }
   }
-  simulate && (null == Offline.options && (Offline.options = {}), null == (base = Offline.options).checks && (base.checks = {}),
+  simulate && (null == Offline.options && (Offline.options = {}), null == (base = Offline.options).checks && (base.checks = {}), 
   Offline.options.checks.active = state);
 }.call(this), function() {
   var RETRY_TEMPLATE, TEMPLATE, _onreadystatechange, addClass, content, createFromHTML, el, flashClass, flashTimeouts, init, removeClass, render, roundTime;
   if (!window.Offline) throw new Error("Offline UI brought in without offline.js");
-  TEMPLATE = '<div class="offline-ui"><div class="offline-ui-content"></div></div>',
+  TEMPLATE = '<div class="offline-ui"><div class="offline-ui-content"></div></div>', 
   RETRY_TEMPLATE = '<a href class="offline-ui-retry"></a>', createFromHTML = function(html) {
     var el;
     return el = document.createElement("div"), el.innerHTML = html, el.children[0];
@@ -113699,7 +113751,7 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
   }, removeClass = function(name) {
     return el.className = el.className.replace(new RegExp("(^| )" + name.split(" ").join("|") + "( |$)", "gi"), " ");
   }, flashTimeouts = {}, flashClass = function(name, time) {
-    return addClass(name), null != flashTimeouts[name] && clearTimeout(flashTimeouts[name]),
+    return addClass(name), null != flashTimeouts[name] && clearTimeout(flashTimeouts[name]), 
     flashTimeouts[name] = setTimeout(function() {
       return removeClass(name), delete flashTimeouts[name];
     }, 1e3 * time);
@@ -113711,39 +113763,39 @@ S.addons={offcanvas:function(){var e=this;if(this.opts.offCanvas){var t=function
       minute:60,
       second:1
     };
-    for (unit in units) if (mult = units[unit], sec >= mult) return val = Math.floor(sec / mult),
+    for (unit in units) if (mult = units[unit], sec >= mult) return val = Math.floor(sec / mult), 
     [ val, unit ];
     return [ "now", "" ];
   }, render = function() {
     var button, handler;
-    return el = createFromHTML(TEMPLATE), document.body.appendChild(el), null != Offline.reconnect && Offline.getOption("reconnect") && (el.appendChild(createFromHTML(RETRY_TEMPLATE)),
+    return el = createFromHTML(TEMPLATE), document.body.appendChild(el), null != Offline.reconnect && Offline.getOption("reconnect") && (el.appendChild(createFromHTML(RETRY_TEMPLATE)), 
     button = el.querySelector(".offline-ui-retry"), handler = function(e) {
       return e.preventDefault(), Offline.reconnect.tryNow();
-    }, null != button.addEventListener ? button.addEventListener("click", handler, !1) :button.attachEvent("click", handler)),
+    }, null != button.addEventListener ? button.addEventListener("click", handler, !1) :button.attachEvent("click", handler)), 
     addClass("offline-ui-" + Offline.state), content = el.querySelector(".offline-ui-content");
   }, init = function() {
     return render(), Offline.on("up", function() {
-      return removeClass("offline-ui-down"), addClass("offline-ui-up"), flashClass("offline-ui-up-2s", 2),
+      return removeClass("offline-ui-down"), addClass("offline-ui-up"), flashClass("offline-ui-up-2s", 2), 
       flashClass("offline-ui-up-5s", 5);
     }), Offline.on("down", function() {
-      return removeClass("offline-ui-up"), addClass("offline-ui-down"), flashClass("offline-ui-down-2s", 2),
+      return removeClass("offline-ui-up"), addClass("offline-ui-down"), flashClass("offline-ui-down-2s", 2), 
       flashClass("offline-ui-down-5s", 5);
     }), Offline.on("reconnect:connecting", function() {
       return addClass("offline-ui-connecting"), removeClass("offline-ui-waiting");
     }), Offline.on("reconnect:tick", function() {
       var ref, time, unit;
-      return addClass("offline-ui-waiting"), removeClass("offline-ui-connecting"), ref = roundTime(Offline.reconnect.remaining),
-      time = ref[0], unit = ref[1], content.setAttribute("data-retry-in-value", time),
+      return addClass("offline-ui-waiting"), removeClass("offline-ui-connecting"), ref = roundTime(Offline.reconnect.remaining), 
+      time = ref[0], unit = ref[1], content.setAttribute("data-retry-in-value", time), 
       content.setAttribute("data-retry-in-unit", unit);
     }), Offline.on("reconnect:stopped", function() {
-      return removeClass("offline-ui-connecting offline-ui-waiting"), content.setAttribute("data-retry-in-value", null),
+      return removeClass("offline-ui-connecting offline-ui-waiting"), content.setAttribute("data-retry-in-value", null), 
       content.setAttribute("data-retry-in-unit", null);
     }), Offline.on("reconnect:failure", function() {
       return flashClass("offline-ui-reconnect-failed-2s", 2), flashClass("offline-ui-reconnect-failed-5s", 5);
     }), Offline.on("reconnect:success", function() {
       return flashClass("offline-ui-reconnect-succeeded-2s", 2), flashClass("offline-ui-reconnect-succeeded-5s", 5);
     });
-  }, "complete" === document.readyState ? init() :null != document.addEventListener ? document.addEventListener("DOMContentLoaded", init, !1) :(_onreadystatechange = document.onreadystatechange,
+  }, "complete" === document.readyState ? init() :null != document.addEventListener ? document.addEventListener("DOMContentLoaded", init, !1) :(_onreadystatechange = document.onreadystatechange, 
   document.onreadystatechange = function() {
     return "complete" === document.readyState && init(), "function" == typeof _onreadystatechange ? _onreadystatechange.apply(null, arguments) :void 0;
   });
@@ -117413,7 +117465,11 @@ if (ns.DEV_VERSION)
         extend          : icon_fa_prefix + 'square-plus',
         diminish        : icon_fa_prefix + 'square-minus',
         new             : icon_fa_prefix + 'window-maximize',
-        warning         : icon_fa_prefix + 'exclamation fa-size-15',
+
+        error           : icon_fa_prefix + 'triangle-exclamation',
+        alert           : icon_fa_prefix + 'diamond-exclamation',
+        warning         : icon_fa_prefix + 'circle-exclamation',
+
         info            : icon_fa_prefix + 'info fa-sm',
         help            : icon_fa_prefix + 'question fa-sm',
         close           : icon_fa_prefix + 'xmark'
@@ -117423,33 +117479,38 @@ if (ns.DEV_VERSION)
     $.bsNotyIcon = {
         info        : 'fa-info-circle',
         information : 'fa-info-circle',
-        alert       : 'fa-exclamation-circle',
         success     : 'fa-check-circle',
-        error       : 'fa-ban',
-        warning     : 'fa-exclamation-square', //'fa-exclamation-triangle',
+        error       : 'fa-triangle-exclamation',
+        alert       : 'fa-diamond-exclamation',
+        warning     : 'fa-circle-exclamation',
         help        : 'fa-question-circle'
     };
 
     $.bsNotyName = {
-        info        : {da:'Besked', en:'Message'},
-        information : {da:'Besked', en:'Message'},
-        alert       : {da:'Bemærkning', en:'Note'},
-        success     : {da:'Succes', en:'Success'},
-        error       : {da:'Fejl', en:'Error'},
-        warning     : {da:'Advarsel', en:'Warning'},
-        help        : {da:'Hjælp', en:'Help'}
+        info        : {da: 'Besked',   en: 'Message'},
+        information : {da: 'Besked',   en: 'Message'},
+        success     : {da: 'Succes',   en: 'Success'},
+        error       : {da: 'Fejl',     en: 'Error'  },
+        alert       : {da: 'Advarsel', en: 'Alert'  },
+        warning     : {da: 'Advarsel', en: 'Warning'},
+        help        : {da: 'Hjælp',    en: 'Help'   }
     };
 
     //Add plural name
     $.bsNotyNames = {
-        info        : {da:'Beskeder', en:'Messages'},
-        information : {da:'Beskeder', en:'Messages'},
-        alert       : {da:'Bemærkninger', en:'Notes'},
-        success     : {da:'Succes', en:'Success'},
-        error       : {da:'Fejl', en:'Errors'},
-        warning     : {da:'Advarsler', en:'Warnings'},
-        help        : {da:'Hjælp', en:'Help'}
+        info        : {da:'Beskeder',   en:'Messages'},
+        information : {da:'Beskeder',   en:'Messages'},
+        success     : {da:'Succes',     en:'Success' },
+        error       : {da:'Fejl',       en:'Errors'  },
+        alert       : {da:'Advarsler',  en:'Alerts'  },
+        warning     : {da:'Advarsler',  en:'Warnings'},
+        help        : {da:'Hjælp',      en:'Help'    }
     };
+
+
+    //ns.bsIcon = colored icons using Bootstrap alert colors
+    ns.bsIcon = {};
+    $.each($.bsNotyIcon, (type, icon) => ns.bsIcon[type] = $.bsIcon(icon, type) );
 
 
     //Icon for external link
@@ -133933,7 +133994,7 @@ var SVG = (function () {
             //bottomcenter need an extra container to be placed at the bottom
             this._controlCorners['bottomcenter'] =
                 L.DomUtil.create(
-                    'div',
+                    'div', 
                     'leaflet-bottom leaflet-center',
                     L.DomUtil.create('div', 'leaflet-control-bottomcenter',    this._controlContainer)
                 );
@@ -134673,7 +134734,7 @@ if (Number.prototype.toDegrees === undefined) {
 
 ;
 /*! =======================================================
-                      VERSION  11.0.2
+                      VERSION  11.0.2              
 ========================================================= */
 "use strict";
 
@@ -139486,7 +139547,7 @@ Options for selectiong position-format and to activate context-menu
 
                 if (_this.options.inclContextmenu)
                     options.after = options.after || {};
-
+                
                 return options;
             }
 
@@ -140638,6 +140699,11 @@ leaflet-bootstrap-control-legend.js
         /*******************************************
         addTo
         *******************************************/
+        //Adjust onClick in header-icons to be called with ( id, null, $button, map )
+        _adjustHeaderIconOnClick: function( id, onClick ){
+            return onClick ? function(event){ return onClick(id, null, $(event.target), this.parent._map, this); }.bind(this) : null;
+        },
+
         addTo: function( parent ){
             var _this = this,
                 options = this.options,
@@ -140670,12 +140736,13 @@ leaflet-bootstrap-control-legend.js
                             icon: options.iconArray,
                             text: options.text
                         },
-                        onInfo     : options.onInfo,
-                        onWarning  : options.onWarning,
-                        onError    : options.onError,
+                        onInfo     : this._adjustHeaderIconOnClick( 'info',    options.onInfo   ),
+                        onWarning  : this._adjustHeaderIconOnClick( 'warning', options.onWarning),
+                        onAlert    : this._adjustHeaderIconOnClick( 'alert',   options.onAlert  ),
+                        onError    : this._adjustHeaderIconOnClick( 'error',   options.onError  ),
                         icons      : {},
                         content    : '',
-semiTransparent: true,
+                        semiTransparent: true,
                         closeButton: false
                     };
 
@@ -140761,7 +140828,7 @@ semiTransparent: true,
                     $normalIcon.children('.container-stacked-icons').addClass('hide-for-bsl-working');
 
                 this.actionIcons = {};
-                ['error', 'warning', 'info', 'help', 'close'].forEach( id => {
+                ['error', 'alert', 'warning', 'info', 'help', 'close'].forEach( id => {
                     _this.actionIcons[id] = _this.$container.find('[data-header-icon-id="'+id+'"]');
                     _this.actionIcons[id].toggle(_this.options.showIcons || (id == 'close'));
                 });
@@ -146356,7 +146423,7 @@ L.Route - Extend L.GeoPolyline with vessels (L.VesselMarker)
 }(jQuery, L, this, document));
 ;
 /****************************************************************************
-	jquery-screen-ratio.js,
+	jquery-screen-ratio.js, 
 
 	(c) 2017, FCOO
 
@@ -146367,11 +146434,11 @@ L.Route - Extend L.GeoPolyline with vessels (L.VesselMarker)
 
 (function ($, window/*, document, undefined*/) {
 	"use strict";
-
+	
     /********************************************
     Screen Ratio
     *********************************************/
-	$.fn.screenRatio = function ( minDimension ) {
+	$.fn.screenRatio = function ( minDimension ) { 
 		return this.each(function() {
             var $this = $(this);
             $this.data("screenRatio_minDimension", minDimension);
@@ -146380,24 +146447,24 @@ L.Route - Extend L.GeoPolyline with vessels (L.VesselMarker)
 		});
 	};
 
-    $.fn._setScreenRatio = function () {
-        var w = screen.availWidth,
-            h = screen.availHeight,
+    $.fn._setScreenRatio = function () { 
+        var w = screen.availWidth, 
+            h = screen.availHeight, 
             r = h/w,
             p = r > 1,
             minD = parseFloat( this.data('screenRatio_minDimension') ),
-            maxD = minD*(p ? r : 1/r );
+            maxD = minD*(p ? r : 1/r ); 
 
         this
             .height( p ? maxD : minD )
             .width( p ? minD : maxD );
     };
-
+    
 
     /********************************************
     Window Ratio
     *********************************************/
-	$.fn.windowRatio = function ( minDimension, maxDimension ) {
+	$.fn.windowRatio = function ( minDimension, maxDimension ) { 
 		return this.each(function() {
             var $this = $(this);
             $this.data("windowRatio_minDimension", minDimension);
@@ -146408,8 +146475,8 @@ L.Route - Extend L.GeoPolyline with vessels (L.VesselMarker)
 	};
 
 
-    $.fn._setWindowRatio = function () {
-        var w = window.innerWidth,
+    $.fn._setWindowRatio = function () { 
+        var w = window.innerWidth, 
             h = window.innerHeight,
             r = h/w,
             p = r > 1,
@@ -146418,7 +146485,7 @@ L.Route - Extend L.GeoPolyline with vessels (L.VesselMarker)
             maxmaxD = parseFloat( this.data('windowRatio_maxDimension') );
 
             maxD = maxmaxD ? Math.min( maxD, maxmaxD ) : maxD;
-
+        
         this
             .height( p ? maxD : minD )
             .width( p ? minD : maxD );
@@ -146983,40 +147050,40 @@ Objects and methods to handle map-sync
                     text = {da: zoomOffset+ ' x zoom ind', en: zoomOffset+ ' x zoom in'};
 
             //Create zoom-mode-icon
-            let outerIcon = 'fa-square-full',
+            let outerIcon = 'fa-square-full', 
                 innerIcon = '';
             switch (Math.abs(zoomOffset)){
                 case 0:  innerIcon = outerIcon; break;
                 case 1:  innerIcon = 'fa-square fa-1xzoom'; break;
                 case 2:  innerIcon = 'fa-square-small fa-2xzoom'; break;
-            }
+            }                
 
             if (zoomOffset < 0){
                 outerIcon = 'fas text-multi-maps-current '  + outerIcon;
-                innerIcon = 'far text-multi-maps-main '     + innerIcon;
+                innerIcon = 'far text-multi-maps-main '     + innerIcon;                
             }
             else {
                 outerIcon = 'far text-multi-maps-main '     + outerIcon;
-                innerIcon = 'fas text-multi-maps-current  ' + innerIcon;
+                innerIcon = 'fas text-multi-maps-current  ' + innerIcon;                
             }
-
+                
             zoomItems.push({
-                id: 'zoomOffset_'+zoomOffset,
+                id: 'zoomOffset_'+zoomOffset, 
                 icon: [[
-                    zoomOffset ? outerIcon : innerIcon,
+                    zoomOffset ? outerIcon : innerIcon, 
                     zoomOffset ? innerIcon : outerIcon
                 ]],
                 text: text
             });
         }
-
+        
         let showWhen = {};
         showWhen[controlId + (controlId?'_':'')+'enabled'+idPostfix] = true;
         content.push({
             id       : 'zoomOffset'+idPostfix,
             label    : {da:'Zoom-niveau', en:'Zoom level'},
             type     : 'selectbutton',
-            fullWidth: true,
+            fullWidth: true,            
             items    : zoomItems,
             showWhen : showWhen
         });
@@ -149419,7 +149486,7 @@ fcoo.map.zIndex contains constants with z-index for different type of panes
 
 ------------------------------------------------------------------------------
 Leaflet has one parent-pane and six different panes for different layers.
-See https://leafletjs.com/reference-1.7.1.html#map-overlaypane
+See https://leafletjs.com/reference.html#map-pane
 
 Pane	    Z-index	Description
 mapPane	      auto	Pane that contains all other map panes
@@ -149443,7 +149510,18 @@ If a Layer contains Marker and/or polylines etc. each layer gets its own pane in
 overlayPane, shadowPane, and/or markerPane with z-index given directly in options or
 via the layers id in fcoo.map.zIndex[id]
 
+
+The following methods are avaiable to get/create new panes with z-index relative to other of the standard Leaflet panes above
+
+L.Map.getPaneBelow(paneId) Create and return a pane named paneId+'below' that gets zIndex just below pane with paneId
+
+L.Map.getPaneAbove(paneId) Create and return a pane named paneId+'above' that gets zIndex just above pane with paneId
+
+L.Map._getPaneDeltaZIndex(paneId, postfix, deltaZIndex) Create and return a pane named paneId+postfix that gets zIndex deltaZIndex (+/-) relative to pane with paneId
+
+
 ****************************************************************************/
+
 (function ($, window/*, document, undefined*/) {
     "use strict";
 
@@ -149452,47 +149530,36 @@ via the layers id in fcoo.map.zIndex[id]
         nsMap = ns.map = ns.map || {};
 
 
-    nsMap.zIndex = {
+    nsMap.zIndex     = {};
+    nsMap.zIndexList = [];
 
-        //Z-index for layers in overlayPane and markerPane. Typical geoJSON-layer
-        'NAVIGATION_PILOT_BOARDING_POSITIONS': 100,
+    ns.promiseList.append({
+        fileName: {subDir: "layers", fileName: "layer-z-index.json"},
+        resolve : function( list ){
+            //DEMO/TEST in LAYERZINDEX
+            list = window.LAYERZINDEX || list;
 
+            let zIndex = 2000 + list.length * 1000;
+            list.forEach( rec => {
+                let id = rec.id.toUpperCase();
+                nsMap.zIndex[id] = zIndex;
+                nsMap.zIndexList.push({id: id, zIndex: zIndex, desc: rec.desc});
+                zIndex = zIndex - 1000;
+            });
+            nsMap.zIndexList.sort( (rec1, rec2) => {return rec2.zIndex - rec1.zIndex; });
+        }
+    });
 
-        'NAVIGATION_NIORD'                   : 90,
-
-
-        //Z-index for tile-layer in tilePane
-
-
-        //BACKGROUND_LAYER_COASTLINE: Must be above all dynamic layers
-        "BACKGROUND_LAYER_COASTLINE": 2000,
-
-
-
-
-        //STATIC_LAYER = Default static layer eq. EEZ, VTS-lines, SAR-areas etc.
-        "STATIC_LAYER_LAND"         : 1000,
-
-        "STATIC_LAYER"              : 900,  //TODO
-
-
-
-
-        //BACKGROUND_LAYER_LAND, BACKGROUND_LAYER_WATER = Layer with background land and water
-        "BACKGROUND_LAYER_LAND"     : 500,
-
-        "STATIC_LAYER_WATER"        : 400,
-
-
-
-
-        "BACKGROUND_LAYER_WATER"    : 300   //TODO
-
-
+    //Methods for z-index
+    nsMap.getZIndex = function(id, delta=0){
+        return (nsMap.zIndex[id.toUpperCase()] || 0) + delta;
     };
 
-//sæt window.L_GEOPOLYLINE_ZINDEX = 100; i relation til de andre ting TODO
-
+    /* Previous const that seems to be used
+    //Z-index for layers in overlayPane and markerPane. Typical geoJSON-layer
+    nsMap.zIndex.NAVIGATION_PILOT_BOARDING_POSITIONS = 100;
+    nsMap.zIndex.NAVIGATION_NIORD = 90;
+    */
 
 }(jQuery, this, document));
 
@@ -149648,7 +149715,7 @@ Objects and methods to handle leaflet-maps
         maxZoom: 12,
 
         zoomSnap: 0.25,
-
+            
         //Hide attribution
         attributionControl: false,
 
@@ -150083,7 +150150,7 @@ Global context-menu for all maps
         onClick    : (id, latlng, $button, map) => nsMap.selectLayerInModal(map)
     });
 
-
+    
     //Map setting
     map_contextmenu_itemList.push({
         icon       : ns.icons.mapSettingSingle,
@@ -150718,7 +150785,7 @@ L.Layer.addInitHook(function(){
                 //Check and create the panes needed
                 if (this.options.createPane || this.options.createMarkerPane){
                     var paneId = this.options.paneId || this.options.id,
-                        zIndex = nsMap.zIndex[paneId.toUpperCase()];
+                        zIndex = nsMap.getZIndex(paneId);
 
                     if (this.options.createPane){
                         //Create pane in overlayPane
@@ -151520,6 +151587,13 @@ coast-lines, and name of cites and places
         water: {color: '#B9D3C2', filter: 'invert(90%) sepia(14%) saturate(281%) hue-rotate(88deg) brightness(91%) contrast(88%)'}
     }];
 
+    //Create css-var for all the land and water color
+    backgroundColorList.forEach( bgColor => {
+        ns.setRootVar('map-'+bgColor.id+'-land',  bgColor.land.color );
+        ns.setRootVar('map-'+bgColor.id+'-water', bgColor.water.color);
+    });
+
+
     L.Map.include({
         /***********************************************************
         L.Map.setBackground(landColor, waterColor)
@@ -151550,7 +151624,7 @@ coast-lines, and name of cites and places
                         layers     : 'land-mask_latest',
                         opacity    : 1,
                         colorFilter: colorFilter,
-                        zIndex     : nsMap.zIndex.BACKGROUND_LAYER_LAND
+                        zIndex     : nsMap.getZIndex('BACKGROUND_LAND')
                     },                  //options
                     undefined,          //map
                     undefined,          //defaultOptions
@@ -151582,7 +151656,7 @@ coast-lines, and name of cites and places
             this.backgroundCoastlineLayer = this.backgroundCoastlineLayer ||
                 nsMap.layer_static({
                     layers: 'top-dark_latest',
-                    zIndex: nsMap.zIndex.BACKGROUND_LAYER_COASTLINE
+                    zIndex: nsMap.getZIndex('BACKGROUND_COASTLINE')
                 }).addTo(this);
         },
 
@@ -154102,7 +154176,7 @@ search-mapLayer.js
         /*****************************************************
         searchButton and buttonList = ´Buttons for legend, menu etc.
         *****************************************************/
-        _searchButton_onClick: function(id, selected, $button, map){
+        _searchButton_onClick: function(id, selected, $button, map){ 
             if (this.searchResultListModal)
                 this.searchResultListModal.close();
             nsMap.showSearchModalForm('', map || ns.showSearchResultInMap );
@@ -154114,7 +154188,7 @@ search-mapLayer.js
                 icon        : 'fa-search',
                 class       : 'min-width',
                 text        : {da:'Søg', en:'Search'},
-                showAllways : true,
+                showAllways : true,                    
                 onClick     : this._searchButton_onClick,
                 context     : this
             };
