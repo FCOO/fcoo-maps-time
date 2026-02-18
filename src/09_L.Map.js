@@ -159,8 +159,8 @@ L.Map
             };
         else {
             //Adjust for time-offset in sync with main map or now
-            var isTsMain = this.timeSync.mode == nsTime.tsMain,
-                offset = this.timeSync.offset;
+            var isTsMain = this.timeSync && (this.timeSync.mode == nsTime.tsMain),
+                offset   = this.timeSync ? this.timeSync.offset : 0;
             this.time = {
                 now     : nsTime.nowMoment,
                 current : isTsMain ? moment(timeData.currentMoment) : moment(nsTime.nowMoment),
@@ -184,7 +184,8 @@ L.Map
         this.bsTimeInfoControl_updateTime();
 
         //Update timeDimension
-        this.timeDimension.setCurrentTime(this.time.current.toDate().getTime());
+        if (this.timeDimension)
+            this.timeDimension.setCurrentTime(this.time.current.toDate().getTime());
 
         //Call events
         this.fire("momentchanged", this.time);
